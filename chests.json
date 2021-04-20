@@ -1,0 +1,2246 @@
+{
+    "LOD": [
+        {
+            "content": "0x2a6e1e6",
+            "bitmask": "0x9a9449",
+            "value": "80",
+            "location": "Bamboo Grove",
+            "name": "Ether"
+        },
+        {
+            "content": "0x2a6e1f2",
+            "bitmask": "0x9a944a",
+            "value": "1",
+            "location": "Bamboo Grove",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e1fe",
+            "bitmask": "0x9a941d",
+            "value": "2",
+            "location": "Checkpoint",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6e20a",
+            "bitmask": "0x9a941d",
+            "value": "4",
+            "location": "Checkpoint",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e216",
+            "bitmask": "0x9a941d",
+            "value": "8",
+            "location": "Mountain Trail",
+            "name": "Lightning Shard"
+        },
+        {
+            "content": "0x2a6e222",
+            "bitmask": "0x9a941d",
+            "value": "10",
+            "location": "Mountain Trail",
+            "name": "Recovery Recipe"
+        },
+        {
+            "content": "0x2a6e22e",
+            "bitmask": "0x9a941d",
+            "value": "20",
+            "location": "Mountain Trail",
+            "name": "Ether"
+        },
+        {
+            "content": "0x2a6e23a",
+            "bitmask": "0x9a941d",
+            "value": "40",
+            "location": "Mountain Trail",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e246",
+            "bitmask": "0x9a941d",
+            "value": "80",
+            "location": "Village Cave",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e252",
+            "bitmask": "0x9a941e",
+            "value": "1",
+            "location": "Village Cave",
+            "name": "Dark Shard"
+        },
+        {
+            "content": "0x2a6e25e",
+            "bitmask": "0x9a941e",
+            "value": "2",
+            "location": "Ridge",
+            "name": "Frost Shard"
+        },
+        {
+            "content": "0x2a6e26a",
+            "bitmask": "0x9a941e",
+            "value": "4",
+            "location": "Ridge",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e276",
+            "bitmask": "0x9a941e",
+            "value": "8",
+            "location": "Throne Room",
+            "name": "Torn Pages"
+        },
+        {
+            "content": "0x2a6e282",
+            "bitmask": "0x9a941e",
+            "value": "10",
+            "location": "Throne Room",
+            "name": "Palace Map"
+        },
+        {
+            "content": "0x2a6e28e",
+            "bitmask": "0x9a941e",
+            "value": "20",
+            "location": "Throne Room",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e29a",
+            "bitmask": "0x9a941e",
+            "value": "40",
+            "location": "Throne Room",
+            "name": "Queen Recipe"
+        },
+        {
+            "content": "0x2a6e2a6",
+            "bitmask": "0x9a941e",
+            "value": "80",
+            "location": "Throne Room",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e2b2",
+            "bitmask": "0x9a941f",
+            "value": "1",
+            "location": "Throne Room",
+            "name": "Ogre Shield"
+        },
+        {
+            "content": "0x2a6e2be",
+            "bitmask": "0x9a941f",
+            "value": "2",
+            "location": "Throne Room",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6e2ca",
+            "bitmask": "0x9a941f",
+            "value": "4",
+            "location": "Throne Room",
+            "name": "Orichalcum"
+        }
+    ],
+    "AG": [
+        {
+            "content": "0x2a6e2d6",
+            "bitmask": "0x9a941f",
+            "value": "8",
+            "location": "Agrabah",
+            "name": "Dark Shard"
+        },
+        {
+            "content": "0x2a6e2e2",
+            "bitmask": "0x9a941f",
+            "value": "10",
+            "location": "Agrabah",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e2ee",
+            "bitmask": "0x9a941f",
+            "value": "20",
+            "location": "Agrabah",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6e2fa",
+            "bitmask": "0x9a941f",
+            "value": "40",
+            "location": "Agrabah",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e306",
+            "bitmask": "0x9a941f",
+            "value": "80",
+            "location": "Agrabah",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e312",
+            "bitmask": "0x9a9420",
+            "value": "1",
+            "location": "Agrabah",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e31e",
+            "bitmask": "0x9a944a",
+            "value": "8",
+            "location": "Agrabah",
+            "name": "Serenity Shard"
+        },
+        {
+            "content": "0x2a6e32a",
+            "bitmask": "0x9a9420",
+            "value": "2",
+            "location": "Bazaar",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6e336",
+            "bitmask": "0x9a9420",
+            "value": "4",
+            "location": "Bazaar",
+            "name": "Power Shard"
+        },
+        {
+            "content": "0x2a6e342",
+            "bitmask": "0x9a9420",
+            "value": "8",
+            "location": "Bazaar",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6e34e",
+            "bitmask": "0x9a9420",
+            "value": "10",
+            "location": "Bazaar",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e35a",
+            "bitmask": "0x9a9420",
+            "value": "20",
+            "location": "Bazaar",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e366",
+            "bitmask": "0x9a9420",
+            "value": "40",
+            "location": "Palace Walls",
+            "name": "Skill Ring"
+        },
+        {
+            "content": "0x2a6e372",
+            "bitmask": "0x9a944b",
+            "value": "20",
+            "location": "Palace Walls",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e37e",
+            "bitmask": "0x9a9420",
+            "value": "80",
+            "location": "The Cave of Wonders: Entrance",
+            "name": "Power Stone"
+        },
+        {
+            "content": "0x2a6e38a",
+            "bitmask": "0x9a9421",
+            "value": "1",
+            "location": "The Cave of Wonders: Entrance",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e396",
+            "bitmask": "0x9a9421",
+            "value": "4",
+            "location": "The Cave of Wonders: Valley of Stone",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e3a2",
+            "bitmask": "0x9a9421",
+            "value": "8",
+            "location": "The Cave of Wonders: Valley of Stone",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e3ae",
+            "bitmask": "0x9a9421",
+            "value": "10",
+            "location": "The Cave of Wonders: Valley of Stone",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e3ba",
+            "bitmask": "0x9a9421",
+            "value": "20",
+            "location": "The Cave of Wonders: Valley of Stone",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6e3c6",
+            "bitmask": "0x9a9448",
+            "value": "80",
+            "location": "The Cave of Wonders: Chasm of Challenges",
+            "name": "The Cave of Wonders Map"
+        },
+        {
+            "content": "0x2a6e3d2",
+            "bitmask": "0x9a9421",
+            "value": "40",
+            "location": "The Cave of Wonders: Chasm of Challenges",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e3de",
+            "bitmask": "0x9a944a",
+            "value": "10",
+            "location": "The Cave of Wonders: Treasure Room",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e3ea",
+            "bitmask": "0x9a944a",
+            "value": "20",
+            "location": "The Cave of Wonders: Treasure Room",
+            "name": "Serenity Gem"
+        },
+        {
+            "content": "0x2a6e3f6",
+            "bitmask": "0x9a9421",
+            "value": "2",
+            "location": "Ruined Chamber",
+            "name": "Torn Pages"
+        },
+        {
+            "content": "0x2a6e402",
+            "bitmask": "0x9a9448",
+            "value": "40",
+            "location": "Ruined Chamber",
+            "name": "Ruins Map"
+        }
+    ],
+    "DC": [
+        {
+            "content": "0x2a6e40e",
+            "bitmask": "0x9a9422",
+            "value": "1",
+            "location": "Cornerstone Hill",
+            "name": "Cornerstone Hill Map"
+        },
+        {
+            "content": "0x2a6e41a",
+            "bitmask": "0x9a9422",
+            "value": "2",
+            "location": "Cornerstone Hill",
+            "name": "Frost Shard"
+        },
+        {
+            "content": "0x2a6e426",
+            "bitmask": "0x9a9422",
+            "value": "8",
+            "location": "Pier",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e432",
+            "bitmask": "0x9a9422",
+            "value": "10",
+            "location": "Pier",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6e43e",
+            "bitmask": "0x9a9422",
+            "value": "20",
+            "location": "Waterway",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e44a",
+            "bitmask": "0x9a9422",
+            "value": "40",
+            "location": "Waterway",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e456",
+            "bitmask": "0x9a9422",
+            "value": "80",
+            "location": "Waterway",
+            "name": "Frost Stone"
+        },
+        {
+            "content": "0x2a6e462",
+            "bitmask": "0x9a9424",
+            "value": "2",
+            "location": "Courtyard (DC)",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e46e",
+            "bitmask": "0x9a9424",
+            "value": "4",
+            "location": "Courtyard (DC)",
+            "name": "Star Recipe"
+        },
+        {
+            "content": "0x2a6e47a",
+            "bitmask": "0x9a9424",
+            "value": "8",
+            "location": "Courtyard (DC)",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e486",
+            "bitmask": "0x9a9424",
+            "value": "10",
+            "location": "Courtyard (DC)",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e492",
+            "bitmask": "0x9a9424",
+            "value": "20",
+            "location": "Courtyard (DC)",
+            "name": "Blazing Stone"
+        },
+        {
+            "content": "0x2a6e49e",
+            "bitmask": "0x9a9424",
+            "value": "40",
+            "location": "Courtyard (DC)",
+            "name": "Blazing Shard"
+        },
+        {
+            "content": "0x2a6e4aa",
+            "bitmask": "0x9a9424",
+            "value": "80",
+            "location": "Courtyard (DC)",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e4b6",
+            "bitmask": "0x9a9424",
+            "value": "1",
+            "location": "Library",
+            "name": "Torn Pages"
+        }
+    ],
+    "100AW" : [
+        {
+            "content": "0x2a6e4c2",
+            "bitmask": "0x9a9439",
+            "value": "80",
+            "location": "Pooh Bear's House",
+            "name": "100 Acre Wood Map"
+        },
+        {
+            "content": "0x2a6e4ce",
+            "bitmask": "0x9a9425",
+            "value": "10",
+            "location": "Pooh Bear's House",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e4da",
+            "bitmask": "0x9a9425",
+            "value": "20",
+            "location": "Pooh Bear's House",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e4e6",
+            "bitmask": "0x9a9426",
+            "value": "10",
+            "location": "Piglet's House",
+            "name": "Defense Boost"
+        },
+        {
+            "content": "0x2a6e4f2",
+            "bitmask": "0x9a9426",
+            "value": "4",
+            "location": "Piglet's House",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e4fe",
+            "bitmask": "0x9a9426",
+            "value": "8",
+            "location": "Piglet's House",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6e50a",
+            "bitmask": "0x9a943a",
+            "value": "1",
+            "location": "Rabbit's House",
+            "name": "Draw Ring"
+        },
+        {
+            "content": "0x2a6e516",
+            "bitmask": "0x9a9425",
+            "value": "80",
+            "location": "Rabbit's House",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6e522",
+            "bitmask": "0x9a9426",
+            "value": "1",
+            "location": "Rabbit's House",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e52e",
+            "bitmask": "0x9a9426",
+            "value": "20",
+            "location": "Kanga's House",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e53a",
+            "bitmask": "0x9a9426",
+            "value": "40",
+            "location": "Kanga's House",
+            "name": "Orichalcum"
+        },
+        {
+            "content": "0x2a6e546",
+            "bitmask": "0x9a9426",
+            "value": "80",
+            "location": "Kanga's House",
+            "name": "Magic Boost"
+        },
+        {
+            "content": "0x2a6e552",
+            "bitmask": "0x9a9427",
+            "value": "2",
+            "location": "The Spooky Cave",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6e55e",
+            "bitmask": "0x9a9427",
+            "value": "4",
+            "location": "The Spooky Cave",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e56a",
+            "bitmask": "0x9a9427",
+            "value": "8",
+            "location": "The Spooky Cave",
+            "name": "Orichalcum"
+        },
+        {
+            "content": "0x2a6e576",
+            "bitmask": "0x9a9427",
+            "value": "10",
+            "location": "The Spooky Cave",
+            "name": "Guard Recipe"
+        },
+        {
+            "content": "0x2a6e582",
+            "bitmask": "0x9a9427",
+            "value": "40",
+            "location": "The Spooky Cave",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6e58e",
+            "bitmask": "0x9a9427",
+            "value": "80",
+            "location": "The Spooky Cave",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e59a",
+            "bitmask": "0x9a9439",
+            "value": "40",
+            "location": "Starry Hill",
+            "name": "Cosmic Ring"
+        },
+        {
+            "content": "0x2a6e5a6",
+            "bitmask": "0x9a9425",
+            "value": "2",
+            "location": "Starry Hill",
+            "name": "Style Recipe"
+        }
+    ],
+    "OC": [
+        {
+            "content": "0x2a6e5b2",
+            "bitmask": "0x9a9428",
+            "value": "1",
+            "location": "Underworld Entrance",
+            "name": "Power Boost"
+        },
+        {
+            "content": "0x2a6e5be",
+            "bitmask": "0x9a9429",
+            "value": "40",
+            "location": "Cave of the Dead: Passage",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e5ca",
+            "bitmask": "0x9a9429",
+            "value": "80",
+            "location": "Cave of the Dead: Passage",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e5d6",
+            "bitmask": "0x9a942a",
+            "value": "1",
+            "location": "Cave of the Dead: Passage",
+            "name": "Ether"
+        },
+        {
+            "content": "0x2a6e5e2",
+            "bitmask": "0x9a942a",
+            "value": "2",
+            "location": "Cave of the Dead: Passage",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e5ee",
+            "bitmask": "0x9a942a",
+            "value": "4",
+            "location": "Cave of the Dead: Passage",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6e5fa",
+            "bitmask": "0x9a9428",
+            "value": "10",
+            "location": "Cave of the Dead: Inner Chamber",
+            "name": "Underworld Map"
+        },
+        {
+            "content": "0x2a6e606",
+            "bitmask": "0x9a9428",
+            "value": "8",
+            "location": "Cave of the Dead: Inner Chamber",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e612",
+            "bitmask": "0x9a9428",
+            "value": "20",
+            "location": "Underworld Caverns: Entrance",
+            "name": "Lucid Shard"
+        },
+        {
+            "content": "0x2a6e61e",
+            "bitmask": "0x9a9428",
+            "value": "40",
+            "location": "Underworld Caverns: Entrance",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e62a",
+            "bitmask": "0x9a944a",
+            "value": "40",
+            "location": "Underworld Caverns: Entrance",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e636",
+            "bitmask": "0x9a942a",
+            "value": "8",
+            "location": "Underworld Caverns: The Lost Road",
+            "name": "Bright Shard"
+        },
+        {
+            "content": "0x2a6e642",
+            "bitmask": "0x9a942a",
+            "value": "10",
+            "location": "Underworld Caverns: The Lost Road",
+            "name": "Ether"
+        },
+        {
+            "content": "0x2a6e64e",
+            "bitmask": "0x9a942a",
+            "value": "20",
+            "location": "Underworld Caverns: The Lost Road",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e65a",
+            "bitmask": "0x9a942a",
+            "value": "40",
+            "location": "Underworld Caverns: The Lost Road",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e666",
+            "bitmask": "0x9a942a",
+            "value": "80",
+            "location": "Underworld Caverns: Atrium",
+            "name": "Lucid Stone"
+        },
+        {
+            "content": "0x2a6e672",
+            "bitmask": "0x9a942b",
+            "value": "1",
+            "location": "Underworld Caverns: Atrium",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e67e",
+            "bitmask": "0x9a9429",
+            "value": "10",
+            "location": "The Lock",
+            "name": "Caverns Map"
+        },
+        {
+            "content": "0x2a6e68a",
+            "bitmask": "0x9a9429",
+            "value": "1",
+            "location": "The Lock",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e696",
+            "bitmask": "0x9a9429",
+            "value": "4",
+            "location": "The Lock",
+            "name": "AP Boost"
+        }
+    ],
+    "BC": [
+        {
+            "content": "0x2a6e6a2",
+            "bitmask": "0x9a942b",
+            "value": "20",
+            "location": "Courtyard (BC)",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e6ae",
+            "bitmask": "0x9a942b",
+            "value": "40",
+            "location": "Courtyard (BC)",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6e6ba",
+            "bitmask": "0x9a944a",
+            "value": "80",
+            "location": "Courtyard (BC)",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e6c6",
+            "bitmask": "0x9a942b",
+            "value": "4",
+            "location": "Belle's Room",
+            "name": "Castle Map"
+        },
+        {
+            "content": "0x2a6e6d2",
+            "bitmask": "0x9a942b",
+            "value": "8",
+            "location": "Belle's Room",
+            "name": "Mega-Recipe"
+        },
+        {
+            "content": "0x2a6e6de",
+            "bitmask": "0x9a942b",
+            "value": "80",
+            "location": "The East Wing",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e6ea",
+            "bitmask": "0x9a942c",
+            "value": "1",
+            "location": "The East Wing",
+            "name": "Tent"
+        },
+        {
+            "content": "0x2a6e6f6",
+            "bitmask": "0x9a942c",
+            "value": "2",
+            "location": "The West Hall",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6e702",
+            "bitmask": "0x9a942c",
+            "value": "4",
+            "location": "The West Hall",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e70e",
+            "bitmask": "0x9a942c",
+            "value": "8",
+            "location": "The West Hall",
+            "name": "Power Shard"
+        },
+        {
+            "content": "0x2a6e71a",
+            "bitmask": "0x9a942c",
+            "value": "10",
+            "location": "The West Hall",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e726",
+            "bitmask": "0x9a942c",
+            "value": "20",
+            "location": "The West Hall",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e732",
+            "bitmask": "0x9a944b",
+            "value": "1",
+            "location": "The West Hall",
+            "name": "Bright Stone"
+        },
+        {
+            "content": "0x2a6e73e",
+            "bitmask": "0x9a942d",
+            "value": "1",
+            "location": "Dungeon",
+            "name": "Basement Map"
+        },
+        {
+            "content": "0x2a6e74a",
+            "bitmask": "0x9a942d",
+            "value": "2",
+            "location": "Dungeon",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e756",
+            "bitmask": "0x9a942d",
+            "value": "4",
+            "location": "Secret Passage",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e762",
+            "bitmask": "0x9a942d",
+            "value": "20",
+            "location": "Secret Passage",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6e76e",
+            "bitmask": "0x9a942d",
+            "value": "8",
+            "location": "Secret Passage",
+            "name": "Lucid Shard"
+        },
+        {
+            "content": "0x2a6e77a",
+            "bitmask": "0x9a942c",
+            "value": "40",
+            "location": "The West Wing",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e786",
+            "bitmask": "0x9a942c",
+            "value": "80",
+            "location": "The West Wing",
+            "name": "Tent"
+        },
+        {
+            "content": "0x2a6e792",
+            "bitmask": "0x9a942b",
+            "value": "10",
+            "location": "Beast's Room",
+            "name": "Blazing Shard"
+        }
+    ],
+    "SP": [
+        {
+            "content": "0x2a6e79e",
+            "bitmask": "0x9a943a",
+            "value": "4",
+            "location": "Pit Cell",
+            "name": "Pit Cell Area Map"
+        },
+        {
+            "content": "0x2a6e7aa",
+            "bitmask": "0x9a942d",
+            "value": "40",
+            "location": "Pit Cell",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6e7b6",
+            "bitmask": "0x9a942e",
+            "value": "2",
+            "location": "Canyon",
+            "name": "Dark Crystal"
+        },
+        {
+            "content": "0x2a6e7c2",
+            "bitmask": "0x9a942e",
+            "value": "4",
+            "location": "Canyon",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e7ce",
+            "bitmask": "0x9a942e",
+            "value": "8",
+            "location": "Canyon",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6e7da",
+            "bitmask": "0x9a944b",
+            "value": "40",
+            "location": "Canyon",
+            "name": "Frost Crystal"
+        },
+        {
+            "content": "0x2a6e7e6",
+            "bitmask": "0x9a942e",
+            "value": "10",
+            "location": "I/O Tower: Hallway",
+            "name": "Power Crystal"
+        },
+        {
+            "content": "0x2a6e7f2",
+            "bitmask": "0x9a942e",
+            "value": "20",
+            "location": "I/O Tower: Hallway",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e7fe",
+            "bitmask": "0x9a942f",
+            "value": "2",
+            "location": "I/O Tower: Communications Room",
+            "name": "I/O Tower Map"
+        },
+        {
+            "content": "0x2a6e80a",
+            "bitmask": "0x9a944a",
+            "value": "2",
+            "location": "I/O Tower: Communications Room",
+            "name": "Gaia Belt"
+        },
+        {
+            "content": "0x2a6e816",
+            "bitmask": "0x9a942f",
+            "value": "10",
+            "location": "Central Computer Mesa",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e822",
+            "bitmask": "0x9a942f",
+            "value": "20",
+            "location": "Central Computer Mesa",
+            "name": "Orichalcum+"
+        },
+        {
+            "content": "0x2a6e82e",
+            "bitmask": "0x9a942f",
+            "value": "40",
+            "location": "Central Computer Mesa",
+            "name": "Cosmic Arts"
+        },
+        {
+            "content": "0x2a6e83a",
+            "bitmask": "0x9a9449",
+            "value": "1",
+            "location": "Central Computer Mesa",
+            "name": "Central Computer Core Map"
+        }
+    ],
+    "HT": [
+        {
+            "content": "0x2a6e846",
+            "bitmask": "0x9a9430",
+            "value": "4",
+            "location": "Graveyard",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e852",
+            "bitmask": "0x9a9430",
+            "value": "8",
+            "location": "Graveyard",
+            "name": "Serenity Gem"
+        },
+        {
+            "content": "0x2a6e85e",
+            "bitmask": "0x9a9430",
+            "value": "2",
+            "location": "Dr. Finkelstein's Lab",
+            "name": "Halloween Town Map"
+        },
+        {
+            "content": "0x2a6e86a",
+            "bitmask": "0x9a942f",
+            "value": "80",
+            "location": "Halloween Town Square",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e876",
+            "bitmask": "0x9a9430",
+            "value": "1",
+            "location": "Halloween Town Square",
+            "name": "Energy Shard"
+        },
+        {
+            "content": "0x2a6e882",
+            "bitmask": "0x9a9430",
+            "value": "10",
+            "location": "Hinterlands",
+            "name": "Lightning Shard"
+        },
+        {
+            "content": "0x2a6e88e",
+            "bitmask": "0x9a9430",
+            "value": "20",
+            "location": "Hinterlands",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e89a",
+            "bitmask": "0x9a9430",
+            "value": "40",
+            "location": "Hinterlands",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e8a6",
+            "bitmask": "0x9a9431",
+            "value": "1",
+            "location": "Candy Cane Lane",
+            "name": "Mega-Potion"
+        },
+        {
+            "content": "0x2a6e8b2",
+            "bitmask": "0x9a9431",
+            "value": "2",
+            "location": "Candy Cane Lane",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6e8be",
+            "bitmask": "0x9a9431",
+            "value": "4",
+            "location": "Candy Cane Lane",
+            "name": "Lightning Stone"
+        },
+        {
+            "content": "0x2a6e8ca",
+            "bitmask": "0x9a9431",
+            "value": "8",
+            "location": "Candy Cane Lane",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e8d6",
+            "bitmask": "0x9a9431",
+            "value": "40",
+            "location": "Santa's House",
+            "name": "Christmas Town Map"
+        },
+        {
+            "content": "0x2a6e8e2",
+            "bitmask": "0x9a9431",
+            "value": "10",
+            "location": "Santa's House",
+            "name": "AP Boost"
+        }
+    ],
+    "PR": [
+        {
+            "content": "0x2a6e8ee",
+            "bitmask": "0x9a9432",
+            "value": "2",
+            "location": "Rampart",
+            "name": "Naval Map"
+        },
+        {
+            "content": "0x2a6e8fa",
+            "bitmask": "0x9a9432",
+            "value": "4",
+            "location": "Rampart",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6e906",
+            "bitmask": "0x9a9432",
+            "value": "8",
+            "location": "Rampart",
+            "name": "Dark Shard"
+        },
+        {
+            "content": "0x2a6e912",
+            "bitmask": "0x9a9432",
+            "value": "10",
+            "location": "Town",
+            "name": "Dark Stone"
+        },
+        {
+            "content": "0x2a6e91e",
+            "bitmask": "0x9a9432",
+            "value": "20",
+            "location": "Town",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e92a",
+            "bitmask": "0x9a9432",
+            "value": "40",
+            "location": "Town",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e936",
+            "bitmask": "0x9a9432",
+            "value": "80",
+            "location": "Town",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6e942",
+            "bitmask": "0x9a9433",
+            "value": "2",
+            "location": "Isla de Muerta: Cave Mouth",
+            "name": "Bright Shard"
+        },
+        {
+            "content": "0x2a6e94e",
+            "bitmask": "0x9a9433",
+            "value": "4",
+            "location": "Isla de Muerta: Cave Mouth",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e95a",
+            "bitmask": "0x9a943a",
+            "value": "80",
+            "location": "Isla de Muerta: Powder Store",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e966",
+            "bitmask": "0x9a943b",
+            "value": "1",
+            "location": "Isla de Muerta: Powder Store",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e972",
+            "bitmask": "0x9a9433",
+            "value": "10",
+            "location": "Isla de Muerta: Moonlight Nook",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6e97e",
+            "bitmask": "0x9a9433",
+            "value": "20",
+            "location": "Isla de Muerta: Moonlight Nook",
+            "name": "Serenity Gem"
+        },
+        {
+            "content": "0x2a6e98a",
+            "bitmask": "0x9a943b",
+            "value": "2",
+            "location": "Isla de Muerta: Moonlight Nook",
+            "name": "Power Stone"
+        },
+        {
+            "content": "0x2a6e996",
+            "bitmask": "0x9a9433",
+            "value": "8",
+            "location": "Ship Graveyard: The Interceptor's Hold",
+            "name": "Feather Charm"
+        },
+        {
+            "content": "0x2a6e9a2",
+            "bitmask": "0x9a9433",
+            "value": "40",
+            "location": "Ship Graveyard: Seadrift Keep",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6e9ae",
+            "bitmask": "0x9a9433",
+            "value": "80",
+            "location": "Ship Graveyard: Seadrift Keep",
+            "name": "Orichalcum"
+        },
+        {
+            "content": "0x2a6e9ba",
+            "bitmask": "0x9a943b",
+            "value": "4",
+            "location": "Ship Graveyard: Seadrift Keep",
+            "name": "Meteor Staff"
+        },
+        {
+            "content": "0x2a6e9c6",
+            "bitmask": "0x9a9434",
+            "value": "1",
+            "location": "Ship Graveyard: Seadrift Row",
+            "name": "Serenity Gem"
+        },
+        {
+            "content": "0x2a6e9d2",
+            "bitmask": "0x9a9434",
+            "value": "2",
+            "location": "Ship Graveyard: Seadrift Row",
+            "name": "King Recipe"
+        },
+        {
+            "content": "0x2a6e9de",
+            "bitmask": "0x9a943b",
+            "value": "8",
+            "location": "Ship Graveyard: Seadrift Row",
+            "name": "Mythril Crystal"
+        }
+    ],
+    "HB" : [
+        {
+            "content": "0x2a6e9ea",
+            "bitmask": "0x9a9436",
+            "value": "2",
+            "location": "Borough",
+            "name": "Drive Recovery"
+        },
+        {
+            "content": "0x2a6e9f6",
+            "bitmask": "0x9a9436",
+            "value": "4",
+            "location": "Borough",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6ea02",
+            "bitmask": "0x9a9436",
+            "value": "8",
+            "location": "Borough",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6ea0e",
+            "bitmask": "0x9a9438",
+            "value": "80",
+            "location": "Borough",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6ea1a",
+            "bitmask": "0x9a944b",
+            "value": "2",
+            "location": "Borough",
+            "name": "Dark Shard"
+        },
+        {
+            "content": "0x2a6ea26",
+            "bitmask": "0x9a9439",
+            "value": "10",
+            "location": "Postern",
+            "name": "Castle Perimeter Map"
+        },
+        {
+            "content": "0x2a6ea32",
+            "bitmask": "0x9a9435",
+            "value": "10",
+            "location": "Postern",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6ea3e",
+            "bitmask": "0x9a9435",
+            "value": "20",
+            "location": "Postern",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6ea4a",
+            "bitmask": "0x9a9436",
+            "value": "80",
+            "location": "Corridors",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6ea56",
+            "bitmask": "0x9a9437",
+            "value": "1",
+            "location": "Corridors",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6ea62",
+            "bitmask": "0x9a9437",
+            "value": "2",
+            "location": "Corridors",
+            "name": "Dark Crystal"
+        },
+        {
+            "content": "0x2a6ea6e",
+            "bitmask": "0x9a9439",
+            "value": "2",
+            "location": "Corridors",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6ea7a",
+            "bitmask": "0x9a9434",
+            "value": "80",
+            "location": "Ansem's Study",
+            "name": "Skill Recipe"
+        },
+        {
+            "content": "0x2a6ea86",
+            "bitmask": "0x9a9434",
+            "value": "40",
+            "location": "Ansem's Study",
+            "name": "Ukulele Charm"
+        },
+        {
+            "content": "0x2a6ea92",
+            "bitmask": "0x9a9439",
+            "value": "8",
+            "location": "Restoration Site",
+            "name": "Moon Recipe"
+        },
+        {
+            "content": "0x2a6ea9e",
+            "bitmask": "0x9a944b",
+            "value": "4",
+            "location": "Restoration Site",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6eaaa",
+            "bitmask": "0x9a9434",
+            "value": "4",
+            "location": "Crystal Fissure",
+            "name": "Torn Pages"
+        },
+        {
+            "content": "0x2a6eab6",
+            "bitmask": "0x9a9449",
+            "value": "2",
+            "location": "Crystal Fissure",
+            "name": "The Great Maw Map"
+        },
+        {
+            "content": "0x2a6eac2",
+            "bitmask": "0x9a9434",
+            "value": "8",
+            "location": "Crystal Fissure",
+            "name": "Energy Crystal"
+        },
+        {
+            "content": "0x2a6eace",
+            "bitmask": "0x9a9434",
+            "value": "10",
+            "location": "Crystal Fissure",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6eada",
+            "bitmask": "0x9a9449",
+            "value": "8",
+            "location": "Postern",
+            "name": "Gull Wing"
+        },
+        {
+            "content": "0x2a6eae6",
+            "bitmask": "0x9a9439",
+            "value": "20",
+            "location": "Heartless Manufactory",
+            "name": "Cosmic Chain"
+        }
+    ],
+    "PL": [
+        {
+            "content": "0x2a6eaf2",
+            "bitmask": "0x9a9449",
+            "value": "10",
+            "location": "Gorge",
+            "name": "Savannah Map"
+        },
+        {
+            "content": "0x2a6eafe",
+            "bitmask": "0x9a943f",
+            "value": "1",
+            "location": "Gorge",
+            "name": "Dark Gem"
+        },
+        {
+            "content": "0x2a6eb0a",
+            "bitmask": "0x9a943f",
+            "value": "2",
+            "location": "Gorge",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6eb16",
+            "bitmask": "0x9a943e",
+            "value": "20",
+            "location": "Elephant Graveyard",
+            "name": "Frost Gem"
+        },
+        {
+            "content": "0x2a6eb22",
+            "bitmask": "0x9a943e",
+            "value": "40",
+            "location": "Elephant Graveyard",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6eb2e",
+            "bitmask": "0x9a943e",
+            "value": "80",
+            "location": "Elephant Graveyard",
+            "name": "Bright Stone"
+        },
+        {
+            "content": "0x2a6eb3a",
+            "bitmask": "0x9a944b",
+            "value": "8",
+            "location": "Elephant Graveyard",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6eb46",
+            "bitmask": "0x9a944b",
+            "value": "10",
+            "location": "Elephant Graveyard",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6eb52",
+            "bitmask": "0x9a9440",
+            "value": "8",
+            "location": "Pride Rock",
+            "name": "Pride Rock Map"
+        },
+        {
+            "content": "0x2a6eb5e",
+            "bitmask": "0x9a943d",
+            "value": "10",
+            "location": "Pride Rock",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6eb6a",
+            "bitmask": "0x9a943d",
+            "value": "20",
+            "location": "Pride Rock",
+            "name": "Serenity Crystal"
+        },
+        {
+            "content": "0x2a6eb76",
+            "bitmask": "0x9a943e",
+            "value": "1",
+            "location": "Wildebeest Valley",
+            "name": "Energy Stone"
+        },
+        {
+            "content": "0x2a6eb82",
+            "bitmask": "0x9a943e",
+            "value": "2",
+            "location": "Wildebeest Valley",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6eb8e",
+            "bitmask": "0x9a943e",
+            "value": "4",
+            "location": "Wildebeest Valley",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6eb9a",
+            "bitmask": "0x9a943e",
+            "value": "8",
+            "location": "Wildebeest Valley",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6eba6",
+            "bitmask": "0x9a943e",
+            "value": "10",
+            "location": "Wildebeest Valley",
+            "name": "Lucid Gem"
+        },
+        {
+            "content": "0x2a6ebb2",
+            "bitmask": "0x9a943f",
+            "value": "4",
+            "location": "Wastelands",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6ebbe",
+            "bitmask": "0x9a943f",
+            "value": "8",
+            "location": "Wastelands",
+            "name": "Serenity Gem"
+        },
+        {
+            "content": "0x2a6ebca",
+            "bitmask": "0x9a943f",
+            "value": "10",
+            "location": "Wastelands",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6ebd6",
+            "bitmask": "0x9a943f",
+            "value": "20",
+            "location": "Jungle",
+            "name": "Serenity Gem"
+        },
+        {
+            "content": "0x2a6ebe2",
+            "bitmask": "0x9a943f",
+            "value": "40",
+            "location": "Jungle",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6ebee",
+            "bitmask": "0x9a943f",
+            "value": "80",
+            "location": "Jungle",
+            "name": "Serenity Crystal"
+        },
+        {
+            "content": "0x2a6ebfa",
+            "bitmask": "0x9a9440",
+            "value": "1",
+            "location": "Oasis",
+            "name": "Oasis Map"
+        },
+        {
+            "content": "0x2a6ec06",
+            "bitmask": "0x9a9449",
+            "value": "20",
+            "location": "Oasis",
+            "name": "Torn Pages"
+        },
+        {
+            "content": "0x2a6ec12",
+            "bitmask": "0x9a9440",
+            "value": "2",
+            "location": "Oasis",
+            "name": "AP Boost"
+        }
+    ],
+    "STT": [
+        {
+            "content": "0x2a6ec1e",
+            "bitmask": "0x9a943a",
+            "value": "2",
+            "location": "Station of Serenity",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ec2a",
+            "bitmask": "0x9a9447",
+            "value": "2",
+            "location": "Station of Calling",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ec36",
+            "bitmask": "0x9a9441",
+            "value": "20",
+            "location": "Central Station (STT)",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ec42",
+            "bitmask": "0x9a9441",
+            "value": "40",
+            "location": "Central Station (STT)",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6ec4e",
+            "bitmask": "0x9a9441",
+            "value": "80",
+            "location": "Central Station (STT)",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ec5a",
+            "bitmask": "0x9a9442",
+            "value": "8",
+            "location": "Sunset Terrace (STT)",
+            "name": "Ability Ring"
+        },
+        {
+            "content": "0x2a6ec66",
+            "bitmask": "0x9a9442",
+            "value": "10",
+            "location": "Sunset Terrace (STT)",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6ec72",
+            "bitmask": "0x9a9442",
+            "value": "20",
+            "location": "Sunset Terrace (STT)",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ec7e",
+            "bitmask": "0x9a9442",
+            "value": "40",
+            "location": "Sunset Terrace (STT)",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ec8a",
+            "bitmask": "0x9a9444",
+            "value": "4",
+            "location": "Mansion: Foyer (STT)",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6ec96",
+            "bitmask": "0x9a9444",
+            "value": "8",
+            "location": "Mansion: Foyer (STT)",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6eca2",
+            "bitmask": "0x9a9444",
+            "value": "10",
+            "location": "Mansion: Foyer (STT)",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ecae",
+            "bitmask": "0x9a9445",
+            "value": "1",
+            "location": "Mansion: Dining Room (STT)",
+            "name": "Elven Bandanna"
+        },
+        {
+            "content": "0x2a6ecba",
+            "bitmask": "0x9a9445",
+            "value": "2",
+            "location": "Mansion: Dining Room (STT)",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ecc6",
+            "bitmask": "0x9a9445",
+            "value": "10",
+            "location": "Mansion: Library (STT)",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6ecd2",
+            "bitmask": "0x9a9446",
+            "value": "1",
+            "location": "Mansion: Basement Corridor (STT)",
+            "name": "Hi-Potion"
+        }
+    ],
+    "TT": [
+        {
+            "content": "0x2a6ecde",
+            "bitmask": "0x9a9444",
+            "value": "1",
+            "location": "The Old Mansion",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ecea",
+            "bitmask": "0x9a9444",
+            "value": "2",
+            "location": "The Old Mansion",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6ecf6",
+            "bitmask": "0x9a9443",
+            "value": "8",
+            "location": "The Woods",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ed02",
+            "bitmask": "0x9a9443",
+            "value": "10",
+            "location": "The Woods",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6ed0e",
+            "bitmask": "0x9a9443",
+            "value": "20",
+            "location": "The Woods",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6ed1a",
+            "bitmask": "0x9a9440",
+            "value": "20",
+            "location": "Tram Common",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6ed26",
+            "bitmask": "0x9a9440",
+            "value": "40",
+            "location": "Tram Common",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6ed32",
+            "bitmask": "0x9a9440",
+            "value": "80",
+            "location": "Tram Common",
+            "name": "Tent"
+        },
+        {
+            "content": "0x2a6ed3e",
+            "bitmask": "0x9a9441",
+            "value": "1",
+            "location": "Tram Common",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6ed4a",
+            "bitmask": "0x9a9441",
+            "value": "2",
+            "location": "Tram Common",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ed56",
+            "bitmask": "0x9a9441",
+            "value": "4",
+            "location": "Tram Common",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6ed62",
+            "bitmask": "0x9a9448",
+            "value": "20",
+            "location": "Tram Common",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ed6e",
+            "bitmask": "0x9a9442",
+            "value": "1",
+            "location": "Central Station (TT)",
+            "name": "Tent"
+        },
+        {
+            "content": "0x2a6ed7a",
+            "bitmask": "0x9a9442",
+            "value": "2",
+            "location": "Central Station (TT)",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6ed86",
+            "bitmask": "0x9a9442",
+            "value": "4",
+            "location": "Central Station (TT)",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6ed92",
+            "bitmask": "0x9a9446",
+            "value": "4",
+            "location": "The Tower",
+            "name": "Potion"
+        },
+        {
+            "content": "0x2a6ed9e",
+            "bitmask": "0x9a9446",
+            "value": "8",
+            "location": "The Tower",
+            "name": "Hi-Potion"
+        },
+        {
+            "content": "0x2a6edaa",
+            "bitmask": "0x9a944b",
+            "value": "80",
+            "location": "The Tower",
+            "name": "Ether"
+        },
+        {
+            "content": "0x2a6edb6",
+            "bitmask": "0x9a9446",
+            "value": "10",
+            "location": "Tower: Entryway",
+            "name": "Ether"
+        },
+        {
+            "content": "0x2a6edc2",
+            "bitmask": "0x9a9446",
+            "value": "20",
+            "location": "Tower: Entryway",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6edce",
+            "bitmask": "0x9a9446",
+            "value": "40",
+            "location": "Tower: Sorcerer's Loft",
+            "name": "Tower Map"
+        },
+        {
+            "content": "0x2a6edda",
+            "bitmask": "0x9a9446",
+            "value": "80",
+            "location": "Tower: Wardrobe",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6ede6",
+            "bitmask": "0x9a9448",
+            "value": "1",
+            "location": "Underground Concourse",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6edf2",
+            "bitmask": "0x9a9448",
+            "value": "2",
+            "location": "Underground Concourse",
+            "name": "Orichalcum"
+        },
+        {
+            "content": "0x2a6edfe",
+            "bitmask": "0x9a9448",
+            "value": "4",
+            "location": "Underground Concourse",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6ee0a",
+            "bitmask": "0x9a9448",
+            "value": "8",
+            "location": "Underground Concourse",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6ee16",
+            "bitmask": "0x9a9447",
+            "value": "40",
+            "location": "Tunnelway",
+            "name": "Orichalcum"
+        },
+        {
+            "content": "0x2a6ee22",
+            "bitmask": "0x9a9447",
+            "value": "80",
+            "location": "Tunnelway",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6ee2e",
+            "bitmask": "0x9a9442",
+            "value": "80",
+            "location": "Sunset Terrace (TT)",
+            "name": "Orichalcum+"
+        },
+        {
+            "content": "0x2a6ee3a",
+            "bitmask": "0x9a9443",
+            "value": "1",
+            "location": "Sunset Terrace (TT)",
+            "name": "Mythril Shard"
+        },
+        {
+            "content": "0x2a6ee46",
+            "bitmask": "0x9a9443",
+            "value": "2",
+            "location": "Sunset Terrace (TT)",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6ee52",
+            "bitmask": "0x9a9443",
+            "value": "4",
+            "location": "Sunset Terrace (TT)",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6ee5e",
+            "bitmask": "0x9a9444",
+            "value": "20",
+            "location": "Mansion: Foyer (TT)",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6ee6a",
+            "bitmask": "0x9a9444",
+            "value": "40",
+            "location": "Mansion: Foyer (TT)",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6ee76",
+            "bitmask": "0x9a9444",
+            "value": "80",
+            "location": "Mansion: Foyer (TT)",
+            "name": "Serenity Crystal"
+        },
+        {
+            "content": "0x2a6ee82",
+            "bitmask": "0x9a9445",
+            "value": "4",
+            "location": "Mansion: Dining Room (TT)",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6ee8e",
+            "bitmask": "0x9a9445",
+            "value": "8",
+            "location": "Mansion: Dining Room (TT)",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6ee9a",
+            "bitmask": "0x9a9445",
+            "value": "20",
+            "location": "Mansion: Library (TT)",
+            "name": "Orichalcum"
+        },
+        {
+            "content": "0x2a6eea6",
+            "bitmask": "0x9a9446",
+            "value": "2",
+            "location": "Mansion: Basement Corridor (TT)",
+            "name": "Ultimate Recipe"
+        }
+    ],
+    "TWTNW": [
+        {
+            "content": "0x2a6eeb2",
+            "bitmask": "0x9a943b",
+            "value": "10",
+            "location": "Fragment Crossing",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6eebe",
+            "bitmask": "0x9a943b",
+            "value": "20",
+            "location": "Fragment Crossing",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6eeca",
+            "bitmask": "0x9a943b",
+            "value": "40",
+            "location": "Fragment Crossing",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6eed6",
+            "bitmask": "0x9a943b",
+            "value": "80",
+            "location": "Fragment Crossing",
+            "name": "Orichalcum"
+        },
+        {
+            "content": "0x2a6eee2",
+            "bitmask": "0x9a943d",
+            "value": "8",
+            "location": "Memory's Skyscraper",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6eeee",
+            "bitmask": "0x9a944c",
+            "value": "1",
+            "location": "Memory's Skyscraper",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6eefa",
+            "bitmask": "0x9a944c",
+            "value": "2",
+            "location": "Memory's Skyscraper",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6ef06",
+            "bitmask": "0x9a943a",
+            "value": "20",
+            "location": "The Brink of Despair",
+            "name": "Dark City Map"
+        },
+        {
+            "content": "0x2a6ef12",
+            "bitmask": "0x9a944a",
+            "value": "4",
+            "location": "The Brink of Despair",
+            "name": "Orichalcum+"
+        },
+        {
+            "content": "0x2a6ef1e",
+            "bitmask": "0x9a943c",
+            "value": "1",
+            "location": "Nothing's Call",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6ef2a",
+            "bitmask": "0x9a943c",
+            "value": "2",
+            "location": "Nothing's Call",
+            "name": "Orichalcum"
+        },
+        {
+            "content": "0x2a6ef36",
+            "bitmask": "0x9a943a",
+            "value": "40",
+            "location": "Twilight's View",
+            "name": "Cosmic Belt"
+        },
+        {
+            "content": "0x2a6ef42",
+            "bitmask": "0x9a943c",
+            "value": "4",
+            "location": "Naught's Skyway",
+            "name": "Mythril Gem"
+        },
+        {
+            "content": "0x2a6ef4e",
+            "bitmask": "0x9a943c",
+            "value": "8",
+            "location": "Naught's Skyway",
+            "name": "Orichalcum"
+        },
+        {
+            "content": "0x2a6ef5a",
+            "bitmask": "0x9a943c",
+            "value": "10",
+            "location": "Naught's Skyway",
+            "name": "Mythril Crystal"
+        },
+        {
+            "content": "0x2a6ef66",
+            "bitmask": "0x9a943c",
+            "value": "80",
+            "location": "Ruin and Creation's Passage",
+            "name": "Mythril Stone"
+        },
+        {
+            "content": "0x2a6ef72",
+            "bitmask": "0x9a943d",
+            "value": "1",
+            "location": "Ruin and Creation's Passage",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6ef7e",
+            "bitmask": "0x9a943d",
+            "value": "2",
+            "location": "Ruin and Creation's Passage",
+            "name": "Mythril Crystal"
+        }
+    ],
+    "CoR": [
+        {
+            "content": "0x2a6ef8a",
+            "bitmask": "0x9a943d",
+            "value": "4",
+            "location": "Ruin and Creation's Passage",
+            "name": "Orichalcum"
+        },
+        {
+            "content": "0x2a6ef96",
+            "bitmask": "0x9a944c",
+            "value": "4",
+            "location": "Cavern of Remembrance: Depths",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6efa2",
+            "bitmask": "0x9a944c",
+            "value": "8",
+            "location": "Cavern of Remembrance: Depths",
+            "name": "Power Crystal"
+        },
+        {
+            "content": "0x2a6efae",
+            "bitmask": "0x9a944c",
+            "value": "10",
+            "location": "Cavern of Remembrance: Depths",
+            "name": "Frost Crystal"
+        },
+        {
+            "content": "0x2a6efba",
+            "bitmask": "0x9a944c",
+            "value": "20",
+            "location": "Cavern of Remembrance: Depths",
+            "name": "Manifest Illusion"
+        },
+        {
+            "content": "0x2a6efc6",
+            "bitmask": "0x9a944c",
+            "value": "40",
+            "location": "Cavern of Remembrance: Depths",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6efd2",
+            "bitmask": "0x9a944c",
+            "value": "80",
+            "location": "Cavern of Remembrance: Depths",
+            "name": "Remembrance Gem"
+        },
+        {
+            "content": "0x2a6efde",
+            "bitmask": "0x9a944d",
+            "value": "1",
+            "location": "Cavern of Remembrance: Mining Area",
+            "name": "Serenity Gem"
+        },
+        {
+            "content": "0x2a6efea",
+            "bitmask": "0x9a944d",
+            "value": "2",
+            "location": "Cavern of Remembrance: Mining Area",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6eff6",
+            "bitmask": "0x9a944d",
+            "value": "4",
+            "location": "Cavern of Remembrance: Mining Area",
+            "name": "Serenity Crystal"
+        },
+        {
+            "content": "0x2a6f002",
+            "bitmask": "0x9a944d",
+            "value": "8",
+            "location": "Cavern of Remembrance: Mining Area",
+            "name": "Manifest Illusion"
+        },
+        {
+            "content": "0x2a6f00e",
+            "bitmask": "0x9a944d",
+            "value": "10",
+            "location": "Cavern of Remembrance: Mining Area",
+            "name": "Serenity Gem"
+        },
+        {
+            "content": "0x2a6f01a",
+            "bitmask": "0x9a944d",
+            "value": "20",
+            "location": "Cavern of Remembrance: Mining Area",
+            "name": "Dark Remembrance Map"
+        },
+        {
+            "content": "0x2a6f026",
+            "bitmask": "0x9a944d",
+            "value": "40",
+            "location": "Cavern of Remembrance: Engine Chamber",
+            "name": "Serenity Crystal"
+        },
+        {
+            "content": "0x2a6f032",
+            "bitmask": "0x9a944d",
+            "value": "80",
+            "location": "Cavern of Remembrance: Engine Chamber",
+            "name": "Remembrance Crystal"
+        },
+        {
+            "content": "0x2a6f03e",
+            "bitmask": "0x9a944e",
+            "value": "1",
+            "location": "Cavern of Remembrance: Engine Chamber",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6f04a",
+            "bitmask": "0x9a944e",
+            "value": "2",
+            "location": "Cavern of Remembrance: Engine Chamber",
+            "name": "Manifest Illusion"
+        },
+        {
+            "content": "0x2a6f056",
+            "bitmask": "0x9a944e",
+            "value": "4",
+            "location": "Cavern of Remembrance: Mineshaft",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6f062",
+            "bitmask": "0x9a944e",
+            "value": "8",
+            "location": "Cavern of Remembrance: Mineshaft",
+            "name": "AP Boost"
+        },
+        {
+            "content": "0x2a6f06e",
+            "bitmask": "0x9a944e",
+            "value": "10",
+            "location": "Cavern of Remembrance: Mineshaft",
+            "name": "Depths of Remembrance Map"
+        },
+        {
+            "content": "0x2a6f07a",
+            "bitmask": "0x9a944e",
+            "value": "20",
+            "location": "Cavern of Remembrance: Mineshaft",
+            "name": "Power Boost"
+        },
+        {
+            "content": "0x2a6f086",
+            "bitmask": "0x9a944e",
+            "value": "40",
+            "location": "Cavern of Remembrance: Mineshaft",
+            "name": "Magic Boost"
+        }
+    ],
+    "GOA": [
+        {
+            "content": "0x2a6f092",
+            "bitmask": "0x9a944f",
+            "value": "2",
+            "location": "Garden of Assemblage",
+            "name": "Garden of Assemblage Map"
+        },
+        {
+            "content": "0x2a6f09e",
+            "bitmask": "0x9a944f",
+            "value": "4",
+            "location": "Garden of Assemblage",
+            "name": "Lost Illusion"
+        },
+        {
+            "content": "0x2a6f0aa",
+            "bitmask": "0x9a944f",
+            "value": "8",
+            "location": "Garden of Assemblage",
+            "name": "Proof of Nonexistence"
+        }
+    ]
+}

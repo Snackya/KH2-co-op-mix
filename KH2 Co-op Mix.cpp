@@ -116,21 +116,45 @@ vector<uint8_t> added_values(uint8_t delta_val)
     return changed_bitmask_vals;
 }
 
-void add_items_to_inv(vector<uint32_t>& chest_addresses)
+// addr is either the inventory address or the bitmask address
+void add_items_to_inventory(uint32_t addr, uint8_t val)
 {
-    vector<uint32_t> item_vals;
+    // => inventory address
+    if (val == 0)
+    {
+        uint8_t curr_val = MemoryLib::ReadByte(addr);
+        // prevent people from going back to 0 items. they might cry.
+        if (curr_val < 255)
+        {
+            MemoryLib::WriteByte(addr, curr_val + 1);
+
+        }
+    }
+    // => bitmask address
+    else
+    {
+        MemoryLib::WriteByte(addr, MemoryLib::ReadByte(addr) | val);
+    }
+}
+
+void get_items_to_add(vector<uint32_t>& chest_addresses)
+{
+    vector<uint16_t> item_vals;
     for (auto item_addr : chest_addresses)
     {
-        item_vals.push_back(MemoryLib::ReadInt(item_addr));
+        item_vals.push_back(MemoryLib::ReadShort(item_addr));
     }
-    for (uint32_t val : item_vals)
+    for (uint16_t val : item_vals)
     {
-        continue;
-        //auto it = std::find(m_item_table.begin(), m_item_table.end(), val);
-        //if (it != m_item_table.end())
-        //{
-        //    continue;
-        //}
+        auto it = m_item_table.find(val);
+        if(it != m_item_table.end())
+        {
+            add_items_to_inventory(it->second.first, it->second.second);
+        }
+        else
+        {
+            std::cout << "failed to find item ID '" << val << "' in lookup table.";
+        }
     }
 }
 
@@ -157,7 +181,7 @@ void add_partner_items(std::map<uint32_t, uint8_t>& chests_added)
         }
     }
 
-    add_items_to_inv(new_item_addr);
+    get_items_to_add(new_item_addr);
 
 }
 
@@ -178,11 +202,6 @@ void open_partner_chests(std::map<uint32_t, uint8_t>& other_vals)
         m_chests_added.insert({item.first, added});
     }
 
-    std::cout << "opening chest prints: \n";
-    for (auto a : m_chests_added) {
-        std::cout << a.first << "\t"; print_byte(a.second);
-    }
-    std::cout << "\n";
     add_partner_items(m_chests_added);
 }
 
@@ -278,9 +297,9 @@ int main()
     fill_chest_lookup_table();
     fill_item_lookup_table();
     map<uint32_t, uint8_t> m;
-    m.insert({ 0x9a9432 , 0x0a });
-    m.insert({ 0x9a944f , 0x08 });
-    //open_partner_chests(m);
+    m.insert({ 10130482 , 0x32 });
+    m.insert({ 10130511 , 0x08 });
+    open_partner_chests(m);
     //current_world = MemoryLib::ReadByte(WORLD_MOD);
     //loop();
 }

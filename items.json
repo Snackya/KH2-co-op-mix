@@ -14,33 +14,35 @@
             "id": 114,
             "name": "Cornerstone Hill Map",
             "inventory_address": 0,
-            "bitmask_address": 3338738,
+            "bitmask_address": 10135346,
             "bitmask_value": 1
         },
         {
             "id": 121,
             "name": "The Cave of Wonders Map",
-            "inventory_address": 10135346
+            "inventory_address": 0,
+            "bitmask_address": 10135346,
+            "bitmask_value": 80
         },
         {
             "id": 122,
             "name": "Ruins Map",
             "inventory_address": 0,
-            "bitmask_address": 3338739,
+            "bitmask_address": 10135347,
             "bitmask_value": 1
         },
         {
             "id": 125,
             "name": "100 Acre Wood Map",
             "inventory_address": 0,
-            "bitmask_address": 3338739,
+            "bitmask_address": 10135347,
             "bitmask_value": 8
         },
         {
             "id": 130,
             "name": "Palace Map",
             "inventory_address": 0,
-            "bitmask_address": 3338740,
+            "bitmask_address": 10135348,
             "bitmask_value": 1
         },
         {
@@ -52,33 +54,33 @@
             "id": 135,
             "name": "Underworld Map",
             "inventory_address": 0,
-            "bitmask_address": 3338740,
+            "bitmask_address": 10135348,
             "bitmask_value": 4
         },
         {
             "id": 136,
             "name": "Caverns Map",
             "inventory_address": 0,
-            "bitmask_address": 3338740,
+            "bitmask_address": 10135348,
             "bitmask_value": 8
         },
         {
-            "id": 141,
+            "id": 594,
             "name": "Proof of Nonexistence",
             "inventory_address": 10135331
         },
         {
-            "id": 150,
+            "id": 251,
             "name": "Naval Map",
             "inventory_address": 0,
-            "bitmask_address": 3338743,
+            "bitmask_address": 10135351,
             "bitmask_value": 8
         },
         {
             "id": 160,
             "name": "Feather Charm",
             "inventory_address": 0,
-            "bitmask_address": 3338740,
+            "bitmask_address": 10135348,
             "bitmask_value": 32
         },
         {
@@ -90,35 +92,35 @@
             "id": 25,
             "name": "Ukulele Charm",
             "inventory_address": 0,
-            "bitmask_address": 3338736,
+            "bitmask_address": 10135344,
             "bitmask_value": 1
         },
         {
             "id": 250,
             "name": "Halloween Town Map",
             "inventory_address": 0,
-            "bitmask_address": 3338743,
+            "bitmask_address": 10135351,
             "bitmask_value": 4
         },
         {
             "id": 252,
             "name": "Pride Rock Map",
             "inventory_address": 0,
-            "bitmask_address": 3338743,
+            "bitmask_address": 10135351,
             "bitmask_value": 16
         },
         {
             "id": 254,
             "name": "Pit Cell Area Map",
             "inventory_address": 0,
-            "bitmask_address": 3338743,
+            "bitmask_address": 10135351,
             "bitmask_value": 64
         },
         {
             "id": 256,
             "name": "Dark City Map",
             "inventory_address": 0,
-            "bitmask_address": 3338744,
+            "bitmask_address": 10135352,
             "bitmask_value": 1
         },
         {
@@ -390,49 +392,49 @@
             "id": 509,
             "name": "Christmas Town Map",
             "inventory_address": 0,
-            "bitmask_address": 3338744,
+            "bitmask_address": 10135352,
             "bitmask_value": 16
         },
         {
             "id": 511,
             "name": "Oasis Map",
             "inventory_address": 0,
-            "bitmask_address": 3338744,
+            "bitmask_address": 10135352,
             "bitmask_value": 64
         },
         {
             "id": 512,
             "name": "Savannah Map",
             "inventory_address": 0,
-            "bitmask_address": 3338744,
+            "bitmask_address": 10135352,
             "bitmask_value": 128
         },
         {
             "id": 513,
             "name": "Castle Perimeter Map",
             "inventory_address": 0,
-            "bitmask_address": 3338745,
+            "bitmask_address": 10135353,
             "bitmask_value": 1
         },
         {
             "id": 514,
             "name": "The Great Maw Map",
             "inventory_address": 0,
-            "bitmask_address": 3338745,
+            "bitmask_address": 10135353,
             "bitmask_value": 2
         },
         {
             "id": 515,
             "name": "I/O Tower Map",
             "inventory_address": 0,
-            "bitmask_address": 3338745,
+            "bitmask_address": 10135353,
             "bitmask_value": 4
         },
         {
             "id": 516,
             "name": "Central Computer Core Map",
             "inventory_address": 0,
-            "bitmask_address": 3338745,
+            "bitmask_address": 10135353,
             "bitmask_value": 8
         },
         {
@@ -444,7 +446,7 @@
             "id": 533,
             "name": "Tower Map",
             "inventory_address": 0,
-            "bitmask_address": 3338746,
+            "bitmask_address": 10135354,
             "bitmask_value": 1
         },
         {
@@ -476,21 +478,21 @@
             "id": 586,
             "name": "Dark Remembrance Map",
             "inventory_address": 0,
-            "bitmask_address": 3338746,
+            "bitmask_address": 10135354,
             "bitmask_value": 16
         },
         {
             "id": 590,
             "name": "Depths of Remembrance Map",
             "inventory_address": 0,
-            "bitmask_address": 3338746,
+            "bitmask_address": 10135354,
             "bitmask_value": 32
         },
         {
             "id": 592,
             "name": "Garden of Assemblage Map",
             "inventory_address": 0,
-            "bitmask_address": 3338746,
+            "bitmask_address": 10135354,
             "bitmask_value": 128
         },
         {
@@ -517,14 +519,14 @@
             "id": 90,
             "name": "Castle Map",
             "inventory_address": 0,
-            "bitmask_address": 3338738,
+            "bitmask_address": 10135346,
             "bitmask_value": 32
         },
         {
             "id": 91,
             "name": "Basement Map",
             "inventory_address": 0,
-            "bitmask_address": 3338737,
+            "bitmask_address": 10135345,
             "bitmask_value": 2
         }
     ]

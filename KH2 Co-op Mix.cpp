@@ -19,8 +19,12 @@ static inline uint64_t BaseAddress;
 static inline DWORD PIdentifier = NULL;
 static inline HANDLE PHandle = NULL;
 json j_chests;
+json j_items;
 uint8_t current_world;
 std::multimap<uint32_t, std::pair<uint8_t, uint32_t>> m_maskVal_chestAddr;
+
+// {id, (address, mask value)}
+std::multimap<uint16_t, std::pair<uint32_t, uint8_t>> m_item_table;
 
 struct LOCATION_CHESTS {
     vector<uint32_t> addresses;
@@ -43,6 +47,31 @@ void fill_chest_lookup_table()
                   )}
             );
         }
+    }
+}
+
+void fill_item_lookup_table()
+{
+    for (json item : j_items["items"])
+    {
+        uint16_t id = item["id"];
+        uint32_t addr;
+        uint8_t val;
+        if (item["inventory_address"] != 0)
+        {
+            addr = item["inventory_address"];
+            val = 0;
+        }
+        else 
+        {
+            addr = item["bitmask_address"];
+            val = item["bitmask_value"];
+        }
+       
+        m_item_table.insert(
+            {id,
+            std::pair(addr, val)}
+        );
     }
 }
 
@@ -94,7 +123,15 @@ void add_items_to_inv(vector<uint32_t>& chest_addresses)
     {
         item_vals.push_back(MemoryLib::ReadInt(item_addr));
     }
-    int i = 0;
+    for (uint32_t val : item_vals)
+    {
+        continue;
+        //auto it = std::find(m_item_table.begin(), m_item_table.end(), val);
+        //if (it != m_item_table.end())
+        //{
+        //    continue;
+        //}
+    }
 }
 
 // probably TODO: increase performance. maybe create new data structure for
@@ -234,13 +271,15 @@ int main()
     setup();
     std::ifstream i("chests.json");
     j_chests = json::parse(i);
-    std::cout << MemoryLib::ReadInt(44495018);
-    json_itemID_itemName();
 
-    //fill_chest_lookup_table();
-    //map<uint32_t, uint8_t> m;
-    //m.insert({ 0x9a9432 , 0x0a });
-    //m.insert({ 0x9a944f , 0x08 });
+    std::ifstream i2("items.json");
+    j_items = json::parse(i2);
+
+    fill_chest_lookup_table();
+    fill_item_lookup_table();
+    map<uint32_t, uint8_t> m;
+    m.insert({ 0x9a9432 , 0x0a });
+    m.insert({ 0x9a944f , 0x08 });
     //open_partner_chests(m);
     //current_world = MemoryLib::ReadByte(WORLD_MOD);
     //loop();

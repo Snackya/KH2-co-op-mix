@@ -6,19 +6,21 @@
 #include "json.hpp"
 #include "MemoryLib.h"
 #include <map>
+#include <omp.h>
+#include <string>
 
 using json = nlohmann::json;
 
 //Addresses
 static uint32_t WORLD_MOD = 0x0714DB8;
+static uint8_t goa_world_mod = 0x04;
 
 static inline uint64_t BaseAddress;
 static inline DWORD PIdentifier = NULL;
 static inline HANDLE PHandle = NULL;
-static uint8_t goa_world_mod = 0x04;
 json j_chests;
 uint8_t current_world;
-
+std::multimap<uint32_t, std::pair<uint8_t, uint32_t>> m_maskVal_chestAddr;
 
 struct LOCATION_CHESTS {
     vector<uint32_t> addresses;
@@ -26,7 +28,25 @@ struct LOCATION_CHESTS {
     vector<uint8_t> values;
 };
 
-map<uint8_t, string> worlds_byte_string = {
+
+void fill_chest_lookup_table()
+{
+    for (vector<json> chest_list : j_chests)
+    {
+        for (json chest : chest_list)
+        {
+            m_maskVal_chestAddr.insert(
+                { strtoul(((string)chest["bitmask"]).c_str(), nullptr, 16),
+                  std::pair(
+                      strtoul(((string)chest["value"]).c_str(), nullptr, 16),
+                      strtoul(((string)chest["content"]).c_str(), nullptr, 16)
+                  )}
+            );
+        }
+    }
+}
+
+std::map<uint8_t, string> worlds_byte_string = {
     {0x12, "TWTNW"},
     {0x10, "PR"}
 };
@@ -54,6 +74,89 @@ void print_byte(uint8_t byte)
     std::cout << std::hex << (0xff & (unsigned int)byte) << std::endl;
 }
 
+vector<uint8_t> added_values(uint8_t delta_val)
+{
+    vector<uint8_t> changed_bitmask_vals;
+    for (int i = 0; i < 8; ++i)
+    {
+        if (delta_val >> i & 1)
+        { 
+            changed_bitmask_vals.push_back(1 << i);
+        }
+    }
+    return changed_bitmask_vals;
+}
+
+void add_items_to_inv(vector<uint32_t>& chest_addresses)
+{
+    vector<uint32_t> item_vals;
+    for (auto item_addr : chest_addresses)
+    {
+        item_vals.push_back(MemoryLib::ReadInt(item_addr));
+    }
+    int i = 0;
+}
+
+// probably TODO: increase performance. maybe create new data structure for
+void add_partner_items(std::map<uint32_t, uint8_t>& chests_added)
+{
+    vector<uint32_t> new_item_addr;
+    // iterate over all new partner chests
+    for (pair<int32_t, uint8_t> added : chests_added)
+    {
+        // get all (address, value) pairs for the current bitmask address
+        auto it = m_maskVal_chestAddr.equal_range(added.first);
+        for (auto itr = it.first; itr != it.second; ++itr)
+        {
+            // split the value (byte) of the added chests into its bits to check against the bitmask lu-table
+            vector<uint8_t> new_vals = added_values(added.second);
+
+            // split byte value matches one of the bitmasks. this chest has been opened.
+            auto val_it = std::find(new_vals.begin(), new_vals.end(), itr->second.first);
+            if (val_it != new_vals.end())
+            {
+                new_item_addr.push_back(itr->second.second);
+            }
+        }
+    }
+
+    add_items_to_inv(new_item_addr);
+
+}
+
+// open all chests of partner players, so items cannot be received twice
+void open_partner_chests(std::map<uint32_t, uint8_t>& other_vals)
+{
+    map<uint32_t, uint8_t> m_chests_added;
+    // loop over all "chest is open" address,status pairs
+    for (pair<int32_t, uint8_t>item : other_vals)
+    {
+        uint8_t before = MemoryLib::ReadByte(item.first);
+        uint8_t after = before | item.second;
+        uint8_t added = after - before;
+        // perform a bit-wise OR at every address for own and partner value
+        // bit-wise OR ensures the 2 values per address get proerply "merged"
+        //MemoryLib::WriteByte(item.first, after);
+
+        m_chests_added.insert({item.first, added});
+    }
+
+    std::cout << "opening chest prints: \n";
+    for (auto a : m_chests_added) {
+        std::cout << a.first << "\t"; print_byte(a.second);
+    }
+    std::cout << "\n";
+    add_partner_items(m_chests_added);
+}
+
+
+
+void receive_partner_values(std::map<uint32_t, uint8_t> other_vals)
+{
+    open_partner_chests(other_vals);
+    add_partner_items(other_vals);
+}
+
 int GoA_entered(uint8_t prev_world) {
     // JSON key string corresponding to WORLD_MOD byte value
     string prev_world_str = worlds_byte_string.at(prev_world);
@@ -63,14 +166,13 @@ int GoA_entered(uint8_t prev_world) {
 
     // map of bitmask addresses and their values
     // determines which chests have been opened
-    map<uint32_t, uint32_t> chest_bm_vals;
-    std::cout << "Chests of the area and their values:" << std::endl;
+    std::map<uint32_t, uint8_t> chest_bm_vals;
     for (uint32_t addr : chests.bitmasks)
     {
-        std::cout << addr << " = "; print_byte(MemoryLib::ReadByte(addr));
         chest_bm_vals.insert({ addr, MemoryLib::ReadByte(addr) });
     }
 
+    // TODO: update world chests based on this map
     return 0;
 }
 
@@ -120,17 +222,28 @@ int loop()
     return 0;
 }
 
+struct ITEM {
+    uint32_t id;
+    string name;
+};
 
+void json_itemID_itemName();
 
 int main()
 {
+    setup();
     std::ifstream i("chests.json");
     j_chests = json::parse(i);
+    std::cout << MemoryLib::ReadInt(44495018);
+    json_itemID_itemName();
 
-    //ch.addresses.push_back((uint32_t)(j_chests["PR"][0]["content"]));
-    setup();
-    current_world = MemoryLib::ReadByte(WORLD_MOD);
-    loop();
+    //fill_chest_lookup_table();
+    //map<uint32_t, uint8_t> m;
+    //m.insert({ 0x9a9432 , 0x0a });
+    //m.insert({ 0x9a944f , 0x08 });
+    //open_partner_chests(m);
+    //current_world = MemoryLib::ReadByte(WORLD_MOD);
+    //loop();
 }
 
 
@@ -144,3 +257,26 @@ int main()
 //   4. Use the Error List window to view errors
 //   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
 //   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+
+
+///////////////////////////////
+//  LEGACY and UTILITY CODE  //
+///////////////////////////////
+
+void json_itemID_itemName() {
+    std::map<std::string, std::string> items;
+    for (vector<json> chest_list : j_chests)
+    {
+        for (json chest : chest_list) {
+            uint32_t addr = strtoul(((string)chest["content"]).c_str(), nullptr, 16);
+            uint32_t val = MemoryLib::ReadShort(addr);
+
+            items.insert(
+                { std::to_string(val) , chest["name"] }
+            );
+        }
+    }
+    json j_items(items);
+    std::ofstream o("items.json");
+    o << j_items << std::endl;
+}

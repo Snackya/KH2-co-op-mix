@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="chests.json" />
+    <None Include="chests_ints.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

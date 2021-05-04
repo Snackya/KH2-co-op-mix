@@ -1,6 +1,7 @@
 // KH2 Co-op Mix.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include "Client.h"
 #include <iostream>
 #include <fstream>
 #include "json.hpp"
@@ -8,6 +9,10 @@
 #include <map>
 #include <omp.h>
 #include <string>
+#include <chrono>
+#include <thread>
+#include "Http_Client.h"
+#include "Server.h"
 
 using json = nlohmann::json;
 
@@ -15,9 +20,9 @@ using json = nlohmann::json;
 static uint32_t WORLD_MOD = 0x0714DB8;
 static uint8_t goa_world_mod = 0x04;
 
-static inline uint64_t BaseAddress;
-static inline DWORD PIdentifier = NULL;
-static inline HANDLE PHandle = NULL;
+static uint64_t BaseAddress;
+static DWORD PIdentifier = NULL;
+static HANDLE PHandle = NULL;
 json j_chests;
 json j_items;
 uint8_t current_world;
@@ -31,7 +36,6 @@ struct LOCATION_CHESTS {
     vector<uint32_t> bitmasks;
     vector<uint8_t> values;
 };
-
 
 void fill_chest_lookup_table()
 {
@@ -80,7 +84,7 @@ std::map<uint8_t, string> worlds_byte_string = {
     {0x10, "PR"}
 };
 
-LOCATION_CHESTS currentAreaChests(string areaName)
+LOCATION_CHESTS current_area_chests(string areaName)
 {
     LOCATION_CHESTS lc;
     for (json fj : j_chests[areaName])
@@ -103,7 +107,7 @@ void print_byte(uint8_t byte)
     std::cout << std::hex << (0xff & (unsigned int)byte) << std::endl;
 }
 
-vector<uint8_t> added_values(uint8_t delta_val)
+vector<uint8_t> mask_to_values(uint8_t delta_val)
 {
     vector<uint8_t> changed_bitmask_vals;
     for (int i = 0; i < 8; ++i)
@@ -159,7 +163,7 @@ void get_items_to_add(vector<uint32_t>& chest_addresses)
 }
 
 // probably TODO: increase performance. maybe create new data structure for
-void add_partner_items(std::map<uint32_t, uint8_t>& chests_added)
+void add_items(std::map<uint32_t, uint8_t>& chests_added)
 {
     vector<uint32_t> new_item_addr;
     // iterate over all new partner chests
@@ -170,7 +174,7 @@ void add_partner_items(std::map<uint32_t, uint8_t>& chests_added)
         for (auto itr = it.first; itr != it.second; ++itr)
         {
             // split the value (byte) of the added chests into its bits to check against the bitmask lu-table
-            vector<uint8_t> new_vals = added_values(added.second);
+            vector<uint8_t> new_vals = mask_to_values(added.second);
 
             // split byte value matches one of the bitmasks. this chest has been opened.
             auto val_it = std::find(new_vals.begin(), new_vals.end(), itr->second.first);
@@ -182,11 +186,10 @@ void add_partner_items(std::map<uint32_t, uint8_t>& chests_added)
     }
 
     get_items_to_add(new_item_addr);
-
 }
 
 // open all chests of partner players, so items cannot be received twice
-void open_partner_chests(std::map<uint32_t, uint8_t>& other_vals)
+void open_chests(std::map<uint32_t, uint8_t>& other_vals)
 {
     map<uint32_t, uint8_t> m_chests_added;
     // loop over all "chest is open" address,status pairs
@@ -202,25 +205,16 @@ void open_partner_chests(std::map<uint32_t, uint8_t>& other_vals)
         m_chests_added.insert({item.first, added});
     }
 
-    add_partner_items(m_chests_added);
+    add_items(m_chests_added);
 }
 
-
-
-void receive_partner_values(std::map<uint32_t, uint8_t> other_vals)
-{
-    open_partner_chests(other_vals);
-    add_partner_items(other_vals);
-}
-
-int GoA_entered(uint8_t prev_world) {
+std::map<uint32_t, uint8_t> get_world_chests(uint8_t world) {
     // JSON key string corresponding to WORLD_MOD byte value
-    string prev_world_str = worlds_byte_string.at(prev_world);
+    string prev_world_str = worlds_byte_string.at(world);
 
     // get all chests of previous world
-    LOCATION_CHESTS chests = currentAreaChests(prev_world_str);
+    LOCATION_CHESTS chests = current_area_chests(prev_world_str);
 
-    // map of bitmask addresses and their values
     // determines which chests have been opened
     std::map<uint32_t, uint8_t> chest_bm_vals;
     for (uint32_t addr : chests.bitmasks)
@@ -229,30 +223,34 @@ int GoA_entered(uint8_t prev_world) {
     }
 
     // TODO: update world chests based on this map
-    return 0;
+    return chest_bm_vals;
 }
 
-int world_changed(uint8_t& current_world)
+void world_changed(uint8_t& current_world)
 {
     uint8_t new_world = MemoryLib::ReadByte(WORLD_MOD);
     
-    if (new_world == 0x0F) return 0; //skip the world map.
-    if (new_world == current_world) return 0;  // world hasn't changed. skip.
+    if (new_world == 0x0F) return; //skip the world map.
+    if (new_world == current_world) return;  // world hasn't changed. skip.
     
     // GoA entered
     if (new_world == goa_world_mod)
     {
         std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
-        GoA_entered(current_world);
+        Client::send_checks(
+            get_world_chests(current_world)
+        );
+
     }
     current_world = new_world;
-    return 1;
 }
 
 int setup()
 {
     string _exec = "KINGDOM HEARTS II FINAL MIX.exe";
-    PIdentifier = MemoryLib::FindProcessId(wstring(_exec.begin(), _exec.end()));
+    //PIdentifier = MemoryLib::FindProcessId(wstring(_exec.begin(), _exec.end()));
+    std::cout << "Enter KH2 PID: ";
+    std::cin >> PIdentifier;
     PHandle = OpenProcess(PROCESS_ALL_ACCESS, false, PIdentifier);
     BaseAddress = (uint64_t)MemoryLib::FindBaseAddr(PHandle, _exec);
     MemoryLib::SetBaseAddr(BaseAddress);
@@ -262,47 +260,64 @@ int setup()
     return 1;
 }
 
-int loop()
+void loop()
 {
     bool flag = true;
+    int _refresh = 16;
 
     while (flag)
     {
-        world_changed(current_world);
+        //world_changed(current_world);
 
         if (GetAsyncKeyState(VK_SPACE) & 0x8000) flag = false;
-        // if  area change. area is GOA
-
-
+        std::this_thread::sleep_for(std::chrono::milliseconds(_refresh));
     }
-    return 0;
 }
-
-struct ITEM {
-    uint32_t id;
-    string name;
-};
-
-void json_itemID_itemName();
 
 int main()
 {
-    setup();
-    std::ifstream i("chests.json");
-    j_chests = json::parse(i);
+    //setup();
+    //std::ifstream i("chests.json");
+    //j_chests = json::parse(i);
 
-    std::ifstream i2("items.json");
-    j_items = json::parse(i2);
+    //std::ifstream i2("items.json");
+    //j_items = json::parse(i2);
 
-    fill_chest_lookup_table();
-    fill_item_lookup_table();
-    map<uint32_t, uint8_t> m;
-    m.insert({ 10130482 , 0x32 });
-    m.insert({ 10130511 , 0x08 });
-    open_partner_chests(m);
+    //fill_chest_lookup_table();
+    //fill_item_lookup_table();
+    //map<uint32_t, uint8_t> m;
+    //m.insert({ 10130482 , 0x32 });
+    //m.insert({ 10130511 , 0x08 });
+    //open_chests(m);
     //current_world = MemoryLib::ReadByte(WORLD_MOD);
     //loop();
+    //Client::start("127.0.0.1", 50000);
+    //std::map<uint32_t, uint8_t> map_chests;
+    //map_chests.emplace(2543, 0xfa);
+    //map_chests.emplace(5423423, 0x15);
+    //map_chests.emplace(232111, 0x10);
+    //
+    //std::string foo = Util::map_to_string(map_chests);
+    //std::cout << foo << std::endl;
+    //auto bar = Util::string_to_map(foo);
+    Server::start(8080);
+    //Http_Client::send_checks(map_chests);
+    //Http_Client::request_checks();
+    //auto f = Client::recv_checks();
+    //Client::shutdown();
+    //std::thread server_thread(Http_Client::run_server);
+    //std::cout << "foo" << std::endl;
+    //loop();
 }
+
+
+
+
+
+
+
+
+
 
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

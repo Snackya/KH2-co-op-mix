@@ -1,22 +1,25 @@
+#include <vector>
 #include "httplib.h"
-#include "Util.h"
 
 class Server
 {
 private:
+	inline static int id_counter = 0;
 
-
-
-public:
 	struct CLIENT {
-		std::string ip;
+		std::string id;
 		std::map<uint32_t, uint8_t> outstanding_checks;
 	};
+	inline static std::vector<CLIENT> clients;
+
 	static CLIENT grab_client(std::string addr);
 
-	static void start(int port);
-
-
+	static void on_register(const httplib::Request& req, httplib::Response& res);
+	static void on_data(const httplib::Request& req, httplib::Response& res);
 	static void on_request(const httplib::Request&, httplib::Response& res);
+
+public:
+
+	static void start(int port);
 };
 

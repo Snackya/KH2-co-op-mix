@@ -1,41 +1,31 @@
 #include "Http_Client.h"
-
-//void Http_Client::send_checks()
-//{
-//	// HTTP
-//	httplib::Server svr;
-//
-//	svr.Get("/hi", [](const httplib::Request&, httplib::Response& res) {
-//		res.set_content("Hello World!", "text/plain");
-//		});
-//
-//	svr.listen("0.0.0.0", 8080);
-//}
+#include "Util.h"
 
 void Http_Client::send_checks(std::map<uint32_t, uint8_t>& checks)
 {
-	httplib::Params params;
-	for (auto item : checks)
-	{
-		params.emplace(std::to_string(item.first), std::to_string(item.second));
-	}
-	for (auto stuff : params)
-	{
-		std::cout << stuff.first << " " << stuff.second << std::endl;
-	}
+	cli->Post("/data", client_id, Util::map_to_string(checks), "text/plain");
 }
 
 std::map<uint32_t, uint8_t> Http_Client::request_checks()
 {
-	httplib::Client cli("http://127.0.0.1:49051");
-	cli.set_keep_alive(true);
-	std::map<uint32_t, uint8_t> mapp;
-	auto res = cli.Get("/request");
-	if (!res) return mapp;
+	std::map<uint32_t, uint8_t> checks;
+	auto res = cli->Get("/request", client_id);
+	if (!res) return checks;
 
-	auto a = res->body;
+	std::string response = res->body.c_str();
 
-	std::cout << res->body.c_str() << std::endl;
-	
-	return std::map<uint32_t, uint8_t>();
+	checks = Util::string_to_map(response);
+	return checks;
+}
+
+void Http_Client::init(std::string server_addr)
+{
+	cli = new httplib::Client(server_addr.c_str());
+	cli->set_keep_alive(true);
+
+	// get a client ID from the server
+	auto res = cli->Get("/register");
+	if (!res) return;
+	std::string id = res->body.c_str();
+	client_id = { {"ID", id} };
 }

@@ -1,7 +1,8 @@
 // KH2 Co-op Mix.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "Client.h"
+#include "Server.h"
+#include "Http_Client.h"
 #include <iostream>
 #include <fstream>
 #include "json.hpp"
@@ -11,8 +12,6 @@
 #include <string>
 #include <chrono>
 #include <thread>
-#include "Http_Client.h"
-#include "Server.h"
 
 using json = nlohmann::json;
 
@@ -237,9 +236,6 @@ void world_changed(uint8_t& current_world)
     if (new_world == goa_world_mod)
     {
         std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
-        Client::send_checks(
-            get_world_chests(current_world)
-        );
 
     }
     current_world = new_world;
@@ -300,7 +296,7 @@ int main()
     //std::string foo = Util::map_to_string(map_chests);
     //std::cout << foo << std::endl;
     //auto bar = Util::string_to_map(foo);
-    Server::start(8080);
+    Server::start(8050);
     //Http_Client::send_checks(map_chests);
     //Http_Client::request_checks();
     //auto f = Client::recv_checks();
@@ -336,20 +332,20 @@ int main()
 //  LEGACY and UTILITY CODE  //
 ///////////////////////////////
 
-void json_itemID_itemName() {
-    std::map<std::string, std::string> items;
-    for (vector<json> chest_list : j_chests)
-    {
-        for (json chest : chest_list) {
-            uint32_t addr = strtoul(((string)chest["content"]).c_str(), nullptr, 16);
-            uint32_t val = MemoryLib::ReadShort(addr);
-
-            items.insert(
-                { std::to_string(val) , chest["name"] }
-            );
-        }
-    }
-    json j_items(items);
-    std::ofstream o("items.json");
-    o << j_items << std::endl;
-}
+//void json_itemID_itemName() {
+//    std::map<std::string, std::string> items;
+//    for (vector<json> chest_list : j_chests)
+//    {
+//        for (json chest : chest_list) {
+//            uint32_t addr = strtoul(((string)chest["content"]).c_str(), nullptr, 16);
+//            uint32_t val = MemoryLib::ReadShort(addr);
+//
+//            items.insert(
+//                { std::to_string(val) , chest["name"] }
+//            );
+//        }
+//    }
+//    json j_items(items);
+//    std::ofstream o("items.json");
+//    o << j_items << std::endl;
+//}

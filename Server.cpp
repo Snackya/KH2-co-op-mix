@@ -15,7 +15,10 @@ void Server::start(int port)
 // register client with id
 void Server::on_register(const httplib::Request& req, httplib::Response& res)
 {
-    CLIENT client{ std::to_string(Server::id_counter) };
+    //CLIENT client{ std::to_string(Server::id_counter), std::map<uint32_t, uint8_t>() };
+    CLIENT client;
+    client.id = std::to_string(Server::id_counter);
+    client.outstanding_checks = new std::map<uint32_t, uint8_t>;
     std::cout << "Registered client #" << Server::id_counter << std::endl;
     clients.push_back(client);
     res.set_content(std::to_string(Server::id_counter), "text/plain");
@@ -32,14 +35,14 @@ void Server::on_data(const httplib::Request& req, httplib::Response& res)
     {
         if (c.id == source_id) continue;
         std::cout << "added the following map data to client #" << c.id << ":\n";
-        auto checks = Util::string_to_map(req.body.c_str());
+        std::map<uint32_t, uint8_t> checks = Util::string_to_map(req.body.c_str());
         for (auto check : checks)
         {
             std::cout << check.first << " " << check.second << std::endl;
         }
         std::cout << std::endl;
         // merge the new checks from the source client with the outstanding checks for each client
-        c.outstanding_checks.insert(checks.begin(), checks.end());
+        c.outstanding_checks->merge(checks);
     }
     res.set_content("ok", "text/plain");
 }
@@ -47,6 +50,19 @@ void Server::on_data(const httplib::Request& req, httplib::Response& res)
 // respond to client with new checks from other clients
 void Server::on_request(const httplib::Request& req, httplib::Response& res)
 {
+    std::cout << "all clients:" << std::endl;
+    for (CLIENT c : clients)
+    {
+        std::cout << "id: " << c.id << std::endl;
+        std::cout << "data: \n";
+        for (auto foo : *(c.outstanding_checks))
+        {
+            std::cout << foo.first << " " << foo.second << "\n";
+        }
+        std::cout << std::endl;
+    }
+
+
     CLIENT client = grab_client(req.get_header_value("ID"));
     std::cout << "New request from client #" << client.id << std::endl;
     if (client.id.empty())
@@ -55,11 +71,11 @@ void Server::on_request(const httplib::Request& req, httplib::Response& res)
         return;
     }
     std::cout << "Outstanding checks are:" << std::endl;
-    for (auto check : client.outstanding_checks)
+    for (auto check : *(client.outstanding_checks))
     {
         std::cout << check.first << " " << check.second << std::endl;
     }
-    std::string s_response = Util::map_to_string(client.outstanding_checks);
+    std::string s_response = Util::map_to_string(*(client.outstanding_checks));
     std::cout << "Responding with:\n" << s_response << std::endl;
     res.set_content(s_response, "text/plain");
 }

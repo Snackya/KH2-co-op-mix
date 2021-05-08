@@ -3,6 +3,7 @@
 
 #include "Server.h"
 #include "Http_Client.h"
+#include "Util.h"
 #include <iostream>
 #include <fstream>
 #include "json.hpp"
@@ -99,11 +100,6 @@ LOCATION_CHESTS current_area_chests(string areaName)
         );
     }
     return lc;
-}
-
-void print_byte(uint8_t byte)
-{
-    std::cout << std::hex << (0xff & (unsigned int)byte) << std::endl;
 }
 
 vector<uint8_t> mask_to_values(uint8_t delta_val)
@@ -270,6 +266,23 @@ void loop()
     }
 }
 
+void req(std::map<uint32_t, uint8_t> map_chests)
+{
+    std::string foo;
+    std::cin >> foo;
+    if (foo == "r")
+    {
+        Http_Client::send_checks(map_chests);
+        auto stuff = Http_Client::request_checks();
+        if (!stuff.empty())
+            for (auto shit : stuff)
+            {
+                std::cout << shit.first << " " << shit.second << std::endl;
+            }
+        req(map_chests);
+    }
+}
+
 int main()
 {
     //setup();
@@ -288,20 +301,18 @@ int main()
     //current_world = MemoryLib::ReadByte(WORLD_MOD);
     //loop();
     //Client::start("127.0.0.1", 50000);
-    //std::map<uint32_t, uint8_t> map_chests;
-    //map_chests.emplace(2543, 0xfa);
-    //map_chests.emplace(5423423, 0x15);
-    //map_chests.emplace(232111, 0x10);
-    //
-    //std::string foo = Util::map_to_string(map_chests);
-    //std::cout << foo << std::endl;
-    //auto bar = Util::string_to_map(foo);
-    Server::start(8050);
+    //Server::start(8050);
+
+    std::map<uint32_t, uint8_t> map_chests;
+    map_chests.emplace(2543, 0xfa);
+    map_chests.emplace(5423423, 0x15);
+    map_chests.emplace(232111, 0x10);
+    auto str = Util::map_to_string(map_chests);
+    auto m = Util::string_to_map(str);
+    //Http_Client::init("127.0.0.1:8050");
     //Http_Client::send_checks(map_chests);
-    //Http_Client::request_checks();
-    //auto f = Client::recv_checks();
-    //Client::shutdown();
-    //std::thread server_thread(Http_Client::run_server);
+    //auto stuff = Http_Client::request_checks();
+    //req(map_chests);
     //std::cout << "foo" << std::endl;
     //loop();
 }

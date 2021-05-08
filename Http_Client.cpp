@@ -3,11 +3,13 @@
 
 void Http_Client::send_checks(std::map<uint32_t, uint8_t>& checks)
 {
+	std::cout << "sending\n";
 	cli->Post("/data", client_id, Util::map_to_string(checks), "text/plain");
 }
 
 std::map<uint32_t, uint8_t> Http_Client::request_checks()
 {
+	std::cout << "requesting\n";
 	std::map<uint32_t, uint8_t> checks;
 	auto res = cli->Get("/request", client_id);
 	if (!res) return checks;

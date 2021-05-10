@@ -158,7 +158,7 @@ void get_items_to_add(vector<uint32_t>& chest_addresses)
 }
 
 // probably TODO: increase performance. maybe create new data structure for
-void add_items(std::map<uint32_t, uint8_t>& chests_added)
+void add_items_from_checks(std::map<uint32_t, uint8_t>& chests_added)
 {
     vector<uint32_t> new_item_addr;
     // iterate over all new partner chests
@@ -195,12 +195,12 @@ void open_chests(std::map<uint32_t, uint8_t>& other_vals)
         uint8_t added = after - before;
         // perform a bit-wise OR at every address for own and partner value
         // bit-wise OR ensures the 2 values per address get proerply "merged"
-        //MemoryLib::WriteByte(item.first, after);
+        MemoryLib::WriteByte(item.first, after);
 
         m_chests_added.insert({item.first, added});
     }
 
-    add_items(m_chests_added);
+    add_items_from_checks(m_chests_added);
 }
 
 std::map<uint32_t, uint8_t> get_world_chests(uint8_t world) {
@@ -209,19 +209,24 @@ std::map<uint32_t, uint8_t> get_world_chests(uint8_t world) {
 
     // get all chests of previous world
     LOCATION_CHESTS chests = current_area_chests(prev_world_str);
+    std::cout << "area chest size: " << chests.bitmasks.size() << std::endl;
 
     // determines which chests have been opened
     std::map<uint32_t, uint8_t> chest_bm_vals;
     for (uint32_t addr : chests.bitmasks)
     {
-        chest_bm_vals.insert({ addr, MemoryLib::ReadByte(addr) });
+        uint8_t val = MemoryLib::ReadByte(addr);
+        if (val > 0)
+        {
+            chest_bm_vals.insert({ addr, val });
+        }
     }
 
     // TODO: update world chests based on this map
     return chest_bm_vals;
 }
 
-void world_changed(uint8_t& current_world)
+void world_changed()
 {
     uint8_t new_world = MemoryLib::ReadByte(WORLD_MOD);
     
@@ -232,7 +237,11 @@ void world_changed(uint8_t& current_world)
     if (new_world == goa_world_mod)
     {
         std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
-
+        auto own_checks = get_world_chests(current_world);
+        std::thread yourmom(Http_Client::send_checks, std::ref(own_checks));
+        yourmom.join();
+        auto checks = Http_Client::request_checks();
+        open_chests(checks);
     }
     current_world = new_world;
 }
@@ -259,7 +268,7 @@ void loop()
 
     while (flag)
     {
-        //world_changed(current_world);
+        world_changed();
 
         if (GetAsyncKeyState(VK_SPACE) & 0x8000) flag = false;
         std::this_thread::sleep_for(std::chrono::milliseconds(_refresh));
@@ -272,7 +281,7 @@ void req(std::map<uint32_t, uint8_t> map_chests)
     std::cin >> foo;
     if (foo == "r")
     {
-        Http_Client::send_checks(map_chests);
+        //Http_Client::send_checks(map_chests);
         auto stuff = Http_Client::request_checks();
         if (!stuff.empty())
             for (auto shit : stuff)
@@ -283,38 +292,30 @@ void req(std::map<uint32_t, uint8_t> map_chests)
     }
 }
 
+void foo(int bar)
+{
+    std::cout << bar;
+}
+
 int main()
 {
-    //setup();
-    //std::ifstream i("chests.json");
-    //j_chests = json::parse(i);
-
-    //std::ifstream i2("items.json");
-    //j_items = json::parse(i2);
-
-    //fill_chest_lookup_table();
-    //fill_item_lookup_table();
-    //map<uint32_t, uint8_t> m;
-    //m.insert({ 10130482 , 0x32 });
-    //m.insert({ 10130511 , 0x08 });
-    //open_chests(m);
-    //current_world = MemoryLib::ReadByte(WORLD_MOD);
-    //loop();
-    //Client::start("127.0.0.1", 50000);
-    //Server::start(8050);
-
+    setup();
+    std::ifstream i("chests.json");
+    j_chests = json::parse(i);
+    std::ifstream i2("items.json");
+    j_items = json::parse(i2);
+    fill_chest_lookup_table();
+    fill_item_lookup_table();
+    //std::thread server_thread(Server::start, 8050);
     std::map<uint32_t, uint8_t> map_chests;
     map_chests.emplace(2543, 0xfa);
     map_chests.emplace(5423423, 0x15);
     map_chests.emplace(232111, 0x10);
-    auto str = Util::map_to_string(map_chests);
-    auto m = Util::string_to_map(str);
-    //Http_Client::init("127.0.0.1:8050");
-    //Http_Client::send_checks(map_chests);
-    //auto stuff = Http_Client::request_checks();
-    //req(map_chests);
-    //std::cout << "foo" << std::endl;
-    //loop();
+    //auto str = Util::map_to_string(map_chests);
+    //auto m = Util::string_to_map(str);
+    Http_Client::init("127.0.0.1:8050");
+    current_world = MemoryLib::ReadByte(WORLD_MOD);
+    loop();
 }
 
 

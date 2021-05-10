@@ -15,7 +15,7 @@ private:
 	static CLIENT grab_client(std::string addr);
 
 	static void on_register(const httplib::Request& req, httplib::Response& res);
-	static void on_data(const httplib::Request& req, httplib::Response& res);
+	static void on_data(const httplib::Request& req, httplib::Response& res, const httplib::ContentReader& content_reader);
 	static void on_request(const httplib::Request&, httplib::Response& res);
 
 public:

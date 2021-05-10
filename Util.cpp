@@ -34,13 +34,15 @@ std::map<uint32_t, uint8_t> Util::string_to_map(std::string s)
 
     delimiter = ",";
     // k, v split by ','
+    std::cout << std::endl;
     for (std::string pair : pairs)
     {
         size_t index = pair.find(delimiter);
-        uint32_t key = std::strtoul((pair.substr(0, index)).c_str(), nullptr, 16);
+        uint32_t key = std::strtoul((pair.substr(0, index)).c_str(), nullptr, 10);
         uint8_t val = std::strtoul((pair.substr(index+1, pair.size())).c_str(), nullptr, 10);
         result.emplace(key, val);
     }
+
     return result;
 }
 

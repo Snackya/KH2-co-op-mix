@@ -26,16 +26,22 @@ void Server::on_register(const httplib::Request& req, httplib::Response& res)
 }
 
 // receive new checks from client
-void Server::on_data(const httplib::Request& req, httplib::Response& res)
+void Server::on_data(const httplib::Request& req, httplib::Response& res, const httplib::ContentReader& content_reader)
 {
     std::string source_id = req.get_header_value("ID");
+    std::string body = "";
+     //idk wtf this library is even doing at this point. dumb shit at least.
+    content_reader([&](const char* data, size_t data_length) {
+        body.append(data, data_length);
+        return true;
+        });
     std::cout << "Data received from client #" << source_id << std::endl;
-    std::cout << "data: \n" << req.body.c_str() << std::endl;
+    std::cout << "data: \n" << body << std::endl;
     for (CLIENT c : clients)
     {
         if (c.id == source_id) continue;
         std::cout << "added the following map data to client #" << c.id << ":\n";
-        std::map<uint32_t, uint8_t> checks = Util::string_to_map(req.body.c_str());
+        std::map<uint32_t, uint8_t> checks = Util::string_to_map(body.c_str());
         for (auto check : checks)
         {
             std::cout << check.first << " " << check.second << std::endl;
@@ -76,8 +82,8 @@ void Server::on_request(const httplib::Request& req, httplib::Response& res)
         std::cout << check.first << " " << check.second << std::endl;
     }
     std::string s_response = Util::map_to_string(*(client.outstanding_checks));
-    std::cout << "Responding with:\n" << s_response << std::endl;
-    res.set_content(s_response, "text/plain");
+    std::cout << "Responding with:\n" << s_response.c_str() << std::endl;
+    res.set_content(s_response.c_str(), "text/plain");
 }
 
 Server::CLIENT Server::grab_client(std::string id)

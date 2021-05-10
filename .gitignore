@@ -397,3 +397,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+Client.cpp
+Client.h

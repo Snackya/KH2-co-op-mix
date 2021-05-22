@@ -137,6 +137,7 @@ void add_items_to_inventory(uint32_t addr, uint8_t val)
     }
 }
 
+// finds the items corresponding to a list of chests, which have been opened
 void get_items_to_add(vector<uint32_t>& chest_addresses)
 {
     vector<uint16_t> item_vals;
@@ -159,6 +160,7 @@ void get_items_to_add(vector<uint32_t>& chest_addresses)
 }
 
 // probably TODO: increase performance. maybe create new data structure for
+// actually find out *which* chests have been opened. the result is new_item_addr
 void add_items_from_checks(std::map<uint32_t, uint8_t>& chests_added)
 {
     vector<uint32_t> new_item_addr;
@@ -185,6 +187,7 @@ void add_items_from_checks(std::map<uint32_t, uint8_t>& chests_added)
 }
 
 // open all chests of partner players, so items cannot be received twice
+// overwrites bitmask values to open a range of chests
 void open_chests(std::map<uint32_t, uint8_t>& other_vals)
 {
     map<uint32_t, uint8_t> m_chests_added;

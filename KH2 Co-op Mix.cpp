@@ -13,6 +13,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include "Popups.h"
 
 using json = nlohmann::json;
 

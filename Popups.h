@@ -2,6 +2,7 @@
 #include <map>
 
 // { World, {Flag address, (flag bitmask value, corresponding check address) } }
+// uses Save+addr anchor
 static inline std::map<std::string, std::map<uint8_t, uint32_t>> popups =
 {
 	{

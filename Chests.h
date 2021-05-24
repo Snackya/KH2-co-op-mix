@@ -4,7 +4,7 @@
 // { "world",
 //      {chest opened status bitmask addr, {bitmask val, chest content addr} }
 // }
-static inline std::map <std::string, std::multimap<uint32_t, std::pair<uint8_t, uint32_t>>> chests =
+static inline std::map <std::string, std::multimap<uint16_t, std::pair<uint8_t, uint16_t>>> chests =
 {
     {
         "100AW",

@@ -21,7 +21,8 @@
 
 //Addresses
 static uint32_t WORLD_MOD = 0x0714DB8;
-static uint32_t SAVE = 0x09A7070; // PC
+static uint32_t SAVE = 0x09A7070;   // PC
+static uint32_t SYS3 = 0x2A59DB0;   // PC
 static uint8_t goa_world_mod = 0x04;
 
 static uint64_t BaseAddress;
@@ -29,9 +30,26 @@ static DWORD PIdentifier = NULL;
 static HANDLE PHandle = NULL;
 uint8_t current_world;
 
-std::map<uint8_t, string> worlds_byte_string = {
+std::map<uint8_t, string> worlds_byte_string =
+{
+    {0x01, "World of Darkness"},
+    {0x02, "TT"},
+    {0x03, "Destiny Island"},
+    {0x04, "HB"},
+    {0x05, "BC"},
+    {0x06, "OC"},
+    {0x07, "AG"},
+    {0x08, "LOD"},
+    {0x09, "100AW"},
+    {0x0A, "PL"},
+    {0x0B, "AT"},
+    {0x0C, "DC"},
+    {0x0D, "DC"},   //in reality, it's TR. but that's just inside DC so whatever
+    {0x0E, "HT"},
+    {0x0F, "World Map"},
+    {0x10, "PR"},
+    {0x11, "SP"},
     {0x12, "TWTNW"},
-    {0x10, "PR"}
 };
 
 vector<uint8_t> mask_to_values(uint8_t delta_val)
@@ -53,7 +71,7 @@ void add_items_to_inventory(uint32_t addr, uint8_t val)
     // => inventory address
     if (val == 0)
     {
-        uint8_t curr_val = MemoryLib::ReadByte(addr);
+        uint8_t curr_val = MemoryLib::ReadByte(SYS3 + addr);
         // prevent people from going back to 0 items. they might cry.
         if (curr_val < 255)
         {
@@ -64,7 +82,7 @@ void add_items_to_inventory(uint32_t addr, uint8_t val)
     // => bitmask address
     else
     {
-        MemoryLib::WriteByte(addr, MemoryLib::ReadByte(addr) | val);
+        MemoryLib::WriteByte(SYS3 + addr, MemoryLib::ReadByte(SYS3 + addr) | val);
     }
 }
 
@@ -93,7 +111,7 @@ void get_items_from_chests(vector<uint32_t>& chest_addresses)
 }
 
 // actually find out *which* chests have been opened. the result is new_item_addr
-void find_opened_chests(std::map<uint32_t, uint8_t>& chests_added)
+void find_opened_chests(std::map<uint16_t, uint8_t>& chests_added)
 {
     std::vector<uint32_t> new_item_addr;
 
@@ -125,11 +143,11 @@ void find_opened_chests(std::map<uint32_t, uint8_t>& chests_added)
 
 // open all chests of partner players, so items cannot be received twice
 // overwrites bitmask values to open a range of chests
-void open_chests(std::map<uint32_t, uint8_t>& other_vals)
+void open_chests(std::map<uint16_t, uint8_t>& other_vals)
 {
-    map<uint32_t, uint8_t> m_chests_added;
+    map<uint16_t, uint8_t> m_chests_added;
     // loop over all "chest is open" address,status pairs
-    for (pair<int32_t, uint8_t>item : other_vals)
+    for (auto item : other_vals)
     {
         uint8_t before = MemoryLib::ReadByte(item.first);
         uint8_t after = before | item.second;
@@ -155,7 +173,7 @@ std::map<uint32_t, uint8_t> get_world_checks(uint8_t world)
     auto world_chests = chests[prev_world_str];
     for (auto chest : world_chests)
     {
-        uint8_t val = MemoryLib::ReadByte(chest.first);
+        uint8_t val = MemoryLib::ReadByte(SAVE + chest.first);
         if (val > 0)
         {
             checks_chests.emplace(chest.first, val);
@@ -219,6 +237,7 @@ void world_changed()
     if (new_world == goa_world_mod)
     {
         std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
+        std::cout << "World code: "; Util::print_byte(current_world);
         auto own_checks = get_world_checks(current_world);
         std::cout << "got the following checks:" << std::endl;
         for (auto fak : own_checks)

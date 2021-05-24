@@ -147,18 +147,20 @@ void find_opened_chests(std::map<uint16_t, uint8_t>& chests_added)
 // overwrites bitmask values to open a range of chests
 void open_chests(std::map<uint16_t, uint8_t>& other_vals)
 {
+    auto itr = other_vals.lower_bound(0x2300);
+    auto upper_limit = other_vals.upper_bound(0x23FF);
     map<uint16_t, uint8_t> m_chests_added;
     // loop over all "chest is open" address,status pairs
-    for (auto item : other_vals)
+    for (; itr != upper_limit; itr++)
     {
-        uint8_t before = MemoryLib::ReadByte(SAVE + item.first);
-        uint8_t after = before | item.second;
+        uint8_t before = MemoryLib::ReadByte(SAVE + itr->first);
+        uint8_t after = before | itr->second;
         uint8_t added = after - before;
         // perform a bit-wise OR at every address for own and partner value
         // bit-wise OR ensures the 2 values per address get proerply "merged"
-        MemoryLib::WriteByte(SAVE + item.first, after);
+        MemoryLib::WriteByte(SAVE + itr->first, after);
 
-        m_chests_added.emplace(item.first, added);
+        m_chests_added.emplace(itr->first, added);
     }
 
     find_opened_chests(m_chests_added);
@@ -228,9 +230,35 @@ std::map<uint16_t, uint8_t> get_world_checks(uint8_t world)
     return checks;
 }
 
+void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
+{
+    auto itr = other_vals.lower_bound(0x1C00);
+    auto upper_limit = other_vals.upper_bound(0x1EFF);
+
+    for (; itr != upper_limit; itr++)
+    {
+        auto val = MemoryLib::ReadByte(SAVE + itr->first);
+        MemoryLib::WriteByte(itr->first, val | itr->second);
+    }
+}
+
+void grant_bonus_levels(std::map<uint16_t, uint8_t>& other_vals)
+{
+    auto itr = other_vals.lower_bound(0x3700);
+    auto upper_limit = other_vals.upper_bound(0x37FF);
+
+    for (; itr != upper_limit; itr++)
+    {
+        auto val = MemoryLib::ReadByte(SAVE + itr->first);
+        MemoryLib::WriteByte(itr->first, val | itr->second);
+    }
+}
+
 void redeem_checks(std::map<uint16_t, uint8_t>& other_vals)
 {
-
+    open_chests(other_vals);
+    grant_progress(other_vals);
+    grant_bonus_levels(other_vals);
 }
 
 void world_changed()

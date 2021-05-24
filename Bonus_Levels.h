@@ -6,7 +6,7 @@
 //  addr3: item1, item2
 // see https://pastebin.com/WfGrYcBK
 
-//  {bitmask address, value}
+//  {bitmask address, value},
 //      {value , [addr1, addr2, addr3]}
 static inline std::multimap<uint16_t, std::pair<uint8_t, std::vector<uint32_t>>> bonus_levels_sora =
 {
@@ -70,5 +70,4 @@ static inline std::multimap<uint16_t, std::pair<uint8_t, std::vector<uint32_t>>>
     {0x370C, {0x80, {0x20f8c72, 0x20f8c74, 0x20f8c78}}},		//Xemnas II
     {0x370D, {0x1, {0x20f8c92, 0x20f8c94, 0x20f8c98}}},		    //Transport to Remembrance Nobodies III
     {0x370D, {0x2, {0x20f8cc2, 0x20f8cc4, 0x20f8cc8}}}		    //Axel I
-
 };

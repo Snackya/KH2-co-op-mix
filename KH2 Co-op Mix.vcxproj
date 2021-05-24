@@ -158,10 +158,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Abilities.h" />
+    <ClInclude Include="Bonus_Levels.h" />
     <ClInclude Include="Chests.h" />
     <ClInclude Include="httplib.h" />
     <ClInclude Include="Http_Client.h" />
-    <ClInclude Include="items.h" />
+    <ClInclude Include="Items.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="MemoryLib.h" />
     <ClInclude Include="Popups.h" />

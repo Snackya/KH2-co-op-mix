@@ -56,10 +56,13 @@
     <ClInclude Include="Abilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="items.h">
+    <ClInclude Include="Items.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Chests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bonus_Levels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

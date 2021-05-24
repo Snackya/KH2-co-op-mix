@@ -16,7 +16,8 @@
 #include "Chests.h"
 #include "Abilities.h"
 #include "Progress_flags.h"
-#include "items.h"
+#include "Items.h"
+#include "Bonus_Levels.h"
 
 //Addresses
 static uint32_t WORLD_MOD = 0x0714DB8;
@@ -137,32 +138,74 @@ void open_chests(std::map<uint32_t, uint8_t>& other_vals)
         // bit-wise OR ensures the 2 values per address get proerply "merged"
         MemoryLib::WriteByte(item.first, after);
 
-        m_chests_added.insert({item.first, added});
+        m_chests_added.emplace(item.first, added);
     }
 
     find_opened_chests(m_chests_added);
 }
 
-std::map<uint32_t, uint8_t> get_world_chests(uint8_t world)
+std::map<uint32_t, uint8_t> get_world_checks(uint8_t world)
 {
     // get the string representation of the world
     string prev_world_str = worlds_byte_string.at(world);
+    std::map<uint32_t, uint8_t> checks;
 
-    // get all chests of previous world
+    // add all chests that have been opened
+    std::map<uint32_t, uint8_t> checks_chests;
     auto world_chests = chests[prev_world_str];
-
-    // determines which chests have been opened
-    std::map<uint32_t, uint8_t> chests_opened;
     for (auto chest : world_chests)
     {
         uint8_t val = MemoryLib::ReadByte(chest.first);
         if (val > 0)
         {
-            chests_opened.insert({ chest.second.first, val });
+            checks_chests.emplace(chest.first, val);
         }
     }
+    checks.merge(checks_chests);
 
-    return chests_opened;
+    // add all bonus levels we currently have
+    std::map<uint32_t, uint8_t> checks_bonuses;
+    for (auto bl : bonus_levels)
+    {
+        uint8_t val = MemoryLib::ReadByte(SAVE + bl.first);
+        if (val > 0)
+        {
+            auto it = checks_bonuses.find(bl.first);
+            if (it == checks_bonuses.end())
+            {
+                checks_bonuses.emplace(bl.first, val);
+            }
+            else
+            {
+                it->second = it->second | bl.second;
+            }
+        }
+    }
+    checks.merge(checks_bonuses);
+
+    // add the world's popup checks
+    std::map<uint32_t, uint8_t> checks_popups;
+    auto world_popups = popups[prev_world_str];
+    for (auto pu : world_popups)
+    {
+        uint8_t val = MemoryLib::ReadByte(SAVE + pu.first);
+        if (val > 0)
+        {
+            checks_chests.emplace(pu.first, val);
+        }
+    }
+    checks.merge(checks_popups);
+
+    //add the progress flags for this world
+    std::map<uint32_t, uint8_t> checks_progress_flags;
+    auto world_progress = progress_flags[prev_world_str];
+    for (auto flag : world_progress)
+    {
+        checks_progress_flags.emplace(flag, MemoryLib::ReadByte(SAVE + flag));
+    }
+    checks.merge(checks_progress_flags);
+
+    return checks;
 }
 
 void world_changed()
@@ -176,11 +219,17 @@ void world_changed()
     if (new_world == goa_world_mod)
     {
         std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
-        auto own_checks = get_world_chests(current_world);
-        std::thread yourmom(Http_Client::send_checks, std::ref(own_checks));
-        yourmom.join();
-        auto checks = Http_Client::request_checks();
-        open_chests(checks);
+        auto own_checks = get_world_checks(current_world);
+        std::cout << "got the following checks:" << std::endl;
+        for (auto fak : own_checks)
+        {
+            std::cout << std::hex << fak.first << ", "; Util::print_byte(fak.second);
+        }
+        std::cout << std::endl;
+        //std::thread yourmom(Http_Client::send_checks, std::ref(own_checks));
+        //yourmom.join();
+        //auto checks = Http_Client::request_checks();
+        //open_chests(checks);
     }
     current_world = new_world;
 }

@@ -20,6 +20,7 @@
 
 //Addresses
 static uint32_t WORLD_MOD = 0x0714DB8;
+static uint32_t SAVE = 0x09A7070; // PC
 static uint8_t goa_world_mod = 0x04;
 
 static uint64_t BaseAddress;
@@ -142,7 +143,8 @@ void open_chests(std::map<uint32_t, uint8_t>& other_vals)
     find_opened_chests(m_chests_added);
 }
 
-std::map<uint32_t, uint8_t> get_world_chests(uint8_t world) {
+std::map<uint32_t, uint8_t> get_world_chests(uint8_t world)
+{
     // get the string representation of the world
     string prev_world_str = worlds_byte_string.at(world);
 

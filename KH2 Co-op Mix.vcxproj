@@ -157,10 +157,15 @@
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Abilities.h" />
+    <ClInclude Include="Chests.h" />
     <ClInclude Include="httplib.h" />
     <ClInclude Include="Http_Client.h" />
+    <ClInclude Include="items.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="MemoryLib.h" />
+    <ClInclude Include="Popups.h" />
+    <ClInclude Include="Progress_flags.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>

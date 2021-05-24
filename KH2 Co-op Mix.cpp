@@ -14,6 +14,10 @@
 #include <chrono>
 #include <thread>
 #include "Popups.h"
+#include "Chests.h"
+#include "Abilities.h"
+#include "Progress_flags.h"
+#include "items.h"
 
 using json = nlohmann::json;
 
@@ -138,7 +142,7 @@ void add_items_to_inventory(uint32_t addr, uint8_t val)
 }
 
 // finds the items corresponding to a list of chests, which have been opened
-void get_items_to_add(vector<uint32_t>& chest_addresses)
+void get_items_from_chests(vector<uint32_t>& chest_addresses)
 {
     vector<uint16_t> item_vals;
     for (auto item_addr : chest_addresses)
@@ -161,7 +165,7 @@ void get_items_to_add(vector<uint32_t>& chest_addresses)
 
 // probably TODO: increase performance. maybe create new data structure for
 // actually find out *which* chests have been opened. the result is new_item_addr
-void add_items_from_checks(std::map<uint32_t, uint8_t>& chests_added)
+void find_opened_chests(std::map<uint32_t, uint8_t>& chests_added)
 {
     vector<uint32_t> new_item_addr;
     // iterate over all new partner chests
@@ -183,7 +187,7 @@ void add_items_from_checks(std::map<uint32_t, uint8_t>& chests_added)
         }
     }
 
-    get_items_to_add(new_item_addr);
+    get_items_from_chests(new_item_addr);
 }
 
 // open all chests of partner players, so items cannot be received twice
@@ -204,7 +208,7 @@ void open_chests(std::map<uint32_t, uint8_t>& other_vals)
         m_chests_added.insert({item.first, added});
     }
 
-    add_items_from_checks(m_chests_added);
+    find_opened_chests(m_chests_added);
 }
 
 std::map<uint32_t, uint8_t> get_world_chests(uint8_t world) {
@@ -303,23 +307,24 @@ void foo(int bar)
 
 int main()
 {
-    setup();
-    std::ifstream i("chests.json");
-    j_chests = json::parse(i);
-    std::ifstream i2("items.json");
-    j_items = json::parse(i2);
-    fill_chest_lookup_table();
-    fill_item_lookup_table();
-    //std::thread server_thread(Server::start, 8050);
-    std::map<uint32_t, uint8_t> map_chests;
-    map_chests.emplace(2543, 0xfa);
-    map_chests.emplace(5423423, 0x15);
-    map_chests.emplace(232111, 0x10);
-    //auto str = Util::map_to_string(map_chests);
-    //auto m = Util::string_to_map(str);
-    Http_Client::init("127.0.0.1:8050");
-    current_world = MemoryLib::ReadByte(WORLD_MOD);
-    loop();
+    std::cout << "foo" << std::endl;
+    //setup();
+    //std::ifstream i("chests.json");
+    //j_chests = json::parse(i);
+    //std::ifstream i2("items.json");
+    //j_items = json::parse(i2);
+    //fill_chest_lookup_table();
+    //fill_item_lookup_table();
+    ////std::thread server_thread(Server::start, 8050);
+    //std::map<uint32_t, uint8_t> map_chests;
+    //map_chests.emplace(2543, 0xfa);
+    //map_chests.emplace(5423423, 0x15);
+    //map_chests.emplace(232111, 0x10);
+    ////auto str = Util::map_to_string(map_chests);
+    ////auto m = Util::string_to_map(str);
+    //Http_Client::init("127.0.0.1:8050");
+    //current_world = MemoryLib::ReadByte(WORLD_MOD);
+    //loop();
 }
 
 

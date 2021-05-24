@@ -68,54 +68,75 @@ vector<uint8_t> mask_to_values(uint8_t delta_val)
 }
 
 // addr is either the inventory address or the bitmask address
-void add_items_to_inventory(uint32_t addr, uint8_t val)
+void add_item_to_inventory(uint16_t addr, uint8_t val)
 {
     // => inventory address
     if (val == 0)
     {
-        uint8_t curr_val = MemoryLib::ReadByte(SYS3 + addr);
+        uint8_t curr_val = MemoryLib::ReadByte(SAVE + addr);
         // prevent people from going back to 0 items. they might cry.
         if (curr_val < 255)
         {
-            MemoryLib::WriteByte(SYS3 + addr, curr_val + 1);
+            MemoryLib::WriteByte(SAVE + addr, curr_val + 1);
 
         }
     }
     // => bitmask address
     else
     {
-        MemoryLib::WriteByte(SYS3 + addr, MemoryLib::ReadByte(SYS3 + addr) | val);
+        MemoryLib::WriteByte(SAVE + addr, MemoryLib::ReadByte(SAVE + addr) | val);
     }
 }
 
-// finds the items corresponding to a list of chests, which have been opened
-void get_items_from_chests(vector<uint16_t>& chest_addresses)
+void add_ability(uint16_t id)
 {
-    vector<uint16_t> id_list;
-    for (auto item_addr : chest_addresses)
+    uint32_t ability_slot = SAVE + 0x2544;
+    for (int i = 0; i <= 68; i + 2)
     {
-        id_list.push_back(MemoryLib::ReadShort(SYS3 + item_addr));
+        uint16_t ab = MemoryLib::ReadShort(ability_slot);
+        if (ab != 0x0000)   // free slot
+        {
+            MemoryLib::WriteShort(ability_slot, id);
+            break;
+        }
+        else
+        {
+            std::cout << "Ran out of ability slots" << std::endl;
+        }
     }
+}
+
+// finds the items and abilities corresponding to the given IDs and add them ingame
+void get_stuff_from_ids(vector<uint16_t>& id_list)
+{
     for (uint16_t id : id_list)
     {
         auto it = items_id_invAddr.find(id);
         if(it != items_id_invAddr.end())
         {
-            add_items_to_inventory(it->second, 0);
+            add_item_to_inventory(it->second, 0);
             continue;
         }
-        auto itr = items_invBitmask.find(id);
-        if (itr != items_invBitmask.end())
+        auto it2 = items_invBitmask.find(id);
+        if (it2 != items_invBitmask.end())
         {
-            add_items_to_inventory(itr->second.first, itr->second.second);
+            add_item_to_inventory(it2->second.first, it2->second.second);
+            continue;
         }
+        auto it3 = std::find(abilities.begin(), abilities.end(), id);
+        if (it3 != abilities.end())
+        {
+            add_ability(id);
+            continue;
+        }
+        std::cout << "Nothing matching ID " << id << " found." << std::endl;
     }
 }
 
 // actually find out *which* chests have been opened. the result is new_item_addr
 void find_opened_chests(std::map<uint16_t, uint8_t>& chests_added)
 {
-    std::vector<uint16_t> new_item_addr;
+    std::vector<uint16_t> id_list;
 
     // iterate over all areas and their chests
     for (auto area : chests)
@@ -134,13 +155,14 @@ void find_opened_chests(std::map<uint16_t, uint8_t>& chests_added)
                 auto val_it = std::find(new_vals.begin(), new_vals.end(), itr->second.first);
                 if (val_it != new_vals.end())
                 {
-                    new_item_addr.push_back(itr->second.second);
+                    auto id = MemoryLib::ReadShort(itr->second.second);
+                    id_list.push_back(id);
                 }
             }
         }
     }
 
-    get_items_from_chests(new_item_addr);
+    get_stuff_from_ids(id_list);
 }
 
 // open all chests of partner players, so items cannot be received twice
@@ -230,22 +252,57 @@ std::map<uint16_t, uint8_t> get_world_checks(uint8_t world)
     return checks;
 }
 
+
+//TODO: get popups based on added progress flags like in open_chests()
+//TODO: rewrite open_chests() to work for chests and flags
 void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
 {
-    auto itr = other_vals.lower_bound(0x1C00);
-    auto upper_limit = other_vals.upper_bound(0x1EFF);
+    //auto itr = other_vals.lower_bound(0x1C00);
+    //auto upper_limit = other_vals.upper_bound(0x1EFF);
 
-    for (; itr != upper_limit; itr++)
-    {
-        auto val = MemoryLib::ReadByte(SAVE + itr->first);
-        MemoryLib::WriteByte(itr->first, val | itr->second);
-    }
+    //for (; itr != upper_limit; itr++)
+    //{
+    //    auto val = MemoryLib::ReadByte(SAVE + itr->first);
+    //    MemoryLib::WriteByte(itr->first, val | itr->second);
+    //}
 }
 
 void grant_bonus_levels(std::map<uint16_t, uint8_t>& other_vals)
 {
-    auto itr = other_vals.lower_bound(0x3700);
+    auto ov_itr = other_vals.lower_bound(0x3700);
     auto upper_limit = other_vals.upper_bound(0x37FF);
+
+    for (; ov_itr != upper_limit; ++ov_itr)
+    {
+        // merge new checks with existing ones
+        uint8_t before = MemoryLib::ReadByte(SAVE + ov_itr->first);
+        uint8_t after = before | ov_itr->second;
+        uint8_t added = after - before;
+        MemoryLib::WriteByte(SAVE + ov_itr->first, after);
+
+        vector<uint8_t> split_vals = mask_to_values(added);
+
+        auto bls_range = bonus_levels_sora.equal_range(ov_itr->first);
+        for (auto bls_itr = bls_range.first; bls_itr != bls_range.second; ++bls_itr)
+        {
+            // split-byte-value matches one of the bitmasks. grant the corresponding items/abilities/etc.
+            auto val_it = std::find(split_vals.begin(), split_vals.end(), bls_itr->second.first);
+            if (val_it != split_vals.end())
+            {
+                auto addr = bls_itr->second.second[2];
+                uint16_t item1 = MemoryLib::ReadShort(addr);
+                uint16_t item2 = MemoryLib::ReadShort(addr + 2);
+                std::vector ids = {item1, item2};
+                get_stuff_from_ids(ids);
+            }
+        }
+    }
+}
+
+void grant_popups(std::map<uint16_t, uint8_t>& other_vals)
+{
+    auto itr = other_vals.lower_bound(0x1C00);
+    auto upper_limit = other_vals.upper_bound(0x1EFF);
 
     for (; itr != upper_limit; itr++)
     {

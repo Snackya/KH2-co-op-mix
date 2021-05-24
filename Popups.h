@@ -3,7 +3,7 @@
 
 // { World, {Flag address, {flag bitmask value, corresponding check address} } }
 // uses Save+addr anchor
-static inline std::map<std::string, std::map<uint16_t, std::pair<uint8_t, uint32_t>>> popups =
+static inline std::map<std::string, std::multimap<uint16_t, std::pair<uint8_t, uint32_t>>> popups =
 {
 	{
 		"100AW",

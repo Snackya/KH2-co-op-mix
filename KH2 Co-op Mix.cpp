@@ -6,7 +6,6 @@
 #include "Util.h"
 #include <iostream>
 #include <fstream>
-#include "json.hpp"
 #include "MemoryLib.h"
 #include <map>
 #include <omp.h>
@@ -19,8 +18,6 @@
 #include "Progress_flags.h"
 #include "items.h"
 
-using json = nlohmann::json;
-
 //Addresses
 static uint32_t WORLD_MOD = 0x0714DB8;
 static uint8_t goa_world_mod = 0x04;
@@ -28,84 +25,12 @@ static uint8_t goa_world_mod = 0x04;
 static uint64_t BaseAddress;
 static DWORD PIdentifier = NULL;
 static HANDLE PHandle = NULL;
-json j_chests;
-json j_items;
 uint8_t current_world;
-std::multimap<uint32_t, std::pair<uint8_t, uint32_t>> m_maskVal_chestAddr;
-
-// {id, (address, mask value)}
-std::multimap<uint16_t, std::pair<uint32_t, uint8_t>> m_item_table;
-
-struct LOCATION_CHESTS {
-    vector<uint32_t> addresses;
-    vector<uint32_t> bitmasks;
-    vector<uint8_t> values;
-};
-
-void fill_chest_lookup_table()
-{
-    for (vector<json> chest_list : j_chests)
-    {
-        for (json chest : chest_list)
-        {
-            m_maskVal_chestAddr.insert(
-                { strtoul(((string)chest["bitmask"]).c_str(), nullptr, 16),
-                  std::pair(
-                      strtoul(((string)chest["value"]).c_str(), nullptr, 16),
-                      strtoul(((string)chest["content"]).c_str(), nullptr, 16)
-                  )}
-            );
-        }
-    }
-}
-
-void fill_item_lookup_table()
-{
-    for (json item : j_items["items"])
-    {
-        uint16_t id = item["id"];
-        uint32_t addr;
-        uint8_t val;
-        if (item["inventory_address"] != 0)
-        {
-            addr = item["inventory_address"];
-            val = 0;
-        }
-        else 
-        {
-            addr = item["bitmask_address"];
-            val = item["bitmask_value"];
-        }
-       
-        m_item_table.insert(
-            {id,
-            std::pair(addr, val)}
-        );
-    }
-}
 
 std::map<uint8_t, string> worlds_byte_string = {
     {0x12, "TWTNW"},
     {0x10, "PR"}
 };
-
-LOCATION_CHESTS current_area_chests(string areaName)
-{
-    LOCATION_CHESTS lc;
-    for (json fj : j_chests[areaName])
-    {
-        lc.addresses.push_back(
-           strtoul(((string)fj["content"]).c_str(), nullptr, 16)
-        );
-        lc.bitmasks.push_back(
-            strtoul(((string)fj["bitmask"]).c_str(), nullptr, 16)
-        );
-        lc.values.push_back(
-            strtoul(((string)fj["value"]).c_str(), nullptr, 16)
-        );
-    }
-    return lc;
-}
 
 vector<uint8_t> mask_to_values(uint8_t delta_val)
 {
@@ -144,45 +69,51 @@ void add_items_to_inventory(uint32_t addr, uint8_t val)
 // finds the items corresponding to a list of chests, which have been opened
 void get_items_from_chests(vector<uint32_t>& chest_addresses)
 {
-    vector<uint16_t> item_vals;
+    vector<uint16_t> id_list;
     for (auto item_addr : chest_addresses)
     {
-        item_vals.push_back(MemoryLib::ReadShort(item_addr));
+        id_list.push_back(MemoryLib::ReadShort(item_addr));
     }
-    for (uint16_t val : item_vals)
+    for (uint16_t id : id_list)
     {
-        auto it = m_item_table.find(val);
-        if(it != m_item_table.end())
+        auto it = items_id_invAddr.find(id);
+        if(it != items_id_invAddr.end())
         {
-            add_items_to_inventory(it->second.first, it->second.second);
+            add_items_to_inventory(it->second, 0);
+            continue;
         }
-        else
+        auto itr = items_invBitmask.find(id);
+        if (itr != items_invBitmask.end())
         {
-            std::cout << "failed to find item ID '" << val << "' in lookup table.";
+            add_items_to_inventory(itr->second.first, itr->second.second);
         }
     }
 }
 
-// probably TODO: increase performance. maybe create new data structure for
 // actually find out *which* chests have been opened. the result is new_item_addr
 void find_opened_chests(std::map<uint32_t, uint8_t>& chests_added)
 {
-    vector<uint32_t> new_item_addr;
-    // iterate over all new partner chests
-    for (pair<int32_t, uint8_t> added : chests_added)
-    {
-        // get all (address, value) pairs for the current bitmask address
-        auto it = m_maskVal_chestAddr.equal_range(added.first);
-        for (auto itr = it.first; itr != it.second; ++itr)
-        {
-            // split the value (byte) of the added chests into its bits to check against the bitmask lu-table
-            vector<uint8_t> new_vals = mask_to_values(added.second);
+    std::vector<uint32_t> new_item_addr;
 
-            // split byte value matches one of the bitmasks. this chest has been opened.
-            auto val_it = std::find(new_vals.begin(), new_vals.end(), itr->second.first);
-            if (val_it != new_vals.end())
+    // iterate over all areas and their chests
+    for (auto area : chests)
+    {
+        // iterate over all newly added partner chests
+        for (pair<int32_t, uint8_t> added : chests_added)
+        {
+            // get all (address, value) pairs for the current bitmask address
+            auto it = area.second.equal_range(added.first);
+            for (auto itr = it.first; itr != it.second; ++itr)
             {
-                new_item_addr.push_back(itr->second.second);
+                // split the value (byte) of the added chests into its bits to check against the bitmask lu-table
+                vector<uint8_t> new_vals = mask_to_values(added.second);
+
+                // split-byte-value matches one of the bitmasks. this chest has been opened.
+                auto val_it = std::find(new_vals.begin(), new_vals.end(), itr->second.first);
+                if (val_it != new_vals.end())
+                {
+                    new_item_addr.push_back(itr->second.second);
+                }
             }
         }
     }
@@ -212,26 +143,24 @@ void open_chests(std::map<uint32_t, uint8_t>& other_vals)
 }
 
 std::map<uint32_t, uint8_t> get_world_chests(uint8_t world) {
-    // JSON key string corresponding to WORLD_MOD byte value
+    // get the string representation of the world
     string prev_world_str = worlds_byte_string.at(world);
 
     // get all chests of previous world
-    LOCATION_CHESTS chests = current_area_chests(prev_world_str);
-    std::cout << "area chest size: " << chests.bitmasks.size() << std::endl;
+    auto world_chests = chests[prev_world_str];
 
     // determines which chests have been opened
-    std::map<uint32_t, uint8_t> chest_bm_vals;
-    for (uint32_t addr : chests.bitmasks)
+    std::map<uint32_t, uint8_t> chests_opened;
+    for (auto chest : world_chests)
     {
-        uint8_t val = MemoryLib::ReadByte(addr);
+        uint8_t val = MemoryLib::ReadByte(chest.first);
         if (val > 0)
         {
-            chest_bm_vals.insert({ addr, val });
+            chests_opened.insert({ chest.second.first, val });
         }
     }
 
-    // TODO: update world chests based on this map
-    return chest_bm_vals;
+    return chests_opened;
 }
 
 void world_changed()
@@ -307,24 +236,17 @@ void foo(int bar)
 
 int main()
 {
-    std::cout << "foo" << std::endl;
-    //setup();
-    //std::ifstream i("chests.json");
-    //j_chests = json::parse(i);
-    //std::ifstream i2("items.json");
-    //j_items = json::parse(i2);
-    //fill_chest_lookup_table();
-    //fill_item_lookup_table();
-    ////std::thread server_thread(Server::start, 8050);
-    //std::map<uint32_t, uint8_t> map_chests;
-    //map_chests.emplace(2543, 0xfa);
-    //map_chests.emplace(5423423, 0x15);
-    //map_chests.emplace(232111, 0x10);
-    ////auto str = Util::map_to_string(map_chests);
-    ////auto m = Util::string_to_map(str);
-    //Http_Client::init("127.0.0.1:8050");
-    //current_world = MemoryLib::ReadByte(WORLD_MOD);
-    //loop();
+    setup();
+    //std::thread server_thread(Server::start, 8050);
+    std::map<uint32_t, uint8_t> map_chests;
+    map_chests.emplace(2543, 0xfa);
+    map_chests.emplace(5423423, 0x15);
+    map_chests.emplace(232111, 0x10);
+    //auto str = Util::map_to_string(map_chests);
+    //auto m = Util::string_to_map(str);
+    Http_Client::init("127.0.0.1:8050");
+    current_world = MemoryLib::ReadByte(WORLD_MOD);
+    loop();
 }
 
 

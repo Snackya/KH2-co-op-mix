@@ -1,7 +1,7 @@
 #include "Http_Client.h"
 #include "Util.h"
 
-void Http_Client::send_checks(std::map<uint32_t, uint8_t>& checks)
+void Http_Client::send_checks(std::map<uint16_t, uint8_t>& checks)
 {
 	// for some reason keep_alive doesn't work only on sending,
 	// so we need to recreate the client here
@@ -13,10 +13,10 @@ void Http_Client::send_checks(std::map<uint32_t, uint8_t>& checks)
 	auto foo = cli->Post("/data", client_id, package, "text/plain");
 }
 
-std::map<uint32_t, uint8_t> Http_Client::request_checks()
+std::map<uint16_t, uint8_t> Http_Client::request_checks()
 {
 	std::cout << "requesting\n";
-	std::map<uint32_t, uint8_t> checks;
+	std::map<uint16_t, uint8_t> checks;
 	auto res = cli->Get("/request", client_id);
 	if (!res) return checks;
 

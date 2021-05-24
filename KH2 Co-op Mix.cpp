@@ -25,6 +25,8 @@ static uint32_t SAVE = 0x09A7070;   // PC
 static uint32_t SYS3 = 0x2A59DB0;   // PC
 static uint8_t goa_world_mod = 0x04;
 
+std::string example_response = "7568,15|7569,219|7570,173|7571,75|7572,127|7573,16|7574,255|7575,255|7576,255|7577,70|7578,160|7579,0|9133,120|14084,252|14085,151|14086,255|14087,247|14088,239|14089,237|14090,70|14091,255|14092,254|14093,2";
+
 static uint64_t BaseAddress;
 static DWORD PIdentifier = NULL;
 static HANDLE PHandle = NULL;
@@ -162,14 +164,14 @@ void open_chests(std::map<uint16_t, uint8_t>& other_vals)
     find_opened_chests(m_chests_added);
 }
 
-std::map<uint32_t, uint8_t> get_world_checks(uint8_t world)
+std::map<uint16_t, uint8_t> get_world_checks(uint8_t world)
 {
     // get the string representation of the world
     string prev_world_str = worlds_byte_string.at(world);
-    std::map<uint32_t, uint8_t> checks;
+    std::map<uint16_t, uint8_t> checks;
 
     // add all chests that have been opened
-    std::map<uint32_t, uint8_t> checks_chests;
+    std::map<uint16_t, uint8_t> checks_chests;
     auto world_chests = chests[prev_world_str];
     for (auto chest : world_chests)
     {
@@ -182,8 +184,8 @@ std::map<uint32_t, uint8_t> get_world_checks(uint8_t world)
     checks.merge(checks_chests);
 
     // add all bonus levels we currently have
-    std::map<uint32_t, uint8_t> checks_bonuses;
-    for (auto bl : bonus_levels)
+    std::map<uint16_t, uint8_t> checks_bonuses;
+    for (auto bl : bonus_levels_sora)
     {
         uint8_t val = MemoryLib::ReadByte(SAVE + bl.first);
         if (val > 0)
@@ -195,14 +197,14 @@ std::map<uint32_t, uint8_t> get_world_checks(uint8_t world)
             }
             else
             {
-                it->second = it->second | bl.second;
+                it->second = it->second | bl.second.first;
             }
         }
     }
     checks.merge(checks_bonuses);
 
     // add the world's popup checks
-    std::map<uint32_t, uint8_t> checks_popups;
+    std::map<uint16_t, uint8_t> checks_popups;
     auto world_popups = popups[prev_world_str];
     for (auto pu : world_popups)
     {
@@ -215,7 +217,7 @@ std::map<uint32_t, uint8_t> get_world_checks(uint8_t world)
     checks.merge(checks_popups);
 
     //add the progress flags for this world
-    std::map<uint32_t, uint8_t> checks_progress_flags;
+    std::map<uint16_t, uint8_t> checks_progress_flags;
     auto world_progress = progress_flags[prev_world_str];
     for (auto flag : world_progress)
     {
@@ -224,6 +226,11 @@ std::map<uint32_t, uint8_t> get_world_checks(uint8_t world)
     checks.merge(checks_progress_flags);
 
     return checks;
+}
+
+void redeem_checks(std::map<uint16_t, uint8_t>& other_vals)
+{
+
 }
 
 void world_changed()
@@ -240,11 +247,11 @@ void world_changed()
         std::cout << "World code: "; Util::print_byte(current_world);
         auto own_checks = get_world_checks(current_world);
         std::cout << "got the following checks:" << std::endl;
-        for (auto fak : own_checks)
-        {
-            std::cout << std::hex << fak.first << ", "; Util::print_byte(fak.second);
-        }
-        std::cout << std::endl;
+        //for (auto fak : own_checks)
+        //{
+        //    std::cout << std::hex << fak.first << ", "; Util::print_byte(fak.second);
+        //}
+        //std::cout << std::endl;
         //std::thread yourmom(Http_Client::send_checks, std::ref(own_checks));
         //yourmom.join();
         //auto checks = Http_Client::request_checks();
@@ -318,47 +325,3 @@ int main()
     current_world = MemoryLib::ReadByte(WORLD_MOD);
     loop();
 }
-
-
-
-
-
-
-
-
-
-
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
-
-///////////////////////////////
-//  LEGACY and UTILITY CODE  //
-///////////////////////////////
-
-//void json_itemID_itemName() {
-//    std::map<std::string, std::string> items;
-//    for (vector<json> chest_list : j_chests)
-//    {
-//        for (json chest : chest_list) {
-//            uint32_t addr = strtoul(((string)chest["content"]).c_str(), nullptr, 16);
-//            uint32_t val = MemoryLib::ReadShort(addr);
-//
-//            items.insert(
-//                { std::to_string(val) , chest["name"] }
-//            );
-//        }
-//    }
-//    json j_items(items);
-//    std::ofstream o("items.json");
-//    o << j_items << std::endl;
-//}

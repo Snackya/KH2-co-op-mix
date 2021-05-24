@@ -8,7 +8,7 @@ private:
 
 	struct CLIENT {
 		std::string id;
-		std::map<uint32_t, uint8_t>* outstanding_checks;
+		std::map<uint16_t, uint8_t>* outstanding_checks;
 	};
 	inline static std::vector<CLIENT> clients;
 

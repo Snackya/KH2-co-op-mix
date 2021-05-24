@@ -18,7 +18,7 @@ void Server::on_register(const httplib::Request& req, httplib::Response& res)
     //CLIENT client{ std::to_string(Server::id_counter), std::map<uint32_t, uint8_t>() };
     CLIENT client;
     client.id = std::to_string(Server::id_counter);
-    client.outstanding_checks = new std::map<uint32_t, uint8_t>;
+    client.outstanding_checks = new std::map<uint16_t, uint8_t>;
     std::cout << "Registered client #" << Server::id_counter << std::endl;
     clients.push_back(client);
     res.set_content(std::to_string(Server::id_counter), "text/plain");
@@ -41,7 +41,7 @@ void Server::on_data(const httplib::Request& req, httplib::Response& res, const 
     {
         if (c.id == source_id) continue;
         std::cout << "added the following map data to client #" << c.id << ":\n";
-        std::map<uint32_t, uint8_t> checks = Util::string_to_map(body.c_str());
+        std::map<uint16_t, uint8_t> checks = Util::string_to_map(body.c_str());
         for (auto check : checks)
         {
             std::cout << check.first << " " << check.second << std::endl;

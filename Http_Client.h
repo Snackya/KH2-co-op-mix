@@ -9,9 +9,9 @@ private:
 	inline static std::string server_addresss;
 
 public:
-	static void send_checks(std::map<uint32_t, uint8_t>& checks);
+	static void send_checks(std::map<uint16_t, uint8_t>& checks);
 
-	static std::map<uint32_t, uint8_t> request_checks();
+	static std::map<uint16_t, uint8_t> request_checks();
 
 	static void init(std::string server_addr);
 };

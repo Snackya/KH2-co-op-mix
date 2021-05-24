@@ -1,6 +1,6 @@
 #include "Util.h"
 
-std::string Util::map_to_string(std::map<uint32_t, uint8_t>& checks)
+std::string Util::map_to_string(std::map<uint16_t, uint8_t>& checks)
 {
     std::string result = "";
     for (auto ch : checks)
@@ -14,12 +14,12 @@ std::string Util::map_to_string(std::map<uint32_t, uint8_t>& checks)
     return result;
 }
 
-std::map<uint32_t, uint8_t> Util::string_to_map(std::string s)
+std::map<uint16_t, uint8_t> Util::string_to_map(std::string s)
 {
     size_t current, previous = 0;
     std::string delimiter = "|";
     std::vector<std::string> pairs;
-    std::map<uint32_t, uint8_t> result;
+    std::map<uint16_t, uint8_t> result;
     current = s.find(delimiter);
 
     // k-v pairs split by '|'

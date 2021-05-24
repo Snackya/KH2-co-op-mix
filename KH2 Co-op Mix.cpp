@@ -75,7 +75,7 @@ void add_items_to_inventory(uint32_t addr, uint8_t val)
         // prevent people from going back to 0 items. they might cry.
         if (curr_val < 255)
         {
-            MemoryLib::WriteByte(addr, curr_val + 1);
+            MemoryLib::WriteByte(SYS3 + addr, curr_val + 1);
 
         }
     }
@@ -87,12 +87,12 @@ void add_items_to_inventory(uint32_t addr, uint8_t val)
 }
 
 // finds the items corresponding to a list of chests, which have been opened
-void get_items_from_chests(vector<uint32_t>& chest_addresses)
+void get_items_from_chests(vector<uint16_t>& chest_addresses)
 {
     vector<uint16_t> id_list;
     for (auto item_addr : chest_addresses)
     {
-        id_list.push_back(MemoryLib::ReadShort(item_addr));
+        id_list.push_back(MemoryLib::ReadShort(SYS3 + item_addr));
     }
     for (uint16_t id : id_list)
     {
@@ -113,7 +113,7 @@ void get_items_from_chests(vector<uint32_t>& chest_addresses)
 // actually find out *which* chests have been opened. the result is new_item_addr
 void find_opened_chests(std::map<uint16_t, uint8_t>& chests_added)
 {
-    std::vector<uint32_t> new_item_addr;
+    std::vector<uint16_t> new_item_addr;
 
     // iterate over all areas and their chests
     for (auto area : chests)
@@ -149,12 +149,12 @@ void open_chests(std::map<uint16_t, uint8_t>& other_vals)
     // loop over all "chest is open" address,status pairs
     for (auto item : other_vals)
     {
-        uint8_t before = MemoryLib::ReadByte(item.first);
+        uint8_t before = MemoryLib::ReadByte(SAVE + item.first);
         uint8_t after = before | item.second;
         uint8_t added = after - before;
         // perform a bit-wise OR at every address for own and partner value
         // bit-wise OR ensures the 2 values per address get proerply "merged"
-        MemoryLib::WriteByte(item.first, after);
+        MemoryLib::WriteByte(SAVE + item.first, after);
 
         m_chests_added.emplace(item.first, added);
     }

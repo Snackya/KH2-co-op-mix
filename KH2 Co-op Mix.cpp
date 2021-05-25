@@ -31,6 +31,7 @@ static uint64_t BaseAddress;
 static DWORD PIdentifier = NULL;
 static HANDLE PHandle = NULL;
 uint8_t current_world;
+std::map<uint16_t, uint8_t> workaround_progress_storage = {};
 
 std::map<uint8_t, string> worlds_byte_string =
 {
@@ -91,17 +92,13 @@ void add_item_to_inventory(uint16_t addr, uint8_t val)
 void add_ability(uint16_t id)
 {
     uint32_t ability_slot = SAVE + 0x2544;
-    for (int i = 0; i <= 68; i + 2)
+    for (int i = 0; i <= 68; i += 2)
     {
-        uint16_t ab = MemoryLib::ReadShort(ability_slot);
-        if (ab != 0x0000)   // free slot
+        uint16_t ab = MemoryLib::ReadShort(ability_slot + i);
+        if (ab == 0x0000)   // free slot
         {
-            MemoryLib::WriteShort(ability_slot, id);
+            MemoryLib::WriteShort(ability_slot + i, id);
             break;
-        }
-        else
-        {
-            std::cout << "Ran out of ability slots" << std::endl;
         }
     }
 }
@@ -109,29 +106,31 @@ void add_ability(uint16_t id)
 // finds the items and abilities corresponding to the given IDs and add them ingame
 void get_stuff_from_ids(vector<uint16_t>& id_list)
 {
-    std::cout << id_list.size() << std::endl;
     for (uint16_t id : id_list)
     {
         std::cout << std::hex << id << std::endl;
         auto it = items_id_invAddr.find(id);
         if(it != items_id_invAddr.end())
         {
+            std::cout << "add inv item: " << std::hex << id << std::endl;
             add_item_to_inventory(it->second, 0);
             continue;
         }
         auto it2 = items_invBitmask.find(id);
         if (it2 != items_invBitmask.end())
         {
+            std::cout << "add bitmask item: " << std::hex << id << std::endl;
             add_item_to_inventory(it2->second.first, it2->second.second);
             continue;
         }
         auto it3 = std::find(abilities.begin(), abilities.end(), id);
         if (it3 != abilities.end())
         {
+            std::cout << "add ability: " << std::hex << id << std::endl;
             add_ability(id);
             continue;
         }
-        //std::cout << "Nothing matching ID " << id << " found." << std::endl;
+        std::cout << "Nothing matching ID " << std::hex << id << " found." << std::endl;
     }
 }
 
@@ -183,7 +182,7 @@ void open_chests(std::map<uint16_t, uint8_t>& other_vals)
         uint8_t added = after - before;
         // perform a bit-wise OR at every address for own and partner value
         // bit-wise OR ensures the 2 values per address get proerply "merged"
-        //MemoryLib::WriteByte(SAVE + itr->first, after);
+        MemoryLib::WriteByte(SAVE + itr->first, after);
 
         m_chests_added.emplace(itr->first, added);
     }
@@ -259,6 +258,7 @@ void grant_bonus_levels(std::map<uint16_t, uint8_t>& other_vals)
 {
     auto ov_itr = other_vals.lower_bound(0x3700);
     auto upper_limit = other_vals.upper_bound(0x37FF);
+    std::vector<uint16_t> id_list;
 
     for (; ov_itr != upper_limit; ++ov_itr)
     {
@@ -278,13 +278,14 @@ void grant_bonus_levels(std::map<uint16_t, uint8_t>& other_vals)
             if (val_it != split_vals.end())
             {
                 auto addr = bls_itr->second.second[2];
-                uint16_t item1 = MemoryLib::ReadShort(addr);
-                uint16_t item2 = MemoryLib::ReadShort(addr + 2);
-                std::vector ids = {item1, item2};
-                get_stuff_from_ids(ids);
+                uint16_t item1 = MemoryLib::ReadShort(SAVE + addr);
+                uint16_t item2 = MemoryLib::ReadShort(SAVE + addr + 2);
+                if(item1 != 0)  id_list.push_back(item1);
+                if(item2 != 0)  id_list.push_back(item2);
             }
         }
     }
+    get_stuff_from_ids(id_list);
 }
 
 void grant_popups(std::map<uint16_t, uint8_t>& progress_added)
@@ -324,17 +325,37 @@ void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
     auto itr = other_vals.lower_bound(0x1D00);
     auto upper_limit = other_vals.upper_bound(0x1EFF);
     map<uint16_t, uint8_t> progress_added;
-
-    for (; itr != upper_limit; itr++)
+    if(workaround_progress_storage.size() == 0)
+    { 
+        for (; itr != upper_limit; itr++)
+        {
+            uint8_t before = MemoryLib::ReadByte(SAVE + itr->first);
+            uint8_t after = before | itr->second;
+            uint8_t added = after - before;
+            // perform a bit-wise OR at every address for own and partner value
+            // bit-wise OR ensures the 2 values per address get proerply "merged"
+            //MemoryLib::WriteByte(SAVE + itr->first, after);
+            if (added != 0) {
+                progress_added.emplace(itr->first, added);
+                workaround_progress_storage[itr->first] = after;
+            }
+        }
+    }
+    else
     {
-        uint8_t before = MemoryLib::ReadByte(SAVE + itr->first);
-        uint8_t after = before | itr->second;
-        uint8_t added = after - before;
-        // perform a bit-wise OR at every address for own and partner value
-        // bit-wise OR ensures the 2 values per address get proerply "merged"
-        MemoryLib::WriteByte(SAVE + itr->first, after);
-        if (added != 0) {
-            progress_added.emplace(itr->first, added);
+        for (; itr != upper_limit; itr++)
+        {
+            uint8_t before = 0;
+            if (workaround_progress_storage[itr->first])
+            {
+                before = workaround_progress_storage[itr->first];
+            }
+            uint8_t after = before | itr->second;
+            uint8_t added = after - before;
+            if (added != 0) {
+                progress_added.emplace(itr->first, added);
+                workaround_progress_storage[itr->first] = after;
+            }
         }
     }
     grant_popups(progress_added);

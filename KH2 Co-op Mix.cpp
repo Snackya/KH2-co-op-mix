@@ -109,8 +109,10 @@ void add_ability(uint16_t id)
 // finds the items and abilities corresponding to the given IDs and add them ingame
 void get_stuff_from_ids(vector<uint16_t>& id_list)
 {
+    std::cout << id_list.size() << std::endl;
     for (uint16_t id : id_list)
     {
+        std::cout << std::hex << id << std::endl;
         auto it = items_id_invAddr.find(id);
         if(it != items_id_invAddr.end())
         {
@@ -129,7 +131,7 @@ void get_stuff_from_ids(vector<uint16_t>& id_list)
             add_ability(id);
             continue;
         }
-        std::cout << "Nothing matching ID " << id << " found." << std::endl;
+        //std::cout << "Nothing matching ID " << id << " found." << std::endl;
     }
 }
 
@@ -142,7 +144,7 @@ void find_opened_chests(std::map<uint16_t, uint8_t>& chests_added)
     for (auto area : chests)
     {
         // iterate over all newly added partner chests
-        for (pair<int32_t, uint8_t> added : chests_added)
+        for (auto added : chests_added)
         {
             // get all (address, value) pairs for the current bitmask address
             auto it = area.second.equal_range(added.first);
@@ -155,7 +157,7 @@ void find_opened_chests(std::map<uint16_t, uint8_t>& chests_added)
                 auto val_it = std::find(new_vals.begin(), new_vals.end(), itr->second.first);
                 if (val_it != new_vals.end())
                 {
-                    auto id = MemoryLib::ReadShort(itr->second.second);
+                    auto id = MemoryLib::ReadShort(SYS3 + itr->second.second);
                     id_list.push_back(id);
                 }
             }
@@ -165,6 +167,7 @@ void find_opened_chests(std::map<uint16_t, uint8_t>& chests_added)
     get_stuff_from_ids(id_list);
 }
 
+//TODO: rewrite open_chests() to work for chests and flags
 // open all chests of partner players, so items cannot be received twice
 // overwrites bitmask values to open a range of chests
 void open_chests(std::map<uint16_t, uint8_t>& other_vals)
@@ -180,7 +183,7 @@ void open_chests(std::map<uint16_t, uint8_t>& other_vals)
         uint8_t added = after - before;
         // perform a bit-wise OR at every address for own and partner value
         // bit-wise OR ensures the 2 values per address get proerply "merged"
-        MemoryLib::WriteByte(SAVE + itr->first, after);
+        //MemoryLib::WriteByte(SAVE + itr->first, after);
 
         m_chests_added.emplace(itr->first, added);
     }
@@ -252,21 +255,6 @@ std::map<uint16_t, uint8_t> get_world_checks(uint8_t world)
     return checks;
 }
 
-
-//TODO: get popups based on added progress flags like in open_chests()
-//TODO: rewrite open_chests() to work for chests and flags
-void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
-{
-    //auto itr = other_vals.lower_bound(0x1C00);
-    //auto upper_limit = other_vals.upper_bound(0x1EFF);
-
-    //for (; itr != upper_limit; itr++)
-    //{
-    //    auto val = MemoryLib::ReadByte(SAVE + itr->first);
-    //    MemoryLib::WriteByte(itr->first, val | itr->second);
-    //}
-}
-
 void grant_bonus_levels(std::map<uint16_t, uint8_t>& other_vals)
 {
     auto ov_itr = other_vals.lower_bound(0x3700);
@@ -299,23 +287,64 @@ void grant_bonus_levels(std::map<uint16_t, uint8_t>& other_vals)
     }
 }
 
-void grant_popups(std::map<uint16_t, uint8_t>& other_vals)
+void grant_popups(std::map<uint16_t, uint8_t>& progress_added)
 {
-    auto itr = other_vals.lower_bound(0x1C00);
+    std::vector<uint16_t> id_list;
+    for (auto added : progress_added) {
+        std::cout << std::hex << added.first << "\t"; Util::print_byte(added.second);
+    }
+    // iterate over all areas and their chests
+    for (auto area : popups)
+    {
+        // iterate over all newly added partner chests
+        for (auto added : progress_added)
+        {
+            // get all (address, value) pairs for the current bitmask address
+            auto it = area.second.equal_range(added.first);
+            for (auto itr = it.first; itr != it.second; ++itr)
+            {
+                // split the value (byte) of the added chests into its bits to check against the bitmask lu-table
+                vector<uint8_t> new_vals = mask_to_values(added.second);
+
+                // split-byte-value matches one of the bitmasks. this chest has been opened.
+                auto val_it = std::find(new_vals.begin(), new_vals.end(), itr->second.first);
+                if (val_it != new_vals.end())
+                {
+                    auto id = MemoryLib::ReadShort(itr->second.second);
+                    id_list.push_back(id);
+                }
+            }
+        }
+    }
+    get_stuff_from_ids(id_list);
+}
+
+void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
+{
+    auto itr = other_vals.lower_bound(0x1D00);
     auto upper_limit = other_vals.upper_bound(0x1EFF);
+    map<uint16_t, uint8_t> progress_added;
 
     for (; itr != upper_limit; itr++)
     {
-        auto val = MemoryLib::ReadByte(SAVE + itr->first);
-        MemoryLib::WriteByte(itr->first, val | itr->second);
+        uint8_t before = MemoryLib::ReadByte(SAVE + itr->first);
+        uint8_t after = before | itr->second;
+        uint8_t added = after - before;
+        // perform a bit-wise OR at every address for own and partner value
+        // bit-wise OR ensures the 2 values per address get proerply "merged"
+        MemoryLib::WriteByte(SAVE + itr->first, after);
+        if (added != 0) {
+            progress_added.emplace(itr->first, added);
+        }
     }
+    grant_popups(progress_added);
 }
 
 void redeem_checks(std::map<uint16_t, uint8_t>& other_vals)
 {
-    open_chests(other_vals);
-    grant_progress(other_vals);
-    grant_bonus_levels(other_vals);
+    //open_chests(other_vals);            // includes granting checks from chests
+    grant_progress(other_vals);         // includes grant_popup()
+    //grant_bonus_levels(other_vals);
 }
 
 void world_changed()
@@ -328,10 +357,10 @@ void world_changed()
     // GoA entered
     if (new_world == goa_world_mod)
     {
-        std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
-        std::cout << "World code: "; Util::print_byte(current_world);
-        auto own_checks = get_world_checks(current_world);
-        std::cout << "got the following checks:" << std::endl;
+        //std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
+        //std::cout << "World code: "; Util::print_byte(current_world);
+        //auto own_checks = get_world_checks(current_world);
+        //std::cout << "got the following checks:" << std::endl;
         //for (auto fak : own_checks)
         //{
         //    std::cout << std::hex << fak.first << ", "; Util::print_byte(fak.second);
@@ -341,6 +370,8 @@ void world_changed()
         //yourmom.join();
         //auto checks = Http_Client::request_checks();
         //open_chests(checks);
+        auto m = Util::string_to_map(example_response);
+        redeem_checks(m);
     }
     current_world = new_world;
 }
@@ -348,9 +379,9 @@ void world_changed()
 int setup()
 {
     string _exec = "KINGDOM HEARTS II FINAL MIX.exe";
-    //PIdentifier = MemoryLib::FindProcessId(wstring(_exec.begin(), _exec.end()));
-    std::cout << "Enter KH2 PID: ";
-    std::cin >> PIdentifier;
+    PIdentifier = MemoryLib::FindProcessId(wstring(_exec.begin(), _exec.end()));
+    //std::cout << "Enter KH2 PID: ";
+    //std::cin >> PIdentifier;
     PHandle = OpenProcess(PROCESS_ALL_ACCESS, false, PIdentifier);
     BaseAddress = (uint64_t)MemoryLib::FindBaseAddr(PHandle, _exec);
     MemoryLib::SetBaseAddr(BaseAddress);
@@ -370,6 +401,7 @@ void loop()
         world_changed();
 
         if (GetAsyncKeyState(VK_SPACE) & 0x8000) flag = false;
+        
         std::this_thread::sleep_for(std::chrono::milliseconds(_refresh));
     }
 }
@@ -400,13 +432,13 @@ int main()
 {
     setup();
     //std::thread server_thread(Server::start, 8050);
-    std::map<uint32_t, uint8_t> map_chests;
-    map_chests.emplace(2543, 0xfa);
-    map_chests.emplace(5423423, 0x15);
-    map_chests.emplace(232111, 0x10);
+    //std::map<uint32_t, uint8_t> map_chests;
+    //map_chests.emplace(2543, 0xfa);
+    //map_chests.emplace(5423423, 0x15);
+    //map_chests.emplace(232111, 0x10);
     //auto str = Util::map_to_string(map_chests);
     //auto m = Util::string_to_map(str);
-    Http_Client::init("127.0.0.1:8050");
+    //Http_Client::init("127.0.0.1:8050");
     current_world = MemoryLib::ReadByte(WORLD_MOD);
     loop();
 }

@@ -79,7 +79,6 @@ void add_item_to_inventory(uint16_t addr, uint8_t val)
         if (curr_val < 255)
         {
             MemoryLib::WriteByte(SAVE + addr, curr_val + 1);
-
         }
     }
     // => bitmask address
@@ -100,6 +99,39 @@ void add_ability(uint16_t id)
             MemoryLib::WriteShort(ability_slot + i, id);
             break;
         }
+    }
+}
+
+void add_magic(uint16_t id)
+{
+    switch (id)
+    {
+        case 0x0015:    // Fire
+            MemoryLib::WriteByte(SAVE + 0x3594,
+                std::max(MemoryLib::ReadByte(SAVE + 0x3594) + 1, 3));
+            break;
+        case 0x0016:    // Blizzard
+            MemoryLib::WriteByte(SAVE + 0x3595,
+                std::max(MemoryLib::ReadByte(SAVE + 0x3595) + 1, 3));
+            break;
+        case 0x0017:    // Thunder
+            MemoryLib::WriteByte(SAVE + 0x3596,
+                std::max(MemoryLib::ReadByte(SAVE + 0x3596) + 1, 3));
+            break;
+        case 0x0018:    // Cure
+            MemoryLib::WriteByte(SAVE + 0x3597,
+                std::max(MemoryLib::ReadByte(SAVE + 0x3597) + 1, 3));
+            break;
+        case 0x0057:    // Magnet
+            MemoryLib::WriteByte(SAVE + 0x35CF,
+                std::max(MemoryLib::ReadByte(SAVE + 0x35CF) + 1, 3));
+            break;
+        case 0x0058:    // Reflect
+            MemoryLib::WriteByte(SAVE + 0x35D0,
+                std::max(MemoryLib::ReadByte(SAVE + 0x35D0) + 1, 3));
+            break;
+        default:
+            std::cout << "Nothing matching ID " << std::hex << id << " found." << std::endl;
     }
 }
 
@@ -130,7 +162,8 @@ void get_stuff_from_ids(vector<uint16_t>& id_list)
             add_ability(id);
             continue;
         }
-        std::cout << "Nothing matching ID " << std::hex << id << " found." << std::endl;
+
+        add_magic(id);
     }
 }
 
@@ -363,9 +396,9 @@ void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
 
 void redeem_checks(std::map<uint16_t, uint8_t>& other_vals)
 {
-    //open_chests(other_vals);            // includes granting checks from chests
+    open_chests(other_vals);            // includes granting checks from chests
     grant_progress(other_vals);         // includes grant_popup()
-    //grant_bonus_levels(other_vals);
+    grant_bonus_levels(other_vals);
 }
 
 void world_changed()

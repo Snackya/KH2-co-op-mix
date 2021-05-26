@@ -41,5 +41,6 @@ void Http_Client::init(std::string server_addr)
 	auto res = cli->Get("/register");
 	if (!res) return;
 	std::string id = res->body.c_str();
+	std::cout << "received id " << id << "from server" << std::endl;
 	client_id = { {"ID", id} };
 }

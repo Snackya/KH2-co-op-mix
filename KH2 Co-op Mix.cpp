@@ -19,10 +19,13 @@
 #include "Items.h"
 #include "Bonus_Levels.h"
 
-//Addresses
-static uint32_t WORLD_MOD = 0x0714DB8;
+//Addresses (default to PC)
+static uint32_t WORLD_MOD = 0x0714DB8;  // PC
 static uint32_t SAVE = 0x09A7070;   // PC
 static uint32_t SYS3 = 0x2A59DB0;   // PC
+
+std::string MODE = "PS2";
+
 static uint8_t goa_world_mod = 0x04;
 
 std::string example_response = "7568,15|7569,219|7570,173|7571,75|7572,127|7573,16|7574,255|7575,255|7576,255|7577,70|7578,160|7579,0|9133,120|14084,252|14085,151|14086,255|14087,247|14088,239|14089,237|14090,70|14091,255|14092,254|14093,2";
@@ -228,6 +231,7 @@ std::map<uint16_t, uint8_t> get_world_checks(uint8_t world)
     // get the string representation of the world
     string prev_world_str = worlds_byte_string.at(world);
     std::map<uint16_t, uint8_t> checks;
+    if (prev_world_str.empty()) return checks;
 
     // add all chests that have been opened
     std::map<uint16_t, uint8_t> checks_chests;
@@ -420,27 +424,79 @@ void world_changed()
         //    std::cout << std::hex << fak.first << ", "; Util::print_byte(fak.second);
         //}
         //std::cout << std::endl;
-        //std::thread yourmom(Http_Client::send_checks, std::ref(own_checks));
-        //yourmom.join();
-        //auto checks = Http_Client::request_checks();
-        //open_chests(checks);
-        auto m = Util::string_to_map(example_response);
-        redeem_checks(m);
+        auto own_checks = get_world_checks(current_world);
+        if (!own_checks.empty())
+        {
+            std::thread t(Http_Client::send_checks, std::ref(own_checks));
+            t.join();
+        }
+
+        auto checks = Http_Client::request_checks();
+        redeem_checks(checks);
+
     }
     current_world = new_world;
 }
 
+void set_pcsx2_baseaddress()
+{
+    // over the horizon (valor form ability) address and expected value
+    uint32_t oth_addr = 0x032EE36;
+    uint16_t oth_val = 0x80F6l;
+    uint16_t val;
+     
+    // check multiple offsets until the read value matches the expected one.
+    for (int i = 1; i < 8; ++i)
+    {
+        BaseAddress = 0x10000000 * i;
+        vector<uint8_t> _buffer(2);
+        ReadProcessMemory(PHandle, (void*)(BaseAddress + oth_addr), _buffer.data(), 2, 0);
+        val = (_buffer[1] << 8) | _buffer[0];
+        if (val == oth_val)
+        {
+            break;
+        }
+    }
+}
+
+void set_anchors()
+{
+    if (MODE == "PC")
+    {
+        WORLD_MOD = 0x0714DB8;
+        SAVE = 0x09A7070;
+        SYS3 = 0x2A59DB0;
+    }
+    else if (MODE == "PS2")
+    {
+        WORLD_MOD = 0x032BAE0;
+        SAVE = 0x032BB30;
+        SYS3 = 0x1CCB300;
+    }
+}
+
 int setup()
 {
-    string _exec = "KINGDOM HEARTS II FINAL MIX.exe";
-    PIdentifier = MemoryLib::FindProcessId(wstring(_exec.begin(), _exec.end()));
-    //std::cout << "Enter KH2 PID: ";
-    //std::cin >> PIdentifier;
-    PHandle = OpenProcess(PROCESS_ALL_ACCESS, false, PIdentifier);
-    BaseAddress = (uint64_t)MemoryLib::FindBaseAddr(PHandle, _exec);
+    if (MODE == "PC")
+    {
+        string _exec = "KINGDOM HEARTS II FINAL MIX.exe";
+        PIdentifier = MemoryLib::FindProcessId(wstring(_exec.begin(), _exec.end()));
+        PHandle = OpenProcess(PROCESS_ALL_ACCESS, false, PIdentifier);
+        BaseAddress = (uint64_t)MemoryLib::FindBaseAddr(PHandle, _exec);
+    }
+    else if (MODE == "PS2")
+    {
+        string _exec = "pcsx2.exe";
+        PIdentifier = MemoryLib::FindProcessId(wstring(_exec.begin(), _exec.end()));
+        PHandle = OpenProcess(PROCESS_ALL_ACCESS, false, PIdentifier);
+        set_pcsx2_baseaddress();
+    }
+
     MemoryLib::SetBaseAddr(BaseAddress);
     MemoryLib::PHandle = PHandle;
     MemoryLib::PIdentifier = PIdentifier;
+
+    set_anchors();
 
     return 1;
 }
@@ -484,15 +540,11 @@ void foo(int bar)
 
 int main()
 {
+    //Server::start(7356);
+    MODE = "PS2";
     setup();
-    //std::thread server_thread(Server::start, 8050);
-    //std::map<uint32_t, uint8_t> map_chests;
-    //map_chests.emplace(2543, 0xfa);
-    //map_chests.emplace(5423423, 0x15);
-    //map_chests.emplace(232111, 0x10);
-    //auto str = Util::map_to_string(map_chests);
-    //auto m = Util::string_to_map(str);
-    //Http_Client::init("127.0.0.1:8050");
+    //Http_Client::init("127.0.0.1:7356");
     current_world = MemoryLib::ReadByte(WORLD_MOD);
+    std::cout << std::hex << current_world << std::endl;
     loop();
 }

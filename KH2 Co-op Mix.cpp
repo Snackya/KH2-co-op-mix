@@ -328,9 +328,7 @@ void grant_bonus_levels(std::map<uint16_t, uint8_t>& other_vals)
 void grant_popups(std::map<uint16_t, uint8_t>& progress_added)
 {
     std::vector<uint16_t> id_list;
-    for (auto added : progress_added) {
-        std::cout << std::hex << added.first << "\t"; Util::print_byte(added.second);
-    }
+
     // iterate over all areas and their chests
     for (auto area : popups)
     {
@@ -348,7 +346,7 @@ void grant_popups(std::map<uint16_t, uint8_t>& progress_added)
                 auto val_it = std::find(new_vals.begin(), new_vals.end(), itr->second.first);
                 if (val_it != new_vals.end())
                 {
-                    auto id = MemoryLib::ReadShort(itr->second.second);
+                    auto id = MemoryLib::ReadShort(SYS3 + itr->second.second);
                     id_list.push_back(id);
                 }
             }

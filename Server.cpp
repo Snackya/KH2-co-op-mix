@@ -44,7 +44,7 @@ void Server::on_data(const httplib::Request& req, httplib::Response& res, const 
         std::map<uint16_t, uint8_t> checks = Util::string_to_map(body.c_str());
         for (auto check : checks)
         {
-            std::cout << check.first << " " << check.second << std::endl;
+            std::cout << std::hex << check.first << " "; Util::print_byte(check.second);
         }
         std::cout << std::endl;
         // merge the new checks from the source client with the outstanding checks for each client
@@ -63,7 +63,7 @@ void Server::on_request(const httplib::Request& req, httplib::Response& res)
         std::cout << "data: \n";
         for (auto foo : *(c.outstanding_checks))
         {
-            std::cout << foo.first << " " << foo.second << "\n";
+            std::cout << "0x" << std::hex << foo.first << " "; Util::print_byte(foo.second);
         }
         std::cout << std::endl;
     }
@@ -76,13 +76,8 @@ void Server::on_request(const httplib::Request& req, httplib::Response& res)
         res.set_content("client not registered yet", "text/plain");
         return;
     }
-    std::cout << "Outstanding checks are:" << std::endl;
-    for (auto check : *(client.outstanding_checks))
-    {
-        std::cout << check.first << " " << check.second << std::endl;
-    }
+
     std::string s_response = Util::map_to_string(*(client.outstanding_checks));
-    std::cout << "Responding with:\n" << s_response.c_str() << std::endl;
     res.set_content(s_response.c_str(), "text/plain");
 }
 

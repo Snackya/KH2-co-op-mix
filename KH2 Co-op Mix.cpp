@@ -323,7 +323,6 @@ void grant_drive_level_checks(std::map<uint16_t, uint8_t>& other_vals)
         // new drive level is bigger than what is stored
         if (level > workaround_drivelvl_storage[addr])
         {
-        std::cout << "foo"<< std::endl;
             workaround_drivelvl_storage[addr] = level;
 
             // go through all new higher level checks

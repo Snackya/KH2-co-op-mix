@@ -415,22 +415,13 @@ void world_changed()
     // GoA entered
     if (new_world == goa_world_mod)
     {
-        //std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
-        //std::cout << "World code: "; Util::print_byte(current_world);
-        //auto own_checks = get_world_checks(current_world);
-        //std::cout << "got the following checks:" << std::endl;
-        //for (auto fak : own_checks)
-        //{
-        //    std::cout << std::hex << fak.first << ", "; Util::print_byte(fak.second);
-        //}
-        //std::cout << std::endl;
+        std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
+
         auto own_checks = get_world_checks(current_world);
         if (!own_checks.empty())
         {
-            std::thread t(Http_Client::send_checks, std::ref(own_checks));
-            t.join();
+            Http_Client::send_checks(own_checks);
         }
-
         auto checks = Http_Client::request_checks();
         redeem_checks(checks);
 
@@ -454,6 +445,7 @@ void set_pcsx2_baseaddress()
         val = (_buffer[1] << 8) | _buffer[0];
         if (val == oth_val)
         {
+            std::cout << "baseaddress is: " << BaseAddress << std::endl;
             break;
         }
     }
@@ -510,7 +502,10 @@ void loop()
     {
         world_changed();
 
-        if (GetAsyncKeyState(VK_SPACE) & 0x8000) flag = false;
+        //if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+        //{
+
+        //}
         
         std::this_thread::sleep_for(std::chrono::milliseconds(_refresh));
     }
@@ -541,10 +536,10 @@ void foo(int bar)
 int main()
 {
     //Server::start(7356);
-    MODE = "PS2";
+    std::cout << "Mode?: ";
+    std::cin >> MODE;
     setup();
-    //Http_Client::init("127.0.0.1:7356");
+    Http_Client::init("127.0.0.1:7356");
     current_world = MemoryLib::ReadByte(WORLD_MOD);
-    std::cout << std::hex << current_world << std::endl;
     loop();
 }

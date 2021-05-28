@@ -18,11 +18,13 @@
 #include "Progress_flags.h"
 #include "Items.h"
 #include "Bonus_Levels.h"
+#include "Drives.h"
 
 //Addresses (default to PC)
 static uint32_t WORLD_MOD = 0x0714DB8;  // PC
-static uint32_t SAVE = 0x09A7070;   // PC
-static uint32_t SYS3 = 0x2A59DB0;   // PC
+static uint32_t SAVE = 0x09A7070;       // PC
+static uint32_t SYS3 = 0x2A59DB0;       // PC
+static uint32_t BTL0 = 0x2A74840;       // PC
 
 std::string MODE = "PS2";
 
@@ -35,6 +37,7 @@ static DWORD PIdentifier = NULL;
 static HANDLE PHandle = NULL;
 uint8_t current_world;
 std::map<uint16_t, uint8_t> workaround_progress_storage = {};
+std::map<uint16_t, uint8_t> workaround_drivelvl_storage = {};
 
 std::map<uint8_t, string> worlds_byte_string =
 {
@@ -279,7 +282,7 @@ std::map<uint16_t, uint8_t> get_world_checks(uint8_t world)
     }
     checks.merge(checks_popups);
 
-    //add the progress flags for this world
+    // add the progress flags for this world
     std::map<uint16_t, uint8_t> checks_progress_flags;
     auto world_progress = progress_flags[prev_world_str];
     for (auto flag : world_progress)
@@ -288,7 +291,52 @@ std::map<uint16_t, uint8_t> get_world_checks(uint8_t world)
     }
     checks.merge(checks_progress_flags);
 
+    // add drive form levels
+    std::map<uint16_t, uint8_t> d_lvls;
+    for (auto form : drive_levels)
+    {
+        d_lvls.emplace(form.first, MemoryLib::ReadByte(SAVE + form.first + 2));
+    }
+    checks.merge(d_lvls);
+
     return checks;
+}
+
+void grant_drive_level_checks(std::map<uint16_t, uint8_t>& other_vals)
+{
+    auto ov_itr = other_vals.lower_bound(0x32F4);
+    auto upper_limit = other_vals.upper_bound(0x33D4);
+    std::vector<uint16_t> id_list;
+
+    for (; ov_itr != upper_limit; ++ov_itr)
+    {
+        uint16_t addr = ov_itr->first;
+        uint8_t level = ov_itr->second;
+        uint8_t before = MemoryLib::ReadByte(SAVE + addr + 2);
+        // drive level higher than partner's. nothing to do
+        if (before >= level) continue;
+
+        // increase drive form level
+        //MemoryLib::WriteByte(SAVE + ov_itr->first + 2, ov_itr->second);
+
+        // workaround to make granting drive levels optional
+        // new drive level is bigger than what is stored
+        if (level > workaround_drivelvl_storage[addr])
+        {
+        std::cout << "foo"<< std::endl;
+            workaround_drivelvl_storage[addr] = level;
+
+            // go through all new higher level checks
+            std::string form_name = drive_levels[addr];
+            for (uint8_t i = before + 1; i <= level; ++i)
+            {
+                auto check_addr = drive_checks[form_name][i];
+                auto id = MemoryLib::ReadShort(BTL0 + check_addr);
+                id_list.push_back(id);
+            }
+        }
+    }
+    get_stuff_from_ids(id_list);
 }
 
 void grant_bonus_levels(std::map<uint16_t, uint8_t>& other_vals)
@@ -401,6 +449,7 @@ void redeem_checks(std::map<uint16_t, uint8_t>& other_vals)
     open_chests(other_vals);            // includes granting checks from chests
     grant_progress(other_vals);         // includes grant_popup()
     grant_bonus_levels(other_vals);
+    grant_drive_level_checks(other_vals);
 }
 
 void world_changed()
@@ -456,12 +505,14 @@ void set_anchors()
         WORLD_MOD = 0x0714DB8;
         SAVE = 0x09A7070;
         SYS3 = 0x2A59DB0;
+        BTL0 = 0x2A74840;
     }
     else if (MODE == "PS2")
     {
         WORLD_MOD = 0x032BAE0;
         SAVE = 0x032BB30;
         SYS3 = 0x1CCB300;
+        BTL0 = 0x1CE5D80;
     }
 }
 

@@ -163,6 +163,7 @@
     <ClInclude Include="Abilities.h" />
     <ClInclude Include="Bonus_Levels.h" />
     <ClInclude Include="Chests.h" />
+    <ClInclude Include="Drives.h" />
     <ClInclude Include="httplib.h" />
     <ClInclude Include="Http_Client.h" />
     <ClInclude Include="Items.h" />

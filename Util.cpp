@@ -48,5 +48,5 @@ std::map<uint16_t, uint8_t> Util::string_to_map(std::string s)
 
 void Util::print_byte(uint8_t byte)
 {
-    std::cout << std::hex << (0xff & (unsigned int)byte) << std::endl;
+    std::cout << "0x" << std::hex << (0xff & (unsigned int)byte) << std::endl;
 }

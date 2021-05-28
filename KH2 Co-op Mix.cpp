@@ -75,7 +75,7 @@ vector<uint8_t> mask_to_values(uint8_t delta_val)
 }
 
 // addr is either the inventory address or the bitmask address
-void add_item_to_inventory(uint16_t addr, uint8_t val)
+void add_item(uint16_t addr, uint8_t val)
 {
     // => inventory address
     if (val == 0)
@@ -151,14 +151,14 @@ void get_stuff_from_ids(vector<uint16_t>& id_list)
         if(it != items_id_invAddr.end())
         {
             std::cout << "add inv item: " << std::hex << id << std::endl;
-            add_item_to_inventory(it->second, 0);
+            add_item(it->second, 0);
             continue;
         }
         auto it2 = items_invBitmask.find(id);
         if (it2 != items_invBitmask.end())
         {
             std::cout << "add bitmask item: " << std::hex << id << std::endl;
-            add_item_to_inventory(it2->second.first, it2->second.second);
+            add_item(it2->second.first, it2->second.second);
             continue;
         }
         auto it3 = std::find(abilities.begin(), abilities.end(), id);

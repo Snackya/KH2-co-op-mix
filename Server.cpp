@@ -1,6 +1,10 @@
 #include "Server.h"
 #include "Util.h"
 
+// TODO: general storage that gets sent out automatically when a new client connects
+//       ensures a client can join midway without any problems.
+//       everything except for drive levels and levels should be OR'able
+
 void Server::start(int port)
 {
 	httplib::Server svr;

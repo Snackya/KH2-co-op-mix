@@ -19,6 +19,7 @@
 #include "Items.h"
 #include "Bonus_Levels.h"
 #include "Drives.h"
+#include "Levels.h"
 
 //Addresses (default to PC)
 static uint32_t WORLD_MOD = 0x0714DB8;  // PC
@@ -26,21 +27,25 @@ static uint32_t SAVE = 0x09A7070;       // PC
 static uint32_t SYS3 = 0x2A59DB0;       // PC
 static uint32_t BTL0 = 0x2A74840;       // PC
 
-std::string MODE = "PS2";
+static std::string MODE = "PS2";
 
+static uint8_t max_check_level = 50;
 static uint8_t goa_world_mod = 0x04;
+
+static uint8_t current_world;
+static uint8_t weapon_choice = 0x08;
 
 std::string example_response = "7568,15|7569,219|7570,173|7571,75|7572,127|7573,16|7574,255|7575,255|7576,255|7577,70|7578,160|7579,0|9133,120|14084,252|14085,151|14086,255|14087,247|14088,239|14089,237|14090,70|14091,255|14092,254|14093,2";
 
 static uint64_t BaseAddress;
 static DWORD PIdentifier = NULL;
 static HANDLE PHandle = NULL;
-uint8_t current_world;
 
 // TODO: replace these with a simple vector of all accessed check addresses
 // if an address has already been accessed, its value must not be uses again.
 std::map<uint16_t, uint8_t> workaround_progress_storage = {};
 std::map<uint16_t, uint8_t> workaround_drivelvl_storage = {};
+uint8_t highest_level_granted = 0;
 
 std::map<uint8_t, string> worlds_byte_string =
 {
@@ -302,6 +307,10 @@ std::map<uint16_t, uint8_t> get_world_checks(uint8_t world)
     }
     checks.merge(d_lvls);
 
+    // add current Sora level
+    uint8_t lvl = MemoryLib::ReadByte(SAVE + cur_level_addr);
+    checks.emplace(0x000F, lvl);
+
     return checks;
 }
 
@@ -371,6 +380,29 @@ void grant_bonus_levels(std::map<uint16_t, uint8_t>& other_vals)
                 if(item2 != 0)  id_list.push_back(item2);
             }
         }
+    }
+    get_stuff_from_ids(id_list);
+}
+
+void grant_level_checks(std::map<uint16_t, uint8_t>& other_vals)
+{
+    std::vector<uint16_t> id_list;
+
+    uint8_t other_level = other_vals[0x000F];   // dummy key for level value
+    uint8_t cur_level = MemoryLib::ReadByte(SAVE + cur_level_addr);
+    if (cur_level >= other_level) return;
+    if (highest_level_granted >= other_level) return;
+
+    uint8_t start = std::max(cur_level, highest_level_granted);
+    uint32_t read_addr;
+
+    for (uint8_t i = start + 1; i <= other_level; ++i)
+    {
+        uint32_t addr = MemoryLib::ReadShort(
+            BTL0 + levels_start + i + weapon_choice
+        );
+        uint16_t id = MemoryLib::ReadShort(addr);
+        id_list.push_back(id);
     }
     get_stuff_from_ids(id_list);
 }

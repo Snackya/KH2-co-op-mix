@@ -36,6 +36,9 @@ static uint64_t BaseAddress;
 static DWORD PIdentifier = NULL;
 static HANDLE PHandle = NULL;
 uint8_t current_world;
+
+// TODO: replace these with a simple vector of all accessed check addresses
+// if an address has already been accessed, its value must not be uses again.
 std::map<uint16_t, uint8_t> workaround_progress_storage = {};
 std::map<uint16_t, uint8_t> workaround_drivelvl_storage = {};
 
@@ -479,7 +482,7 @@ void set_pcsx2_baseaddress()
 {
     // over the horizon (valor form ability) address and expected value
     uint32_t oth_addr = 0x032EE36;
-    uint16_t oth_val = 0x80F6l;
+    uint16_t oth_val = 0x80F6;
     uint16_t val;
      
     // check multiple offsets until the read value matches the expected one.

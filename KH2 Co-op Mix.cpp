@@ -28,6 +28,8 @@ static uint32_t SYS3 = 0x2A59DB0;       // PC
 static uint32_t BTL0 = 0x2A74840;       // PC
 
 static std::string MODE = "PS2";
+static bool SHARE_LEVELS = true;
+static bool SHARE_DRIVE_LEVELS = true;
 
 static uint8_t max_check_level = 50;
 static uint8_t goa_world_mod = 0x04;
@@ -122,27 +124,27 @@ void add_magic(uint16_t id)
     {
         case 0x0015:    // Fire
             MemoryLib::WriteByte(SAVE + 0x3594,
-                std::max(MemoryLib::ReadByte(SAVE + 0x3594) + 1, 3));
+                std::min(MemoryLib::ReadByte(SAVE + 0x3594) + 1, 3));
             break;
         case 0x0016:    // Blizzard
             MemoryLib::WriteByte(SAVE + 0x3595,
-                std::max(MemoryLib::ReadByte(SAVE + 0x3595) + 1, 3));
+                std::min(MemoryLib::ReadByte(SAVE + 0x3595) + 1, 3));
             break;
         case 0x0017:    // Thunder
             MemoryLib::WriteByte(SAVE + 0x3596,
-                std::max(MemoryLib::ReadByte(SAVE + 0x3596) + 1, 3));
+                std::min(MemoryLib::ReadByte(SAVE + 0x3596) + 1, 3));
             break;
         case 0x0018:    // Cure
             MemoryLib::WriteByte(SAVE + 0x3597,
-                std::max(MemoryLib::ReadByte(SAVE + 0x3597) + 1, 3));
+                std::min(MemoryLib::ReadByte(SAVE + 0x3597) + 1, 3));
             break;
         case 0x0057:    // Magnet
             MemoryLib::WriteByte(SAVE + 0x35CF,
-                std::max(MemoryLib::ReadByte(SAVE + 0x35CF) + 1, 3));
+                std::min(MemoryLib::ReadByte(SAVE + 0x35CF) + 1, 3));
             break;
         case 0x0058:    // Reflect
             MemoryLib::WriteByte(SAVE + 0x35D0,
-                std::max(MemoryLib::ReadByte(SAVE + 0x35D0) + 1, 3));
+                std::min(MemoryLib::ReadByte(SAVE + 0x35D0) + 1, 3));
             break;
         default:
             std::cout << "Nothing matching ID " << std::hex << id << " found." << std::endl;
@@ -329,7 +331,10 @@ void grant_drive_level_checks(std::map<uint16_t, uint8_t>& other_vals)
         if (before >= level) continue;
 
         // increase drive form level
-        //MemoryLib::WriteByte(SAVE + ov_itr->first + 2, ov_itr->second);
+        if (SHARE_DRIVE_LEVELS)
+        {
+            MemoryLib::WriteByte(SAVE + ov_itr->first + 2, ov_itr->second);
+        }
 
         // workaround to make granting drive levels optional
         // new drive level is bigger than what is stored
@@ -403,6 +408,10 @@ void grant_level_checks(std::map<uint16_t, uint8_t>& other_vals)
         );
         uint16_t id = MemoryLib::ReadShort(addr);
         id_list.push_back(id);
+    }
+    if (SHARE_LEVELS)
+    {
+        MemoryLib::WriteByte(SAVE + cur_level_addr, other_level);
     }
     get_stuff_from_ids(id_list);
 }
@@ -484,6 +493,7 @@ void redeem_checks(std::map<uint16_t, uint8_t>& other_vals)
     grant_progress(other_vals);         // includes grant_popup()
     grant_bonus_levels(other_vals);
     grant_drive_level_checks(other_vals);
+    grant_level_checks(other_vals);
 }
 
 void world_changed()
@@ -619,8 +629,9 @@ void foo(int bar)
 int main()
 {
     //Server::start(7356);
-    std::cout << "Mode?: ";
-    std::cin >> MODE;
+    //std::cout << "Mode?: ";
+    //std::cin >> MODE;
+    MODE = "PC";
     setup();
     Http_Client::init("127.0.0.1:7356");
     current_world = MemoryLib::ReadByte(WORLD_MOD);

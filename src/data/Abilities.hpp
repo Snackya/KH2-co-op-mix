@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 
 static inline std::vector<uint16_t> abilities =

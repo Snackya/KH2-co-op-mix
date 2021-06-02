@@ -20,8 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\httplib.h" />
+    <ClInclude Include="src\checks_other.hpp" />
+    <ClInclude Include="src\checks_own.hpp" />
     <ClInclude Include="src\client\Http_Client.hpp" />
     <ClInclude Include="src\data\Abilities.hpp" />
+    <ClInclude Include="src\data\Anchors.hpp" />
     <ClInclude Include="src\data\Bonus_Levels.hpp" />
     <ClInclude Include="src\data\Chests.hpp" />
     <ClInclude Include="src\data\Drives.hpp" />
@@ -29,12 +32,16 @@
     <ClInclude Include="src\data\Levels.hpp" />
     <ClInclude Include="src\data\Popups.hpp" />
     <ClInclude Include="src\data\Progress_flags.hpp" />
+    <ClInclude Include="src\inventory.hpp" />
     <ClInclude Include="src\memory\MemoryLib.hpp" />
     <ClInclude Include="src\server\Server.hpp" />
     <ClInclude Include="src\util\Utils.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\checks_other.cpp" />
+    <ClCompile Include="src\checks_own.cpp" />
     <ClCompile Include="src\client\Http_Client.cpp" />
+    <ClCompile Include="src\inventory.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\server\Server.cpp" />
     <ClCompile Include="src\util\Utils.cpp" />

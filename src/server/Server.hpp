@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include <httplib.h>
 #include "../util/Utils.hpp"

@@ -1,5 +1,7 @@
+#pragma once
 #include <httplib.h>
 #include <map>
+#include "../util/Utils.hpp"
 
 class Http_Client
 {

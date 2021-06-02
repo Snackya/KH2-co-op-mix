@@ -1,5 +1,4 @@
 #include "Http_Client.hpp"
-#include "../util/Utils.hpp"
 
 void Http_Client::send_checks(std::map<uint16_t, uint8_t>& checks)
 {

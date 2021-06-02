@@ -1,9 +1,10 @@
+#pragma once
 #include <string>
 #include <map>
 #include <vector>
 
 // { form, { level, check address } }
-std::map<std::string, std::map<uint8_t, uint32_t>> drive_checks = 
+static std::map<std::string, std::map<uint8_t, uint32_t>> drive_checks = 
 {
     {
         "Valor",
@@ -74,7 +75,7 @@ std::map<std::string, std::map<uint8_t, uint32_t>> drive_checks =
 };
 
 // Save + addr anchor, have to add +2 offset for form level byte
-std::map<uint16_t, std::string> drive_levels =
+static std::map<uint16_t, std::string> drive_levels =
 {
     {0x32F4, "Valor"},
     {0x332C, "Wisdom"},

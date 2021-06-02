@@ -1,6 +1,8 @@
 #ifndef MEMORYLIB
 #define MEMORYLIB
 
+#pragma once    // added by Snackya
+
 #include <windows.h>
 #include <iostream>
 #include <string>
@@ -10,6 +12,8 @@
 
 using namespace std;
 
+
+// from fork https://github.com/Snackya/LuaBackend
 class MemoryLib
 {
     private:
@@ -78,11 +82,6 @@ class MemoryLib
         return 0;
     }
 
-    static void SetBaseAddr(uint64_t InputAddress)
-    {
-        BaseAddress = InputAddress;
-    }
-
     static void ExecuteProcess(string InputName, uint64_t InputAddress, bool InputEndian)
     {
         ZeroMemory(&_sInfo, sizeof(_sInfo)); _sInfo.cb = sizeof(_sInfo);
@@ -93,6 +92,48 @@ class MemoryLib
         BaseAddress = InputAddress;
         _bigEndian = InputEndian;
     };
+
+    // added by Snackya. idea from Tommadness/TrevorLuckey
+    static void SetPCSX2BaseAddress()
+    {
+        // over the horizon (valor form ability) address and expected value
+        uint32_t oth_addr = 0x032EE36;
+        uint16_t oth_val = 0x80F6;
+        uint16_t val;
+
+        // check multiple offsets until the read value matches the expected one.
+        for (int i = 1; i < 8; ++i)
+        {
+            BaseAddress = 0x10000000 * i;
+            vector<uint8_t> _buffer(2);
+            ReadProcessMemory(PHandle, (void*)(BaseAddress + oth_addr), _buffer.data(), 2, 0);
+            val = (_buffer[1] << 8) | _buffer[0];
+            if (val == oth_val) break;
+        }
+    }
+
+    // added by Snackya
+    static bool AttachToGameVersion(string mode)
+    {
+        string _exec;
+        if (mode == "PC") _exec = "KINGDOM HEARTS II FINAL MIX.exe";
+        else if (mode == "PCSX2") _exec = "pcsx2.exe";
+
+        PIdentifier = FindProcessId(wstring(_exec.begin(), _exec.end()));
+        PHandle = OpenProcess(PROCESS_ALL_ACCESS, false, PIdentifier);
+
+        if (mode == "PC" && PHandle != NULL)
+        {
+            BaseAddress = (uint64_t)FindBaseAddr(PHandle, _exec);
+            return true;
+        }
+        else if (mode == "PCSX2" && PHandle != NULL)
+        {
+            SetPCSX2BaseAddress();
+            return true;
+        }
+        else return false;
+    }
 
     static bool LatchProcess(string InputName, uint64_t InputAddress, bool InputEndian)
     {
@@ -387,3 +428,27 @@ class MemoryLib
     }
 };
 #endif
+
+/*
+MIT License
+
+Copyright (c) 2021 TopazTK
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/

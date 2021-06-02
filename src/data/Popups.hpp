@@ -1,3 +1,4 @@
+#pragma once
 #include <map>
 
 // { World, {Flag address, {flag bitmask value, corresponding check address} } }

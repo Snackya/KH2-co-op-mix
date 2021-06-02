@@ -50,3 +50,17 @@ void Utils::print_byte(uint8_t byte)
 {
     std::cout << "0x" << std::hex << (0xff & (unsigned int)byte) << std::endl;
 }
+
+std::vector<uint8_t> Utils::mask_to_values(uint8_t delta_val)
+{
+    std::vector<uint8_t> changed_bitmask_vals;
+    for (int i = 0; i < 8; ++i)
+    {
+        if (delta_val >> i & 1)
+        {
+            changed_bitmask_vals.push_back(1 << i);
+        }
+    }
+    return changed_bitmask_vals;
+}
+

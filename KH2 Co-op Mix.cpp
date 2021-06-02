@@ -159,25 +159,21 @@ void get_stuff_from_ids(vector<uint16_t>& id_list)
 {
     for (uint16_t id : id_list)
     {
-        std::cout << std::hex << id << std::endl;
         auto it = items_id_invAddr.find(id);
         if(it != items_id_invAddr.end())
         {
-            std::cout << "add inv item: " << std::hex << id << std::endl;
             add_item(it->second, 0);
             continue;
         }
         auto it2 = items_invBitmask.find(id);
         if (it2 != items_invBitmask.end())
         {
-            std::cout << "add bitmask item: " << std::hex << id << std::endl;
             add_item(it2->second.first, it2->second.second);
             continue;
         }
         auto it3 = std::find(abilities.begin(), abilities.end(), id);
         if (it3 != abilities.end())
         {
-            std::cout << "add ability: " << std::hex << id << std::endl;
             add_ability(id);
             continue;
         }
@@ -425,10 +421,10 @@ void grant_popups(std::map<uint16_t, uint8_t>& progress_added)
 {
     std::vector<uint16_t> id_list;
 
-    // iterate over all areas and their chests
+    // iterate over all areas
     for (auto area : popups)
     {
-        // iterate over all newly added partner chests
+        // iterate over all new progress pairs
         for (auto added : progress_added)
         {
             // get all (address, value) pairs for the current bitmask address
@@ -453,9 +449,8 @@ void grant_popups(std::map<uint16_t, uint8_t>& progress_added)
 
 void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
 {
-    auto itr = other_vals.lower_bound(0x1D00);
+    auto itr = other_vals.lower_bound(0x1C00);
     auto upper_limit = other_vals.upper_bound(0x1EFF);
-    std::cout << "\n" << workaround_progress_storage.size() << "\n";
     map<uint16_t, uint8_t> progress_added;
     if(workaround_progress_storage.size() == 0)
     { 
@@ -464,8 +459,7 @@ void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
             uint8_t before = MemoryLib::ReadByte(SAVE + itr->first);
             uint8_t after = before | itr->second;
             uint8_t added = after - before;
-            // perform a bit-wise OR at every address for own and partner value
-            // bit-wise OR ensures the 2 values per address get proerply "merged"
+
             //MemoryLib::WriteByte(SAVE + itr->first, after);
             if (added != 0) {
                 progress_added.emplace(itr->first, added);
@@ -484,6 +478,7 @@ void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
             }
             uint8_t after = before | itr->second;
             uint8_t added = after - before;
+
             if (added != 0) {
                 progress_added.emplace(itr->first, added);
                 workaround_progress_storage[itr->first] = after;

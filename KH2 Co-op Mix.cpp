@@ -28,7 +28,7 @@ static uint32_t SYS3 = 0x2A59DB0;       // PC
 static uint32_t BTL0 = 0x2A74840;       // PC
 
 static uint8_t GOA_WORLD_ID = 0x04;
-static uint8_t GOA_ROOM_ID = 0x1A;
+static uint16_t GOA_WORLD_ROOM_ID = 0x1A04;
 static bool SHARE_LEVELS = true;
 static bool SHARE_DRIVE_LEVELS = true;
 
@@ -455,6 +455,7 @@ void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
 {
     auto itr = other_vals.lower_bound(0x1D00);
     auto upper_limit = other_vals.upper_bound(0x1EFF);
+    std::cout << "\n" << workaround_progress_storage.size() << "\n";
     map<uint16_t, uint8_t> progress_added;
     if(workaround_progress_storage.size() == 0)
     { 
@@ -516,19 +517,18 @@ void on_GoA_entered(uint8_t& world)
 
 void world_changed()
 {
-    uint8_t new_world = MemoryLib::ReadByte(WORLD);
+    uint16_t world_room = MemoryLib::ReadShort(WORLD);
+    uint8_t new_world = world_room & 0xff;
     if (new_world == 0x0F) return; //skip the world map.
-    if (new_world == current_world && new_world != 0x04) return;  // world hasn't changed and world isn't HB. skip
-    
-    uint8_t new_room = MemoryLib::ReadByte(WORLD + 1);
+    if (new_world == current_world && new_world != GOA_WORLD_ID) return;  // world hasn't changed and isn't GOA. skip
 
     // GoA entered
-    if (new_world == GOA_WORLD_ID && new_room == GOA_ROOM_ID && !inside_goa)
+    if (world_room == GOA_WORLD_ROOM_ID && !inside_goa)
     {
-        inside_goa = true;
         on_GoA_entered(current_world);
+        inside_goa = true;
     }
-    else if (new_world != GOA_WORLD_ID || new_room != GOA_ROOM_ID)
+    else if (world_room != GOA_WORLD_ROOM_ID)
     {
         inside_goa = false;
     }
@@ -645,11 +645,11 @@ void foo(int bar)
 int main()
 {
     //Server::start(7356);
-    std::cout << "Mode?: ";
-    std::cin >> MODE;
-    //MODE = "PC";
+    //std::cout << "Mode?: ";
+    //std::cin >> MODE;
+    MODE = "PC";
     setup();
-    //Http_Client::init("127.0.0.1:7356");
+    Http_Client::init("127.0.0.1:7356");
     current_world = MemoryLib::ReadByte(WORLD);
     loop();
 }

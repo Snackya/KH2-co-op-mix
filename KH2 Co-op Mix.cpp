@@ -22,10 +22,10 @@
 #include "Levels.h"
 
 //Addresses (default to PC)
-static uint32_t WORLD = 0x0714DB8;  // PC
-static uint32_t SAVE = 0x09A7070;       // PC
-static uint32_t SYS3 = 0x2A59DB0;       // PC
-static uint32_t BTL0 = 0x2A74840;       // PC
+static uint32_t WORLD = 0x0714DB8;
+static uint32_t SAVE = 0x09A7070;
+static uint32_t SYS3 = 0x2A59DB0;
+static uint32_t BTL0 = 0x2A74840;
 
 static uint8_t GOA_WORLD_ID = 0x04;
 static uint16_t GOA_WORLD_ROOM_ID = 0x1A04;
@@ -33,10 +33,10 @@ static bool SHARE_LEVELS = true;
 static bool SHARE_DRIVE_LEVELS = true;
 static bool SHARE_PROGRESS = false;
 
-static std::string MODE = "PS2";
+static std::string MODE = "PC";
 
 static uint8_t max_check_level = 50;
-static uint8_t weapon_choice = 0x08;
+static uint8_t weapon_choice = 0;
 
 static uint8_t current_world;
 static bool inside_goa = true;
@@ -397,6 +397,7 @@ void grant_level_checks(std::map<uint16_t, uint8_t>& other_vals)
 
     uint8_t other_level = other_vals[0x000F];   // dummy key for level value
     uint8_t cur_level = MemoryLib::ReadByte(SAVE + cur_level_addr);
+
     if (cur_level >= other_level) return;
     if (highest_level_granted >= other_level) return;
 
@@ -411,10 +412,12 @@ void grant_level_checks(std::map<uint16_t, uint8_t>& other_vals)
         uint16_t id = MemoryLib::ReadShort(addr);
         id_list.push_back(id);
     }
+
     if (SHARE_LEVELS)
     {
         MemoryLib::WriteByte(SAVE + cur_level_addr, other_level);
     }
+
     get_stuff_from_ids(id_list);
 }
 
@@ -490,6 +493,7 @@ void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
             }
         }
     }
+
     grant_popups(progress_added);
 }
 
@@ -502,9 +506,27 @@ void redeem_checks(std::map<uint16_t, uint8_t>& other_vals)
     grant_level_checks(other_vals);
 }
 
+void get_weapon_choice()
+{
+    uint8_t dream_wep = MemoryLib::ReadByte(SAVE + 0x24F0 + 0xE);
+    switch (dream_wep)
+    {
+        case 0: weapon_choice = 0x08;
+                break;
+        case 1: weapon_choice = 0x0A;
+                break;
+        case 2: weapon_choice = 0x0C;
+                break;
+        default: weapon_choice = 0x08;
+    }
+}
+
 void on_GoA_entered(uint8_t& world)
 {
     std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
+
+    // set the dream weapon
+    if (!weapon_choice) get_weapon_choice;
 
     auto own_checks = get_world_checks(current_world);
     if (!own_checks.empty())

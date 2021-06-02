@@ -140,7 +140,6 @@ std::vector<uint16_t> Checks_Other::from_levels(std::map<uint16_t, uint8_t>& oth
     if (highest_level_granted >= other_level) return id_list;
 
     uint8_t start = (std::max)(cur_level, highest_level_granted);
-    uint32_t read_addr;
 
     for (uint8_t i = start + 1; i <= other_level; ++i)
     {

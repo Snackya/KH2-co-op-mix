@@ -22,20 +22,23 @@
 #include "Levels.h"
 
 //Addresses (default to PC)
-static uint32_t WORLD_MOD = 0x0714DB8;  // PC
+static uint32_t WORLD = 0x0714DB8;  // PC
 static uint32_t SAVE = 0x09A7070;       // PC
 static uint32_t SYS3 = 0x2A59DB0;       // PC
 static uint32_t BTL0 = 0x2A74840;       // PC
 
-static std::string MODE = "PS2";
+static uint8_t GOA_WORLD_ID = 0x04;
+static uint8_t GOA_ROOM_ID = 0x1A;
 static bool SHARE_LEVELS = true;
 static bool SHARE_DRIVE_LEVELS = true;
 
+static std::string MODE = "PS2";
+
 static uint8_t max_check_level = 50;
-static uint8_t goa_world_mod = 0x04;
+static uint8_t weapon_choice = 0x08;
 
 static uint8_t current_world;
-static uint8_t weapon_choice = 0x08;
+static bool inside_goa = true;
 
 std::string example_response = "7568,15|7569,219|7570,173|7571,75|7572,127|7573,16|7574,255|7575,255|7576,255|7577,70|7578,160|7579,0|9133,120|14084,252|14085,151|14086,255|14087,247|14088,239|14089,237|14090,70|14091,255|14092,254|14093,2";
 
@@ -279,18 +282,20 @@ std::map<uint16_t, uint8_t> get_world_checks(uint8_t world)
     }
     checks.merge(checks_bonuses);
 
+    // these should be a subset of progress flags. idk why this is here rn.
+    // TODO: fix
     // add the world's popup checks
-    std::map<uint16_t, uint8_t> checks_popups;
-    auto world_popups = popups[prev_world_str];
-    for (auto pu : world_popups)
-    {
-        uint8_t val = MemoryLib::ReadByte(SAVE + pu.first);
-        if (val > 0)
-        {
-            checks_chests.emplace(pu.first, val);
-        }
-    }
-    checks.merge(checks_popups);
+    //std::map<uint16_t, uint8_t> checks_popups;
+    //auto world_popups = popups[prev_world_str];
+    //for (auto pu : world_popups)
+    //{
+    //    uint8_t val = MemoryLib::ReadByte(SAVE + pu.first);
+    //    if (val > 0)
+    //    {
+    //        checks_chests.emplace(pu.first, val);
+    //    }
+    //}
+    //checks.merge(checks_popups);
 
     // add the progress flags for this world
     std::map<uint16_t, uint8_t> checks_progress_flags;
@@ -496,27 +501,38 @@ void redeem_checks(std::map<uint16_t, uint8_t>& other_vals)
     grant_level_checks(other_vals);
 }
 
+void on_GoA_entered(uint8_t& world)
+{
+    std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
+
+    auto own_checks = get_world_checks(current_world);
+    if (!own_checks.empty())
+    {
+        Http_Client::send_checks(own_checks);
+    }
+    auto checks = Http_Client::request_checks();
+    redeem_checks(checks);
+}
+
 void world_changed()
 {
-    uint8_t new_world = MemoryLib::ReadByte(WORLD_MOD);
-    
+    uint8_t new_world = MemoryLib::ReadByte(WORLD);
     if (new_world == 0x0F) return; //skip the world map.
-    if (new_world == current_world) return;  // world hasn't changed. skip.
+    if (new_world == current_world && new_world != 0x04) return;  // world hasn't changed and world isn't HB. skip
     
+    uint8_t new_room = MemoryLib::ReadByte(WORLD + 1);
+
     // GoA entered
-    if (new_world == goa_world_mod)
+    if (new_world == GOA_WORLD_ID && new_room == GOA_ROOM_ID && !inside_goa)
     {
-        std::cout << "GoA entered from: " << worlds_byte_string.at(current_world) << std::endl;
-
-        auto own_checks = get_world_checks(current_world);
-        if (!own_checks.empty())
-        {
-            Http_Client::send_checks(own_checks);
-        }
-        auto checks = Http_Client::request_checks();
-        redeem_checks(checks);
-
+        inside_goa = true;
+        on_GoA_entered(current_world);
     }
+    else if (new_world != GOA_WORLD_ID || new_room != GOA_ROOM_ID)
+    {
+        inside_goa = false;
+    }
+
     current_world = new_world;
 }
 
@@ -546,14 +562,14 @@ void set_anchors()
 {
     if (MODE == "PC")
     {
-        WORLD_MOD = 0x0714DB8;
+        WORLD = 0x0714DB8;
         SAVE = 0x09A7070;
         SYS3 = 0x2A59DB0;
         BTL0 = 0x2A74840;
     }
     else if (MODE == "PS2")
     {
-        WORLD_MOD = 0x032BAE0;
+        WORLD = 0x032BAE0;
         SAVE = 0x032BB30;
         SYS3 = 0x1CCB300;
         BTL0 = 0x1CE5D80;
@@ -629,11 +645,11 @@ void foo(int bar)
 int main()
 {
     //Server::start(7356);
-    //std::cout << "Mode?: ";
-    //std::cin >> MODE;
-    MODE = "PC";
+    std::cout << "Mode?: ";
+    std::cin >> MODE;
+    //MODE = "PC";
     setup();
-    Http_Client::init("127.0.0.1:7356");
-    current_world = MemoryLib::ReadByte(WORLD_MOD);
+    //Http_Client::init("127.0.0.1:7356");
+    current_world = MemoryLib::ReadByte(WORLD);
     loop();
 }

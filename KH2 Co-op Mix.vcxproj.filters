@@ -32,9 +32,6 @@
     <ClInclude Include="MemoryLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="json.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Http_Client.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -167,7 +167,6 @@
     <ClInclude Include="httplib.h" />
     <ClInclude Include="Http_Client.h" />
     <ClInclude Include="Items.h" />
-    <ClInclude Include="json.hpp" />
     <ClInclude Include="Levels.h" />
     <ClInclude Include="MemoryLib.h" />
     <ClInclude Include="Popups.h" />

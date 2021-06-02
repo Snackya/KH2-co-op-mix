@@ -134,7 +134,7 @@ std::vector<uint16_t> Checks_Other::from_levels(std::map<uint16_t, uint8_t>& oth
     std::vector<uint16_t> id_list;
 
     uint8_t other_level = other_vals[0x000F];   // dummy key for level value
-    uint8_t cur_level = MemoryLib::ReadByte(SAVE + Levels::cur_level_addr);
+    uint8_t cur_level = MemoryLib::ReadByte(SAVE + cur_level_addr);
 
     if (cur_level >= other_level) return id_list;
     if (highest_level_granted >= other_level) return id_list;
@@ -145,7 +145,7 @@ std::vector<uint16_t> Checks_Other::from_levels(std::map<uint16_t, uint8_t>& oth
     for (uint8_t i = start + 1; i <= other_level; ++i)
     {
         uint32_t addr = MemoryLib::ReadShort(
-            BTL0 + Levels::levels_start + i + Levels::weapon_offset
+            BTL0 + levels_start + i + weapon_offset
         );
         uint16_t id = MemoryLib::ReadShort(addr);
         id_list.push_back(id);
@@ -153,7 +153,7 @@ std::vector<uint16_t> Checks_Other::from_levels(std::map<uint16_t, uint8_t>& oth
 
     if (SHARE_LEVELS)
     {
-        MemoryLib::WriteByte(SAVE + Levels::cur_level_addr, other_level);
+        MemoryLib::WriteByte(SAVE + cur_level_addr, other_level);
     }
 
     return id_list;

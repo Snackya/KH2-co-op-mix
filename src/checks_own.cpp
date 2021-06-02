@@ -73,7 +73,7 @@ std::map<uint16_t, uint8_t> Checks_Own::get_world_checks(uint8_t world)
     checks.merge(d_lvls);
 
     // add current Sora level
-    uint8_t lvl = MemoryLib::ReadByte(SAVE + Levels::cur_level_addr);
+    uint8_t lvl = MemoryLib::ReadByte(SAVE + cur_level_addr);
     checks.emplace(0x000F, lvl);
 
     return checks;

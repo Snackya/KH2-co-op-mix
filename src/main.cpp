@@ -28,7 +28,7 @@ std::string example_response = "7568,15|7569,219|7570,173|7571,75|7572,127|7573,
 void on_GoA_entered(uint8_t& world)
 {
     // set the dream weapon for level checks
-    if (Levels::weapon_offset) Levels::set_weapon_offset();
+    if (weapon_offset) set_weapon_offset();
 
     auto own_checks = Checks_Own::get_world_checks(current_world);
     if (!own_checks.empty())

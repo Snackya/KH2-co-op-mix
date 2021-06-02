@@ -1,5 +1,34 @@
 #include "checks_other.hpp"
 
+std::vector<uint16_t> Checks_Other::find_all_ids(std::map<uint16_t, uint8_t>& other_vals)
+{
+    std::vector<uint16_t> ids = {};
+
+    // chests
+    auto _chests = open_chests(other_vals);
+    auto chest_checks = from_chests(_chests);
+    ids.insert(ids.end(), chest_checks.begin(), chest_checks.end());
+
+    // levels
+    auto _levels = from_levels(other_vals);
+    ids.insert(ids.end(), _levels.begin(), _levels.end());
+
+    // drive forms
+    auto _drives = from_drives(other_vals);
+    ids.insert(ids.end(), _drives.begin(), _drives.end());
+
+    // bonus levels
+    auto _bonus = from_bonus_levels(other_vals);
+    ids.insert(ids.end(), _bonus.begin(), _bonus.end());
+
+    // popups (e.g. from cutscenes)
+    auto _progress = grant_progress(other_vals);
+    auto _popups = from_popups(_progress);
+    ids.insert(ids.end(), _popups.begin(), _popups.end());
+
+    return ids;
+}
+
 //TODO: rewrite open_chests() to work for chests and flags
 // open all chests of partner players, so items cannot be received twice
 // overwrites bitmask values to open a range of chests
@@ -232,33 +261,4 @@ std::map<uint16_t, uint8_t> Checks_Other::grant_progress(std::map<uint16_t, uint
     }
 
     return progress_added;
-}
-
-std::vector<uint16_t> Checks_Other::find_all_ids(std::map<uint16_t, uint8_t>& other_vals)
-{
-    std::vector<uint16_t> ids = {};
-
-    // chests
-    auto _chests = open_chests(other_vals);
-    auto chest_checks = from_chests(_chests);
-    ids.insert(ids.end(), chest_checks.begin(), chest_checks.end());
-
-    // levels
-    auto _levels = from_levels(other_vals);
-    ids.insert(ids.end(), _levels.begin(), _levels.end());
-
-    // drive forms
-    auto _drives = from_drives(other_vals);
-    ids.insert(ids.end(), _drives.begin(), _drives.end());
-
-    // bonus levels
-    auto _bonus = from_bonus_levels(other_vals);
-    ids.insert(ids.end(), _bonus.begin(), _bonus.end());
-
-    // popups (e.g. from cutscenes)
-    auto _progress = grant_progress(other_vals);
-    auto _popups = from_popups(_progress);
-    ids.insert(ids.end(), _popups.begin(), _popups.end());
-
-    return ids;
 }

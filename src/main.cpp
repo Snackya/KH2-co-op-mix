@@ -23,8 +23,6 @@ static int refresh = 16;
 static bool inside_goa = true;
 static bool interrupt_loop = false;
 
-std::string example_response = "7568,15|7569,219|7570,173|7571,75|7572,127|7573,16|7574,255|7575,255|7576,255|7577,70|7578,160|7579,0|9133,120|14084,252|14085,151|14086,255|14087,247|14088,239|14089,237|14090,70|14091,255|14092,254|14093,2";
-
 void on_GoA_entered(uint8_t& world)
 {
     // set the dream weapon for level checks

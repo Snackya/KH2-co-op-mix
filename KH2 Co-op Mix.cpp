@@ -620,28 +620,6 @@ void loop()
     }
 }
 
-void req(std::map<uint32_t, uint8_t> map_chests)
-{
-    std::string foo;
-    std::cin >> foo;
-    if (foo == "r")
-    {
-        //Http_Client::send_checks(map_chests);
-        auto stuff = Http_Client::request_checks();
-        if (!stuff.empty())
-            for (auto shit : stuff)
-            {
-                std::cout << shit.first << " " << shit.second << std::endl;
-            }
-        req(map_chests);
-    }
-}
-
-void foo(int bar)
-{
-    std::cout << bar;
-}
-
 int main()
 {
     //Server::start(7356);

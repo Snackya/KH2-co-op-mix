@@ -31,6 +31,7 @@ static uint8_t GOA_WORLD_ID = 0x04;
 static uint16_t GOA_WORLD_ROOM_ID = 0x1A04;
 static bool SHARE_LEVELS = true;
 static bool SHARE_DRIVE_LEVELS = true;
+static bool SHARE_PROGRESS = false;
 
 static std::string MODE = "PS2";
 
@@ -452,7 +453,7 @@ void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
     auto itr = other_vals.lower_bound(0x1C00);
     auto upper_limit = other_vals.upper_bound(0x1EFF);
     map<uint16_t, uint8_t> progress_added;
-    if(workaround_progress_storage.size() == 0)
+    if(SHARE_PROGRESS)
     { 
         for (; itr != upper_limit; itr++)
         {
@@ -460,10 +461,10 @@ void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
             uint8_t after = before | itr->second;
             uint8_t added = after - before;
 
-            //MemoryLib::WriteByte(SAVE + itr->first, after);
+            MemoryLib::WriteByte(SAVE + itr->first, after);
+
             if (added != 0) {
                 progress_added.emplace(itr->first, added);
-                workaround_progress_storage[itr->first] = after;
             }
         }
     }
@@ -475,6 +476,10 @@ void grant_progress(std::map<uint16_t, uint8_t>& other_vals)
             if (workaround_progress_storage[itr->first])
             {
                 before = workaround_progress_storage[itr->first];
+            }
+            else
+            {
+                before = MemoryLib::ReadByte(SAVE + itr->first);
             }
             uint8_t after = before | itr->second;
             uint8_t added = after - before;

@@ -1,6 +1,3 @@
-// KH2 Co-op Mix.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include "server/Server.hpp"
 #include "client/Http_Client.hpp"
 #include <iostream>

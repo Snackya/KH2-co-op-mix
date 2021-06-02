@@ -1,5 +1,6 @@
 #include <vector>
-#include "httplib.h"
+#include <httplib.h>
+#include "../util/Utils.hpp"
 
 class Server
 {

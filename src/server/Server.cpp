@@ -1,5 +1,4 @@
-#include "Server.h"
-#include "Util.h"
+#include "Server.hpp"
 
 // TODO: general storage that gets sent out automatically when a new client connects
 //       ensures a client can join midway without any problems.
@@ -42,7 +41,7 @@ void Server::on_data(const httplib::Request& req, httplib::Response& res, const 
     std::cout << "Data received from client #" << source_id << std::endl;
     //std::cout << "data: \n" << body << std::endl;
 
-    std::map<uint16_t, uint8_t> checks = Util::string_to_map(body.c_str());
+    std::map<uint16_t, uint8_t> checks = Utils::string_to_map(body.c_str());
     std::cout << "Received size: " << checks.size() << std::endl;
 
     CLIENT client = grab_client(source_id);
@@ -134,9 +133,9 @@ void Server::on_request(const httplib::Request& req, httplib::Response& res)
     }
     for (auto fak : response_map)
     {
-        std::cout << std::hex << fak.first; Util::print_byte(fak.second);
+        std::cout << std::hex << fak.first; Utils::print_byte(fak.second);
     }
-    std::string s_response = Util::map_to_string(response_map);
+    std::string s_response = Utils::map_to_string(response_map);
     res.set_content(s_response.c_str(), "text/plain");
 }
 

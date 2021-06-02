@@ -18,6 +18,27 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\httplib.h" />
+    <ClInclude Include="src\client\Http_Client.hpp" />
+    <ClInclude Include="src\data\Abilities.hpp" />
+    <ClInclude Include="src\data\Bonus_Levels.hpp" />
+    <ClInclude Include="src\data\Chests.hpp" />
+    <ClInclude Include="src\data\Drives.hpp" />
+    <ClInclude Include="src\data\Items.hpp" />
+    <ClInclude Include="src\data\Levels.hpp" />
+    <ClInclude Include="src\data\Popups.hpp" />
+    <ClInclude Include="src\data\Progress_flags.hpp" />
+    <ClInclude Include="src\memory\MemoryLib.hpp" />
+    <ClInclude Include="src\server\Server.hpp" />
+    <ClInclude Include="src\util\Utils.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\client\Http_Client.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\server\Server.cpp" />
+    <ClCompile Include="src\util\Utils.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -90,6 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,7 +142,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SOLUTIONDIR)dep\asio\include; C:\Program Files\boost\boost_1_76_0;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,8 +159,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -153,27 +174,6 @@
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Http_Client.cpp" />
-    <ClCompile Include="KH2 Co-op Mix.cpp" />
-    <ClCompile Include="Server.cpp" />
-    <ClCompile Include="Util.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Abilities.h" />
-    <ClInclude Include="Bonus_Levels.h" />
-    <ClInclude Include="Chests.h" />
-    <ClInclude Include="Drives.h" />
-    <ClInclude Include="httplib.h" />
-    <ClInclude Include="Http_Client.h" />
-    <ClInclude Include="Items.h" />
-    <ClInclude Include="Levels.h" />
-    <ClInclude Include="MemoryLib.h" />
-    <ClInclude Include="Popups.h" />
-    <ClInclude Include="Progress_flags.h" />
-    <ClInclude Include="Server.h" />
-    <ClInclude Include="Util.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

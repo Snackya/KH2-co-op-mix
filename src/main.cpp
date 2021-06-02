@@ -1,25 +1,24 @@
 // KH2 Co-op Mix.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "Server.h"
-#include "Http_Client.h"
-#include "Util.h"
+#include "server/Server.hpp"
+#include "client/Http_Client.hpp"
 #include <iostream>
 #include <fstream>
-#include "MemoryLib.h"
+#include "memory/MemoryLib.hpp"
 #include <map>
 #include <omp.h>
 #include <string>
 #include <chrono>
 #include <thread>
-#include "Popups.h"
-#include "Chests.h"
-#include "Abilities.h"
-#include "Progress_flags.h"
-#include "Items.h"
-#include "Bonus_Levels.h"
-#include "Drives.h"
-#include "Levels.h"
+#include "data/Popups.hpp"
+#include "data/Chests.hpp"
+#include "data/Abilities.hpp"
+#include "data/Progress_flags.hpp"
+#include "data/Items.hpp"
+#include "data/Bonus_Levels.hpp"
+#include "data/Drives.hpp"
+#include "data/Levels.hpp"
 
 //Addresses (default to PC)
 static uint32_t WORLD = 0x0714DB8;
@@ -645,8 +644,8 @@ void loop()
 int main()
 {
     //Server::start(7356);
-    //std::cout << "Mode?: ";
-    //std::cin >> MODE;
+    std::cout << "Mode?: ";
+    std::cin >> MODE;
     MODE = "PC";
     setup();
     Http_Client::init("127.0.0.1:7356");

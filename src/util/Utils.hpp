@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 
-class Util
+class Utils
 {
 private:
 

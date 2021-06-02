@@ -1,6 +1,6 @@
-#include "Util.h"
+#include "Utils.hpp"
 
-std::string Util::map_to_string(std::map<uint16_t, uint8_t>& checks)
+std::string Utils::map_to_string(std::map<uint16_t, uint8_t>& checks)
 {
     std::string result = "";
     for (auto ch : checks)
@@ -14,7 +14,7 @@ std::string Util::map_to_string(std::map<uint16_t, uint8_t>& checks)
     return result;
 }
 
-std::map<uint16_t, uint8_t> Util::string_to_map(std::string s)
+std::map<uint16_t, uint8_t> Utils::string_to_map(std::string s)
 {
     size_t current, previous = 0;
     std::string delimiter = "|";
@@ -46,7 +46,7 @@ std::map<uint16_t, uint8_t> Util::string_to_map(std::string s)
     return result;
 }
 
-void Util::print_byte(uint8_t byte)
+void Utils::print_byte(uint8_t byte)
 {
     std::cout << "0x" << std::hex << (0xff & (unsigned int)byte) << std::endl;
 }

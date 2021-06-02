@@ -34,6 +34,12 @@ private:
         {0x12, "TWTNW"}
     };
 
+    static std::map<uint16_t, uint8_t> get_chests(std::string world);
+    static std::map<uint16_t, uint8_t> get_progress(std::string world);
+    static std::pair<uint16_t, uint8_t> get_level();
+    static std::map<uint16_t, uint8_t> get_drive_levels();
+    static std::map<uint16_t, uint8_t> get_bonus_levels(std::string world);
+
 public:
     static std::map<uint16_t, uint8_t> get_world_checks(uint8_t world);
 };

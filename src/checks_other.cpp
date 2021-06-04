@@ -26,10 +26,10 @@ std::vector<uint16_t> Checks_Other::find_all_ids(std::map<uint16_t, uint8_t>& ot
     auto _popups = from_popups(_progress);
     ids.insert(ids.end(), _popups.begin(), _popups.end());
 
-    for (auto id : ids)
-    {
-        std::cout << std::hex << id << std::endl;
-    }
+    //for (auto id : ids)
+    //{
+    //    std::cout << std::hex << id << std::endl;
+    //}
     return ids;
 }
 

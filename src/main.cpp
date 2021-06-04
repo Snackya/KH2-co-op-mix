@@ -13,7 +13,7 @@
 
 static uint8_t current_world;
 static int refresh = 16;
-static bool inside_goa = false;
+static bool inside_goa = true;
 static bool interrupt_loop = false;
 
 void on_GoA_entered(uint8_t& world)

@@ -399,3 +399,4 @@ MigrationBackup/
 FodyWeavers.xsd
 Client.cpp
 Client.h
+config.txt

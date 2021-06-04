@@ -113,21 +113,21 @@ class MemoryLib
     }
 
     // added by Snackya
-    static bool AttachToGameVersion(string mode)
+    static bool AttachToGameVersion(string version)
     {
         string _exec;
-        if (mode == "PC") _exec = "KINGDOM HEARTS II FINAL MIX.exe";
-        else if (mode == "PCSX2") _exec = "pcsx2.exe";
+        if (version == "PC") _exec = "KINGDOM HEARTS II FINAL MIX.exe";
+        else if (version == "PS2") _exec = "pcsx2.exe";
 
         PIdentifier = FindProcessId(wstring(_exec.begin(), _exec.end()));
         PHandle = OpenProcess(PROCESS_ALL_ACCESS, false, PIdentifier);
 
-        if (mode == "PC" && PHandle != NULL)
+        if (version == "PC" && PHandle != NULL)
         {
             BaseAddress = (uint64_t)FindBaseAddr(PHandle, _exec);
             return true;
         }
-        else if (mode == "PCSX2" && PHandle != NULL)
+        else if (version == "PS2" && PHandle != NULL)
         {
             SetPCSX2BaseAddress();
             return true;

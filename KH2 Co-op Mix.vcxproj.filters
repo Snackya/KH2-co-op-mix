@@ -66,6 +66,9 @@
     <ClInclude Include="src\checks_own.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\config\config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\server\Server.cpp">
@@ -87,6 +90,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\checks_own.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config\config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

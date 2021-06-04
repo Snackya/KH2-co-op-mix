@@ -1,7 +1,6 @@
 #include "server/Server.hpp"
 #include "client/Http_Client.hpp"
 #include <iostream>
-#include <fstream>
 #include "memory/MemoryLib.hpp"
 #include <map>
 #include <omp.h>
@@ -10,11 +9,7 @@
 #include <thread>
 #include "checks_other.hpp"
 #include "checks_own.hpp"
-
-static std::string GAME_VERSION = "PC";
-static bool HOSTING = false;
-static std::string SERVER_ADDR = "127.0.0.1";
-static int PORT = 7356;
+#include "config/config.hpp"
 
 static uint8_t current_world;
 static int refresh = 16;
@@ -69,52 +64,25 @@ void loop()
     }
 }
 
-bool get_config()
-{
-    std::ifstream con_file("config.txt");
-    if (con_file.is_open())
-    {
-        std::string line;
-        while (getline(con_file, line))
-        {
-            line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
-            auto delimiterPos = line.find("=");
-            auto name = line.substr(0, delimiterPos);
-            auto value = line.substr(delimiterPos + 1);
-            if(name == "HOST_ADDRESS") 
-            { 
-                SERVER_ADDR = value;
-                if(value == "127.0.0.1") HOSTING = true;
-            }
-            else if(name == "PORT") PORT = stoi(value);
-            else if(name == "VERSION") GAME_VERSION = value;
-        }
-        return 1;
-    }
-    else
-    {
-        std::cout << "config.txt not found." << std::endl;
-        return 0;
-    }
-}
+
 
 bool setup()
 {
     // get config params
-    //bool configured = get_config();
-    //if (!configured)
-    //{
-    //    return 0;
-    //}
+    bool configured = Config::set_config("config.txt");
+    if (!configured)
+    {
+        return 0;
+    }
 
     // set game anchors
-    Anchors::set_anchors(GAME_VERSION);
+    Anchors::set_anchors(Config::GAME_VERSION);
 
     // init process handle
-    bool attached = MemoryLib::AttachToGameVersion(GAME_VERSION);
+    bool attached = MemoryLib::AttachToGameVersion(Config::GAME_VERSION);
     if (!attached)
     {
-        std::cout << "Failed to attach to the " << GAME_VERSION << " version of the game.\n"
+        std::cout << "Failed to attach to the " << Config::GAME_VERSION << " version of the game.\n"
         << "Make sure the game is running and you selected the right version." << std::endl;
         return 0;
     }
@@ -127,11 +95,11 @@ bool setup()
     //}
 
     // init client
-    bool connected = Http_Client::init(SERVER_ADDR, PORT);
+    bool connected = Http_Client::init(Config::SERVER_ADDR, Config::PORT);
     if (!connected)
     {
-        std::cout << "Failed to connect to server at " << SERVER_ADDR << ":"
-        << PORT << ".\n"
+        std::cout << "Failed to connect to server at " << Config::SERVER_ADDR << ":"
+        << Config::PORT << ".\n"
         << "Make sure the server is running and try again." << std::endl;
         return 0;
     }
@@ -141,9 +109,9 @@ bool setup()
 
 void server_only()
 {
-    bool cnfg = get_config();
-    std::cout << "Hosting server on port " << PORT << std::endl;
-    Server::start(PORT);
+    bool cnfg = Config::set_config("config.txt");
+    std::cout << "Hosting server on port " << Config::PORT << std::endl;
+    Server::start(Config::PORT);
 }
 
 int main()

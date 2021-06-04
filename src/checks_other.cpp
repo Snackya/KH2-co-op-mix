@@ -104,7 +104,7 @@ std::vector<uint16_t> Checks_Other::from_drives(std::map<uint16_t, uint8_t>& oth
         if (before >= level) continue;
 
         // increase drive form level
-        if (SHARE_DRIVES)
+        if (Config::SHARE_DRIVES)
         {
             MemoryLib::WriteByte(Anchors::SAVE + ov_itr->first + 2, ov_itr->second);
         }
@@ -183,7 +183,7 @@ std::vector<uint16_t> Checks_Other::from_levels(std::map<uint16_t, uint8_t>& oth
         id_list.push_back(id);
     }
 
-    if (SHARE_LEVELS)
+    if (Config::SHARE_LEVELS)
     {
         MemoryLib::WriteByte(Anchors::SAVE + cur_level_addr, other_level);
     }
@@ -226,7 +226,7 @@ std::map<uint16_t, uint8_t> Checks_Other::grant_progress(std::map<uint16_t, uint
     auto itr = other_vals.lower_bound(0x1C00);
     auto upper_limit = other_vals.upper_bound(0x1EFF);
     map<uint16_t, uint8_t> progress_added;
-    if (SHARE_PROGRESS)
+    if (Config::SHARE_PROGRESS)
     {
         for (; itr != upper_limit; itr++)
         {

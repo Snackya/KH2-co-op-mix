@@ -42,7 +42,7 @@ void Server::on_data(const httplib::Request& req, httplib::Response& res, const 
     //std::cout << "data: \n" << body << std::endl;
 
     std::map<uint16_t, uint8_t> checks = Utils::string_to_map(body.c_str());
-    std::cout << "Received size: " << checks.size() << std::endl;
+    std::cout << "Received data of size: " << checks.size() << std::endl;
 
     CLIENT client = grab_client(source_id);
     for (auto check : checks)
@@ -131,10 +131,11 @@ void Server::on_request(const httplib::Request& req, httplib::Response& res)
             }
         }
     }
-    for (auto fak : response_map)
-    {
-        std::cout << std::hex << fak.first; Utils::print_byte(fak.second);
-    }
+    std::cout << "Responding with data of size " << response_map.size() << std::endl;
+    //for (auto fak : response_map)
+    //{
+    //    std::cout << std::hex << fak.first; Utils::print_byte(fak.second);
+    //}
     std::string s_response = Utils::map_to_string(response_map);
     res.set_content(s_response.c_str(), "text/plain");
 }

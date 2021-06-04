@@ -1,7 +1,8 @@
 # KH2 Co-op Mix
 
 ## Introduction
-This software will make it so you can play KH2FM "cooperatively".  It was designed to be used with Sonicshadowsilver's Garden of Assemblage (GoA) mod and in a randomizer setting.
+This software will make it so you can play KH2FM "cooperatively". It is akin to "shared-world co-op", but all updates happen via the hub of the KH2 randomizer, the GoA. That is why I'd actually call it "shared-hub co-op".
+It was designed to be used with Sonicshadowsilver2's Garden of Assemblage (GoA) mod, in a randomizer setting.
 
 The GoA works as a central hub. Here you:
 - bring your new checks from each world.  
@@ -48,3 +49,4 @@ When you start the `KH2 Co-op Mix.exe` make sure of the following:
 - [Sonicshadowsilver2](https://github.com/sonicshadowsilver2) for creating the GoA mod and providing resources.
 - [Num](https://github.com/1234567890num) for his resources and generally helping me out.
 - [Tommadness](https://github.com/tommadness) for generally helping me out at times.
+- [The KH2FM Rando Discord](https://discord.gg/KwfqM6GYzd) just because.

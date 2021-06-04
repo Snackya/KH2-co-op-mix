@@ -12,7 +12,7 @@ static uint8_t weapon_offset = 0;
 
 static void set_weapon_offset()
 {
-    uint8_t dream_wep = MemoryLib::ReadByte(SAVE + 0x24F0 + 0xE);
+    uint8_t dream_wep = MemoryLib::ReadByte(Anchors::SAVE + 0x24F0 + 0xE);
     switch (dream_wep)
     {
     case 0: weapon_offset = 0x08;

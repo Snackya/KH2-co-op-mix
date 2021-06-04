@@ -8,13 +8,13 @@ class Http_Client
 private:
 	inline static httplib::Client* cli;
 	inline static httplib::Headers client_id;
-	inline static std::string server_addresss;
+	inline static std::string server_address;
 
 public:
 	static void send_checks(std::map<uint16_t, uint8_t>& checks);
 
 	static std::map<uint16_t, uint8_t> request_checks();
 
-	static void init(std::string server_addr);
+	static bool init(std::string server_addr, int port);
 };
 

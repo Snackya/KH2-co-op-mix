@@ -6,8 +6,8 @@ std::vector<uint16_t> Checks_Other::find_all_ids(std::map<uint16_t, uint8_t>& ot
 
     // chests
     auto _chests = open_chests(other_vals);
-    auto chest_checks = from_chests(_chests);
-    ids.insert(ids.end(), chest_checks.begin(), chest_checks.end());
+    auto _chest_checks = from_chests(_chests);
+    ids.insert(ids.end(), _chest_checks.begin(), _chest_checks.end());
 
     // levels
     auto _levels = from_levels(other_vals);
@@ -26,6 +26,10 @@ std::vector<uint16_t> Checks_Other::find_all_ids(std::map<uint16_t, uint8_t>& ot
     auto _popups = from_popups(_progress);
     ids.insert(ids.end(), _popups.begin(), _popups.end());
 
+    for (auto id : ids)
+    {
+        std::cout << std::hex << id << std::endl;
+    }
     return ids;
 }
 
@@ -40,7 +44,7 @@ std::map<uint16_t, uint8_t> Checks_Other::open_chests(std::map<uint16_t, uint8_t
     // loop over all "chest is open" address,status pairs
     for (; itr != upper_limit; itr++)
     {
-        uint8_t before = MemoryLib::ReadByte(SAVE + itr->first);
+        uint8_t before = MemoryLib::ReadByte(Anchors::SAVE + itr->first);
         uint8_t after = before | itr->second;
         uint8_t added = after - before;
         // perform a bit-wise OR at every address for own and partner value
@@ -75,7 +79,7 @@ std::vector<uint16_t> Checks_Other::from_chests(std::map<uint16_t, uint8_t> ches
                 auto val_it = std::find(new_vals.begin(), new_vals.end(), itr->second.first);
                 if (val_it != new_vals.end())
                 {
-                    auto id = MemoryLib::ReadShort(SYS3 + itr->second.second);
+                    auto id = MemoryLib::ReadShort(Anchors::SYS3 + itr->second.second);
                     id_list.push_back(id);
                 }
             }
@@ -95,14 +99,14 @@ std::vector<uint16_t> Checks_Other::from_drives(std::map<uint16_t, uint8_t>& oth
     {
         uint16_t addr = ov_itr->first;
         uint8_t level = ov_itr->second;
-        uint8_t before = MemoryLib::ReadByte(SAVE + addr + 2);
+        uint8_t before = MemoryLib::ReadByte(Anchors::SAVE + addr + 2);
         // drive level higher than partner's. nothing to do
         if (before >= level) continue;
 
         // increase drive form level
         if (SHARE_DRIVES)
         {
-            MemoryLib::WriteByte(SAVE + ov_itr->first + 2, ov_itr->second);
+            MemoryLib::WriteByte(Anchors::SAVE + ov_itr->first + 2, ov_itr->second);
         }
 
         // workaround to make granting drive levels optional
@@ -116,7 +120,7 @@ std::vector<uint16_t> Checks_Other::from_drives(std::map<uint16_t, uint8_t>& oth
             for (uint8_t i = before + 1; i <= level; ++i)
             {
                 auto check_addr = drive_checks[form_name][i];
-                auto id = MemoryLib::ReadShort(BTL0 + check_addr);
+                auto id = MemoryLib::ReadShort(Anchors::BTL0 + check_addr);
                 id_list.push_back(id);
             }
         }
@@ -133,10 +137,10 @@ std::vector<uint16_t> Checks_Other::from_bonus_levels(std::map<uint16_t, uint8_t
     for (; ov_itr != upper_limit; ++ov_itr)
     {
         // merge new checks with existing ones
-        uint8_t before = MemoryLib::ReadByte(SAVE + ov_itr->first);
+        uint8_t before = MemoryLib::ReadByte(Anchors::SAVE + ov_itr->first);
         uint8_t after = before | ov_itr->second;
         uint8_t added = after - before;
-        MemoryLib::WriteByte(SAVE + ov_itr->first, after);
+        MemoryLib::WriteByte(Anchors::SAVE + ov_itr->first, after);
 
         vector<uint8_t> split_vals = Utils::mask_to_values(added);
 
@@ -148,8 +152,8 @@ std::vector<uint16_t> Checks_Other::from_bonus_levels(std::map<uint16_t, uint8_t
             if (val_it != split_vals.end())
             {
                 auto addr = bls_itr->second.second[2];
-                uint16_t item1 = MemoryLib::ReadShort(SAVE + addr);
-                uint16_t item2 = MemoryLib::ReadShort(SAVE + addr + 2);
+                uint16_t item1 = MemoryLib::ReadShort(Anchors::SAVE + addr);
+                uint16_t item2 = MemoryLib::ReadShort(Anchors::SAVE + addr + 2);
                 if (item1 != 0)  id_list.push_back(item1);
                 if (item2 != 0)  id_list.push_back(item2);
             }
@@ -163,7 +167,7 @@ std::vector<uint16_t> Checks_Other::from_levels(std::map<uint16_t, uint8_t>& oth
     std::vector<uint16_t> id_list;
 
     uint8_t other_level = other_vals[0x000F];   // dummy key for level value
-    uint8_t cur_level = MemoryLib::ReadByte(SAVE + cur_level_addr);
+    uint8_t cur_level = MemoryLib::ReadByte(Anchors::SAVE + cur_level_addr);
 
     if (cur_level >= other_level) return id_list;
     if (highest_level_granted >= other_level) return id_list;
@@ -173,7 +177,7 @@ std::vector<uint16_t> Checks_Other::from_levels(std::map<uint16_t, uint8_t>& oth
     for (uint8_t i = start + 1; i <= other_level; ++i)
     {
         uint32_t addr = MemoryLib::ReadShort(
-            BTL0 + levels_start + i + weapon_offset
+            Anchors::BTL0 + levels_start + i + weapon_offset
         );
         uint16_t id = MemoryLib::ReadShort(addr);
         id_list.push_back(id);
@@ -181,7 +185,7 @@ std::vector<uint16_t> Checks_Other::from_levels(std::map<uint16_t, uint8_t>& oth
 
     if (SHARE_LEVELS)
     {
-        MemoryLib::WriteByte(SAVE + cur_level_addr, other_level);
+        MemoryLib::WriteByte(Anchors::SAVE + cur_level_addr, other_level);
     }
 
     return id_list;
@@ -208,7 +212,7 @@ std::vector<uint16_t> Checks_Other::from_popups(std::map<uint16_t, uint8_t>& pro
                 auto val_it = std::find(new_vals.begin(), new_vals.end(), itr->second.first);
                 if (val_it != new_vals.end())
                 {
-                    auto id = MemoryLib::ReadShort(SYS3 + itr->second.second);
+                    auto id = MemoryLib::ReadShort(Anchors::SYS3 + itr->second.second);
                     id_list.push_back(id);
                 }
             }
@@ -226,11 +230,11 @@ std::map<uint16_t, uint8_t> Checks_Other::grant_progress(std::map<uint16_t, uint
     {
         for (; itr != upper_limit; itr++)
         {
-            uint8_t before = MemoryLib::ReadByte(SAVE + itr->first);
+            uint8_t before = MemoryLib::ReadByte(Anchors::SAVE + itr->first);
             uint8_t after = before | itr->second;
             uint8_t added = after - before;
 
-            MemoryLib::WriteByte(SAVE + itr->first, after);
+            MemoryLib::WriteByte(Anchors::SAVE + itr->first, after);
 
             if (added != 0) {
                 progress_added.emplace(itr->first, added);
@@ -248,7 +252,7 @@ std::map<uint16_t, uint8_t> Checks_Other::grant_progress(std::map<uint16_t, uint
             }
             else
             {
-                before = MemoryLib::ReadByte(SAVE + itr->first);
+                before = MemoryLib::ReadByte(Anchors::SAVE + itr->first);
             }
             uint8_t after = before | itr->second;
             uint8_t added = after - before;

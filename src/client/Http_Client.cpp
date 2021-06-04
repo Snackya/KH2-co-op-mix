@@ -5,7 +5,7 @@ void Http_Client::send_checks(std::map<uint16_t, uint8_t>& checks)
 	// for some reason keep_alive doesn't work only on sending,
 	// so we need to recreate the client here
 	delete cli;
-	cli = new httplib::Client(server_addresss.c_str());
+	cli = new httplib::Client(server_address.c_str());
 	std::string package = Utils::map_to_string(checks);
 	std::cout << "package:\n" << package << std::endl;
 	auto foo = cli->Post("/data", client_id, package, "text/plain");
@@ -27,15 +27,15 @@ std::map<uint16_t, uint8_t> Http_Client::request_checks()
 	return checks;
 }
 
-void Http_Client::init(std::string server_addr)
+bool Http_Client::init(std::string server_addr, int port)
 {
-	server_addresss = server_addr;
-	cli = new httplib::Client(server_addresss.c_str());
+	server_address = server_addr + ":" + std::to_string(port);
+	cli = new httplib::Client(server_address.c_str());
 	cli->set_keep_alive(true);
 	// get a client ID from the server
 	auto res = cli->Get("/register");
-	if (!res) return;
+	if (!res) return 0;
 	std::string id = res->body.c_str();
-	std::cout << "received id " << id << " from server" << std::endl;
 	client_id = { {"ID", id} };
+	return 1;
 }

@@ -21,7 +21,8 @@ bool Config::set_config(std::string filename)
             else if (name == "VERSION") GAME_VERSION = value;
             else if (name == "SHARE_LEVELS") SHARE_LEVELS = stoi(value);
             else if (name == "SHARE_DRIVES") SHARE_DRIVES = stoi(value);
-            else if (name == "SHARE_PROGRESS") SHARE_PROGRESS = stoi(value);
+            // currently unsupported
+            //else if (name == "SHARE_PROGRESS") SHARE_PROGRESS = stoi(value);
         }
         return 1;
     }

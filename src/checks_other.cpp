@@ -49,7 +49,7 @@ std::map<uint16_t, uint8_t> Checks_Other::open_chests(std::map<uint16_t, uint8_t
         uint8_t added = after - before;
         // perform a bit-wise OR at every address for own and partner value
         // bit-wise OR ensures the 2 values per address get proerply "merged"
-        MemoryLib::WriteByte(SAVE + itr->first, after);
+        MemoryLib::WriteByte(Anchors::SAVE + itr->first, after);
 
         m_chests_added.emplace(itr->first, added);
     }

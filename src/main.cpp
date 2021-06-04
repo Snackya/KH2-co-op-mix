@@ -110,6 +110,10 @@ bool setup()
 void server_only()
 {
     bool cnfg = Config::set_config("config.txt");
+    if (!cnfg)
+    {
+        std::cout << "Using default port." << std::endl;
+    }
     std::cout << "Hosting server on port " << Config::PORT << std::endl;
     Server::start(Config::PORT);
 }
@@ -121,6 +125,7 @@ int main()
     if (!setup_success)
     {
         std::cout << "Setup failed. Aborting." << std::endl;
+        system("pause");
         return 0;
     }
     else

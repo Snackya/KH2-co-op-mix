@@ -23,14 +23,14 @@ Currently unsupported:
 
 ## Usage
 #### Server
-One player will have to host a server using `KH2.Co-op.Mix.Server.exe`. The `config.txt` is optional here and only used for setting a different `PORT`.
+One player will have to host a server using `KH2.Co-op.Mix.Server.exe` from the [latest release](/releases/latest). The `config.txt` is optional here and only used for setting a different `PORT`.
 That player will have to share their IP (`SERVER_ADDRESS`) and (if changed from the default) `PORT` their server is running on.
 **Notes:** 
 - Port-forwarding may be required on your router.
 - Make sure to allow the server through your windows firewall.
 
 #### Clients
-Started with `KH2 Co-op Mix.exe`.
+Started with `KH2 Co-op Mix.exe` from the [latest release](/releases/latest).
 Every player must set up the `config.txt` file correctly for the program to work (exclude the quotation marks).
 - `SERVER_ADDRESS =`
 the host's IP. (e.g. `100.110.120.130`). Host himself leaves this at `127.0.0.1`

@@ -10,7 +10,7 @@ The GoA works as a central hub. Here you:
   
 Things that get synched between players are:
 - Chests
-- Popup rewards (Sora only)
+- Popup rewards (e.g. items received after cutscenes)
 - Bonus level rewards (e.g. Cerberus fight reward) (Sora only)
 - Level rewards (Sora only)
 - Drive level rewards

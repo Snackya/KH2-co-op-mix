@@ -23,7 +23,7 @@ Currently unsupported:
 
 ## Usage
 #### Server
-One player will have to host a server with the corresponding .exe or their own solution. The `config.txt` is optional here and only used for setting a different `PORT`.
+One player will have to host a server using `KH2.Co-op.Mix.Server.exe`. The `config.txt` is optional here and only used for setting a different `PORT`.
 That player will have to share their IP (`SERVER_ADDRESS`) and (if changed from the default) `PORT` their server is running on.
 **Notes:** 
 - Port-forwarding may be required on your router.

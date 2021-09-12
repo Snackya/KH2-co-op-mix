@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
@@ -13,35 +9,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{b269dd5e-d956-4979-9234-47cfdd23894a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{b49bd1f8-c4b1-46ce-ac97-01d682d30cd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\data\Abilities.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\data\Bonus_Levels.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\data\Chests.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\data\Drives.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\data\Items.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\data\Levels.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\data\Popups.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\data\Progress_flags.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\server\Server.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\httplib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -49,12 +28,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\util\Utils.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\Http_Client.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\data\Anchors.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\inventory.hpp">
@@ -69,15 +42,42 @@
     <ClInclude Include="src\config\config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\data\Popups.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data\Levels.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data\Items.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data\Drives.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data\Chests.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data\Bonus_Levels.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data\Anchors.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data\Abilities.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data\Progress_flags.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\Http_Client.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\server\Server.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\server\Server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\Utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\Http_Client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
@@ -94,6 +94,12 @@
     </ClCompile>
     <ClCompile Include="src\config\config.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\Http_Client.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\server\Server.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

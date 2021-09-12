@@ -81,10 +81,11 @@ static inline std::vector<uint16_t> abilities =
     0x010C,         // Counterguard
     0x0181,         // Auto Valor
     0x0182,         // Auto Wisdom
-    0x01A1,         // Auto Limit
+    0x0238,         // Auto Limit (Form)
     0x0183,         // Auto Master
     0x0184,         // Auto Final
     0x0185,         // Auto Summon
+    0x01A1,         // Auto Limit (Party Limit)
     0x00A5,         // Donald Fire
     0x00A6,         // Donald Blizzard
     0x00A7,         // Donald Thunder

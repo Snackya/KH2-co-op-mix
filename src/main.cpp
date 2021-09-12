@@ -20,7 +20,6 @@ void on_GoA_entered(uint8_t& world)
 {
     // set the dream weapon for level checks
     std::cout << "GOA entered";
-    if (weapon_offset) set_weapon_offset();
 
     auto own_checks = Checks_Own::get_world_checks(current_world);
     if (!own_checks.empty())

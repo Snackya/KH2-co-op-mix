@@ -173,13 +173,12 @@ std::vector<uint16_t> Checks_Other::from_levels(std::map<uint16_t, uint8_t>& oth
     if (highest_level_granted >= other_level) return id_list;
 
     uint8_t start = (std::max)(cur_level, highest_level_granted);
-
-    for (uint8_t i = start + 1; i <= other_level; ++i)
+    uint8_t weapon_offset = get_weapon_offset();
+    for (uint8_t i = start; i <= other_level; ++i)
     {
-        uint32_t addr = MemoryLib::ReadShort(
-            Anchors::BTL0 + levels_start + i + weapon_offset
+        uint16_t id = MemoryLib::ReadShort(
+            Anchors::BTL0 + levels_start + (i * 0x10) + weapon_offset
         );
-        uint16_t id = MemoryLib::ReadShort(addr);
         id_list.push_back(id);
     }
 

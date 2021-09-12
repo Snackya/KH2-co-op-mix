@@ -45,10 +45,6 @@ std::map<uint16_t, uint8_t> Checks_Own::get_bonus_levels(std::string world)
             {
                 checks_bonus_levels.emplace(bl.first, val);
             }
-            else
-            {
-                it->second = it->second | bl.second.first;
-            }
         }
     }
     return checks_bonus_levels;

@@ -33,6 +33,7 @@ private:
     static std::vector<uint16_t> from_popups(std::map<uint16_t, uint8_t>& progress_added);
     static std::map<uint16_t, uint8_t> grant_progress(std::map<uint16_t, uint8_t>& other_vals);
 
+    static void append_blvl_reward(std::vector<uint16_t>& id_list, std::vector<uint32_t>& reward_addresses);
 
 public:
     static inline bool SHARE_PROGRESS = false;
@@ -42,3 +43,4 @@ public:
     static std::vector<uint16_t> find_all_ids(std::map<uint16_t, uint8_t>& other_vals);
 
 };
+

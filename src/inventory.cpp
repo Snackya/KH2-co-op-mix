@@ -39,40 +39,16 @@ void Inventory::add_ability(uint16_t id)
     }
 }
 
-void Inventory::add_magic(uint16_t id)
+void Inventory::increase_lvl(uint16_t id, std::map<uint16_t, uint16_t> table, int max=0)
 {
-    switch (id)
-    {
-    case 0x0015:    // Fire
-        MemoryLib::WriteByte(Anchors::SAVE + 0x3594,
-            (std::min)(MemoryLib::ReadByte(Anchors::SAVE + 0x3594) + 1, 3));
-        break;
-    case 0x0016:    // Blizzard
-        MemoryLib::WriteByte(Anchors::SAVE + 0x3595,
-            (std::min)(MemoryLib::ReadByte(Anchors::SAVE + 0x3595) + 1, 3));
-        break;
-    case 0x0017:    // Thunder
-        MemoryLib::WriteByte(Anchors::SAVE + 0x3596,
-            (std::min)(MemoryLib::ReadByte(Anchors::SAVE + 0x3596) + 1, 3));
-        break;
-    case 0x0018:    // Cure
-        MemoryLib::WriteByte(Anchors::SAVE + 0x3597,
-            (std::min)(MemoryLib::ReadByte(Anchors::SAVE + 0x3597) + 1, 3));
-        break;
-    case 0x0057:    // Magnet
-        MemoryLib::WriteByte(Anchors::SAVE + 0x35CF,
-            (std::min)(MemoryLib::ReadByte(Anchors::SAVE + 0x35CF) + 1, 3));
-        break;
-    case 0x0058:    // Reflect
-        MemoryLib::WriteByte(Anchors::SAVE + 0x35D0,
-            (std::min)(MemoryLib::ReadByte(Anchors::SAVE + 0x35D0) + 1, 3));
-        break;
-    default:
-        std::cout << "Nothing matching ID " << std::hex << id << " found." << std::endl;
-    }
+    uint16_t addr = table[id];
+    MemoryLib::WriteByte(
+        Anchors::SAVE + addr,
+        (std::min)(MemoryLib::ReadByte(Anchors::SAVE + addr) + 1, max)
+    );
 }
 
-// finds the items and abilities corresponding to the given IDs and add them ingame
+// finds the items, abilities and stat boosts corresponding to the given IDs and add them ingame
 void Inventory::get_stuff_from_ids(vector<uint16_t>& id_list)
 {
     for (uint16_t id : id_list)
@@ -95,7 +71,24 @@ void Inventory::get_stuff_from_ids(vector<uint16_t>& id_list)
             add_ability(id);
             continue;
         }
-
-        add_magic(id);
+        auto it4 = magic_addrs.find(id);
+        if (it4 != magic_addrs.end())
+        {
+            increase_lvl(id, magic_addrs, 3);
+            continue;
+        }
+        auto it5 = stats_addrs.find(id);
+        if (it5 != stats_addrs.end())
+        {
+            if (id == 0xFF02)
+            {
+                increase_lvl(id, magic_addrs, 9);   // drive gauge limited to lvl 9
+            }
+            else
+            {
+                increase_lvl(id, magic_addrs);      // don't know limit on other stats
+            }
+            continue;
+        }
     }
 }

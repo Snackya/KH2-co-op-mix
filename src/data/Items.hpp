@@ -198,7 +198,6 @@ static inline std::map<uint16_t, uint16_t> items_id_invAddr =
     //{0x----, 0x365D},        // >Dummy 13<
     //{0x----, 0x365E},        // >Dummy 14<
     //{0x----, 0x365F},        // >Dummy 15<
-    //{0x----, 0x3660},        // >Dummy 16< (Gained Item Slot!)
     {0x01D0, 0x3661},        // Road to Discovery
     {0x01D1, 0x3662},        // Strength Beyond Strength
     {0x01D2, 0x3663},        // Book of Shadows
@@ -215,11 +214,6 @@ static inline std::map<uint16_t, uint16_t> items_id_invAddr =
     {0x01D3, 0x366E},        // Cloaked Thunder
     {0x01D4, 0x366F},        // Eternal Blossom
     {0x01D5, 0x3670},        // Rare Document
-    //{0x----, 0x3671},        // >Dummy 23< (Maximum HP Increased!)
-    //{0x----, 0x3672},        // >Dummy 24< (Maximum MP Increased!)
-    //{0x----, 0x3673},        // >Dummy 25< (Drive Gauge Powered Up!)
-    //{0x----, 0x3674},        // >Dummy 26< (Gained Armor Slot!)
-    //{0x----, 0x3675},        // >Dummy 27< (Gained Accessory Slot!)
     {0x01DB, 0x3676},        // Style Recipe
     {0x01DC, 0x3677},        // Moon Recipe
     {0x01DD, 0x3678},        // Queen Recipe
@@ -286,6 +280,28 @@ static inline std::map<uint16_t, uint16_t> items_id_invAddr =
     {0x0257, 0x36B5},        // Executive's Ring
     {0x0258, 0x36B6},        // Shaman's Relic+
     {0x0259, 0x36B7},        // Akashic Record+
+};
+
+// {ID, inventory address}
+static inline std::map<uint16_t, uint16_t> magic_addrs =
+{
+    {0x0015, 0x3594},       // Fire
+    {0x0016, 0x3595},       // Blizzard
+    {0x0017, 0x3596},       // Thunder
+    {0x0018, 0x3597},       // Cure
+    {0x0057, 0x35CF},       // Magnet
+    {0x0058, 0x35D0},       // Reflect
+};
+
+// {ID, inventory address}
+static inline std::map<uint16_t, uint16_t> stats_addrs =
+{
+    {0xFF00, 0x3671},        // >Dummy 23< (Maximum HP Increased!)
+    {0xFF01, 0x3672},        // >Dummy 24< (Maximum MP Increased!)
+    {0xFF02, 0x3673},        // >Dummy 25< (Drive Gauge Powered Up!)
+    {0xFF03, 0x3674},        // >Dummy 26< (Gained Armor Slot!)
+    {0xFF04, 0x3675},        // >Dummy 27< (Gained Accessory Slot!)
+    {0xFF05, 0x3660},        // >Dummy 16< (Gained Item Slot!)
 };
 
 // {ID, {bitmask address, bitmask value} }

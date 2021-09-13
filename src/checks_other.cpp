@@ -26,10 +26,6 @@ std::vector<uint16_t> Checks_Other::find_all_ids(std::map<uint16_t, uint8_t>& ot
     auto _popups = from_popups(_progress);
     ids.insert(ids.end(), _popups.begin(), _popups.end());
 
-    //for (auto id : ids)
-    //{
-    //    std::cout << std::hex << id << std::endl;
-    //}
     return ids;
 }
 
@@ -128,15 +124,20 @@ std::vector<uint16_t> Checks_Other::from_drives(std::map<uint16_t, uint8_t>& oth
     return id_list;
 }
 
+// get checks from given map
+// returns: a list of items, the player needs to be awarded
+// also immediately awards stat bonuses to the player
 std::vector<uint16_t> Checks_Other::from_bonus_levels(std::map<uint16_t, uint8_t>& other_vals)
 {
-    auto ov_itr = other_vals.lower_bound(0x3700);
-    auto upper_limit = other_vals.upper_bound(0x37FF);
     std::vector<uint16_t> id_list;
 
-    for (; ov_itr != upper_limit; ++ov_itr)
+    auto lower_limit = other_vals.lower_bound(0x3700);
+    auto upper_limit = other_vals.upper_bound(0x37FF);
+
+    // iterate over received checks
+    for (auto ov_itr = lower_limit; ov_itr != upper_limit; ++ov_itr)
     {
-        // merge new checks with existing ones
+        // update own bonus level bitmask
         uint8_t before = MemoryLib::ReadByte(Anchors::SAVE + ov_itr->first);
         uint8_t after = before | ov_itr->second;
         uint8_t added = after - before;
@@ -144,18 +145,18 @@ std::vector<uint16_t> Checks_Other::from_bonus_levels(std::map<uint16_t, uint8_t
 
         vector<uint8_t> split_vals = Utils::mask_to_values(added);
 
+        // iterate over bonus level addresses, that are present in received checks
         auto bls_range = bonus_levels_sora.equal_range(ov_itr->first);
         for (auto bls_itr = bls_range.first; bls_itr != bls_range.second; ++bls_itr)
         {
             // split-byte-value matches one of the bitmasks. grant the corresponding items/abilities/etc.
-            auto val_it = std::find(split_vals.begin(), split_vals.end(), bls_itr->second.first);
+            auto bitmask_val = bls_itr->second.first;
+            auto reward_addresses = bls_itr->second.second;
+            auto val_it = std::find(split_vals.begin(), split_vals.end(), bitmask_val);
+
             if (val_it != split_vals.end())
             {
-                auto addr = bls_itr->second.second[2];
-                uint16_t item1 = MemoryLib::ReadShort(Anchors::SAVE + addr);
-                uint16_t item2 = MemoryLib::ReadShort(Anchors::SAVE + addr + 2);
-                if (item1 != 0)  id_list.push_back(item1);
-                if (item2 != 0)  id_list.push_back(item2);
+                append_blvl_reward(id_list, reward_addresses);
             }
         }
     }
@@ -264,4 +265,35 @@ std::map<uint16_t, uint8_t> Checks_Other::grant_progress(std::map<uint16_t, uint
     }
 
     return progress_added;
+}
+
+// append reward IDs from given reward_addresses to given id_list
+void Checks_Other::append_blvl_reward(std::vector<uint16_t> &id_list, std::vector<uint32_t> &reward_addresses)
+{
+    // HP/MP
+    auto hpmp_addr = reward_addresses[0];
+    uint8_t hp = MemoryLib::ReadByte(Anchors::SAVE + hpmp_addr);
+    uint8_t mp = MemoryLib::ReadByte(Anchors::SAVE + hpmp_addr + 1);
+
+    // Inv slots and drive gauge
+    auto slots_addr = reward_addresses[1];
+    uint8_t drive_gauge_upgr =  MemoryLib::ReadByte(Anchors::SAVE + slots_addr);
+    uint8_t item_slots =        MemoryLib::ReadByte(Anchors::SAVE + slots_addr + 1);
+    uint8_t accessory_slots =   MemoryLib::ReadByte(Anchors::SAVE + slots_addr + 2);
+    uint8_t armor_slots =       MemoryLib::ReadByte(Anchors::SAVE + slots_addr + 3);
+
+    // items
+    auto item_addr = reward_addresses[2];
+    uint16_t item1 = MemoryLib::ReadShort(Anchors::SAVE + item_addr);
+    uint16_t item2 = MemoryLib::ReadShort(Anchors::SAVE + item_addr + 2);
+
+    // add reward IDs to list. magic numbers are dummies, not in the og game code.
+    if (hp) id_list.push_back(0xFF00);
+    if (mp) id_list.push_back(0xFF01);
+    if (drive_gauge_upgr) id_list.push_back(0xFF02);
+    if (armor_slots) id_list.push_back(0xFF03);
+    if (accessory_slots) id_list.push_back(0xFF04);
+    if (item_slots) id_list.push_back(0xFF05);
+    if (item1) id_list.push_back(item1);
+    if (item2) id_list.push_back(item2);
 }

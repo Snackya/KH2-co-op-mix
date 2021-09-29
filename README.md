@@ -32,7 +32,7 @@ That player will have to share their IP (`HOST_ADDRESS`) and (if changed from th
 - Make sure to allow the server through your windows firewall.
 
 #### Clients
-Started with `KH2 Co-op Mix.exe` from the [latest release](https://github.com/Snackya/KH2-co-op-mix/releases/latest/).
+Started with `KH2 Co-op Mix.exe` from the [latest release](https://github.com/Snackya/KH2-co-op-mix/releases/latest/). (**Every player** must run this, including the one hosting the server.)
 Every player must set up the `config.txt` file correctly for the program to work (exclude the quotation marks).
 - `HOST_ADDRESS =`
 the host's IP. (e.g. `100.110.120.130`). Host himself leaves this at `127.0.0.1`
